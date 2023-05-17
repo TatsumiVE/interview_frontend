@@ -1,14 +1,17 @@
 import axios from "axios";
 import { createContext, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthContextProvider = ({ children }) => {
-  const [token, setToken] = useState(null);
+  const [initial, setInitial] = useState(localStorage.getItem("token"));
+  const navigate = useNavigate();
+  const [token, setToken] = useState(initial);
 
-  const isLogin = !token;
+  const isLogin = !!token;
 
   const handleLogin = async (email, password) => {
     try {
@@ -19,8 +22,10 @@ export const AuthContextProvider = ({ children }) => {
           password,
         }
       );
-      console.log(response.data.data.token);
-      return response.data;
+      setToken(response.data.data.token);
+      console.log("token done");
+      localStorage.setItem("token", response.data.data.token);
+      navigate("/");
     } catch (error) {
       console.error(error);
       throw error;

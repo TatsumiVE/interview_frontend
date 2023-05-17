@@ -13,10 +13,9 @@ const LoginForm = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
+    console.log("login");
     handleLogin(email, password);
-
-    navigate("/");
+    console.log("login  done");
   };
 
   const handleShowPassword = () => {

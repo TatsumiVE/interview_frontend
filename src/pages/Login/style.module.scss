@@ -1,77 +1,20 @@
-.login-form {
-    width: 320px;
-    margin: 5rem auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 1.5rem;
-}
-
-.form-header {
-    font-size: 1.5rem;
-}
-
-.form-desc {
-    font-size: 0.9rem;
-}
-
-.form-input {
-    position: relative;
+.login {
+  height: 100vh;
+  min-width: 850px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &__left {
     width: 100%;
-}
-
-input:focus {
-    outline: 2px solid rgb(23, 122, 254);
-    box-shadow: 1px 1px 10px rgb(23, 122, 254);
-}
-
-.form-input__text,
-.form-input__pwd {
-    border: none;
-    width: 100%;
-    font-size: 1rem;
-    padding: 0.5rem 2.5rem;
-    border-radius: 5px;
+    height: 100%;
     background-color: rgb(245, 247, 249);
-}
+  }
 
-.input-icon__left {
-    position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    font-size: 1rem;
-    color: rgb(23, 122, 254);
-}
-
-.input-icon__right {
-    cursor: pointer;
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    font-size: 1rem;
-    color: rgb(23, 122, 254);
-}
-
-.form-optional {
+  &__right {
     width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-}
-
-.form-input__check:focus {
-    outline: none;
-    box-shadow: none;
-}
-
-.btn-login {
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    font-size: 1rem;
-    padding: 0.5rem;
-    color: white;
-    border-radius: 5px;
-    background-color: rgb(23, 122, 254);
+    background-color: rgb(255, 255, 255);
+  }
 }
