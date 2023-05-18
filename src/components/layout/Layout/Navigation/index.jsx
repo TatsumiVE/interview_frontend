@@ -18,6 +18,9 @@ const MainNavigation = () => (
     <NavigationLink to="/setting" icon="fa-gear">
       Setting
     </NavigationLink>
+    <NavigationLink to="/candidate/create" icon="fa-gear">
+      Candidate Create
+    </NavigationLink>
   </nav>
 );
 

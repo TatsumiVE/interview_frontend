@@ -8,7 +8,7 @@ import Employee from "../pages/Employees";
 import Interview from "../pages/Interviews";
 import Setting from "../pages/Setting";
 import Not from "../pages/Not";
-import { CandidateCreate } from "../components/candidate";
+import CandidateCreate from "../components/candidate";
 
 const Router = () => {
   const { isLogin } = useAuth();
@@ -25,6 +25,7 @@ const Router = () => {
           <Route path="interview" element={<Interview />} />
           <Route path="setting" element={<Setting />} />
           <Route path="candidate/create" element={<CandidateCreate />} />
+
           <Route path="*" element={<Not />} />
         </Route>
       ) : (
