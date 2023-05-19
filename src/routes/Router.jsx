@@ -1,15 +1,16 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../store/AuthContext";
-import Login from "../pages/Login";
-import Layout from "../components/layout/Layout";
-import Dashboard from "../pages/Dashboard";
-import Candidate from "../pages/Candidates";
-import Employee from "../pages/Employees";
-import Interview from "../pages/Interviews";
-import Setting from "../pages/Setting";
-import Not from "../pages/Not";
-import CandidateCreate from "../components/candidate";
-
+import {
+  Dashboard,
+  Candidate,
+  Employee,
+  InterviewList,
+  Setting,
+  NotFound,
+  Login,
+  CandidateCreate,
+} from "../pages";
+import { Layout } from "../layout";
 const Router = () => {
   const { isLogin } = useAuth();
 
@@ -17,16 +18,15 @@ const Router = () => {
     <Routes>
       {isLogin ? (
         <Route path="/*" element={<Layout />}>
-          {console.log("layout")}
           <Route path="" element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="candidate" element={<Candidate />} />
           <Route path="employee" element={<Employee />} />
-          <Route path="interview" element={<Interview />} />
+          <Route path="interview" element={<InterviewList />} />
           <Route path="setting" element={<Setting />} />
           <Route path="candidate/create" element={<CandidateCreate />} />
 
-          <Route path="*" element={<Not />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       ) : (
         <Route path="/*">

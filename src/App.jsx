@@ -1,5 +1,5 @@
 import { AuthContextProvider } from "./store/AuthContext";
-import Router from "./routes/Router";
+import Router from "./routes/router/";
 
 const App = () => (
   <AuthContextProvider>
