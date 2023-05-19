@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Dropdown } from "../components/dropdown";
+import { Dropdown,Input,Button} from "../components";
 
 export const CandidateCreate = () => {
   const [name, setName] = useState("");
@@ -105,19 +105,23 @@ export const CandidateCreate = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <label>
+      <form onSubmit={handleSubmit} className="form">
+        <Input labelName="Name" type="text" name="name" placeholder="Enter Candidate Name" value={name}
+            onChange={(e) => setName(e.target.value)}/>
+        {/* <label>
           Name
-          <input
+          <Input
             type="text"
             name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter Candidate Name"
           />
-        </label>
+        </label> */}
         <br />
-        <label>
+        <Input labelName="Email" type="email" name="email" placeholder="Enter Email"  value={email}
+            onChange={(e) => setEmail(e.target.value)}/>
+        {/* <label>
           Email
           <input
             type="email"
@@ -126,9 +130,12 @@ export const CandidateCreate = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter Email"
           />
-        </label>
+        </label> */}
+       
         <br />
-        <label>
+        <Input labelName="Phone Number" type="tel" name="phoneNumber" placeholder="Enter Phone Number"  value={phone_number}
+            onChange={(e) => setPhone(e.target.value)}/>
+        {/* <label>
           Phone Number
           <input
             type="text"
@@ -136,9 +143,12 @@ export const CandidateCreate = () => {
             value={phone_number}
             onChange={(e) => setPhone(e.target.value)}
           />
-        </label>
+        </label> */}
         <br />
-        <label>
+        <Input labelName="Date Of Birth" type="date" name="date_of_birth" placeholder="Enter Date of Birth" value={date_of_birth}
+            onChange={(e) => setBirth(e.target.value)}/>
+       
+        {/* <label>
           Date of Birth
           <input
             type="date"
@@ -146,9 +156,15 @@ export const CandidateCreate = () => {
             value={date_of_birth}
             onChange={(e) => setBirth(e.target.value)}
           />
-        </label>
+        </label> */}
         <br />
         <label>
+          Address
+        <textarea name="residential_address"  value={residential_address}
+            onChange={(e) => setAddress(e.target.value)}>Enter Residential Address</textarea>
+        </label>
+       
+        {/* <label>
           Residential Address
           <input
             type="text"
@@ -156,9 +172,10 @@ export const CandidateCreate = () => {
             value={residential_address}
             onChange={(e) => setAddress(e.target.value)}
           />
-        </label>
+        </label> */}
         <br />
-        <label>
+        <Input labelName="Willingness To Travel" type="checkbox" name="willingness_to_travel" value="" placeholder="" onChange={(e) => setTravel(e.target.checked)}/>
+        {/* <label>
           Willingness to Travel
           <input
             type="checkbox"
@@ -166,9 +183,12 @@ export const CandidateCreate = () => {
             checked={willingness_to_travel}
             onChange={(e) => setTravel(e.target.checked)}
           />
-        </label>
+        </label> */}
         <br />
-        <label>
+        <Input labelName="Male" type="radio" name="gender" placeholder="" value="0"
+            checked={gender === "1"}
+            onChange={(e) => setGender(e.target.value)}/>
+        {/* <label>
           Male
           <input
             type="radio"
@@ -177,9 +197,12 @@ export const CandidateCreate = () => {
             checked={gender === "0"}
             onChange={(e) => setGender(e.target.value)}
           />
-        </label>
+        </label> */}
         <br />
-        <label>
+        <Input labelName="Female" type="radio" name="gender" placeholder="" value="1"
+            checked={gender === "2"}
+            onChange={(e) => setGender(e.target.value)}/>
+        {/* <label>
           Female
           <input
             type="radio"
@@ -187,10 +210,13 @@ export const CandidateCreate = () => {
             value="1"
             checked={gender === "1"}
             onChange={(e) => setGender(e.target.value)}
-          />
-        </label>
+          />6
+        </label> */}
         <br />
-        <label>
+        <Input labelName="No Boundary" type="radio" name="gender" placeholder="" value="2"
+            checked={gender === "3"}
+            onChange={(e) => setGender(e.target.value)}/>
+        {/* <label>
           other
           <input
             type="radio"
@@ -199,30 +225,29 @@ export const CandidateCreate = () => {
             checked={gender === "2"}
             onChange={(e) => setGender(e.target.value)}
           />
-        </label>
+        </label> */}
         <br />
-        <label>
-          Position
-          <Dropdown
+        
+          <Dropdown labelName="Position"
             options={position_id.data}
             selectedValue={position_id}
             onChange={(e) => setPosition(e.target.value)}
-          />
-        </label>
+          >
+        </Dropdown>
 
         <br />
-        <label>
-          Agency
-          <Dropdown
+       
+          <Dropdown labelName="Agency"
             options={agency_id.data}
             selectedValue={agency_id}
             onChange={(e) => setAgency(e.target.value)}
           />
-        </label>
+       
 
         <br />
-
-        <label>
+        <Input labelName="Expected Salary" type="number" name="expected_salary" placeholder="Enter Expected Salary" value={expected_salary}
+            onChange={(e) => setExpected(e.target.value)}/>
+        {/* <label>
           Expected Salary
           <input
             type="number"
@@ -230,9 +255,11 @@ export const CandidateCreate = () => {
             value={expected_salary}
             onChange={(e) => setExpected(e.target.value)}
           />
-        </label>
+        </label> */}
         <br />
-        <label>
+        <Input labelName="Last Salary" type="number" name="last_salary" placeholder="Enter Last Salary"  value={last_salary}
+            onChange={(e) => setLast(e.target.value)}/>
+        {/* <label>
           Last Salary
           <input
             type="number"
@@ -240,9 +267,11 @@ export const CandidateCreate = () => {
             value={last_salary}
             onChange={(e) => setLast(e.target.value)}
           />
-        </label>
+        </label> */}
         <br />
-        <label>
+        <Input labelName="CV Path" type="text" name="cv_path" placeholder="Enter Cv Path" value={cv_path}
+            onChange={(e) => setCv(e.target.value)}/>
+        {/* <label>
           CV Path
           <input
             type="text"
@@ -250,9 +279,11 @@ export const CandidateCreate = () => {
             value={cv_path}
             onChange={(e) => setCv(e.target.value)}
           />
-        </label>
+        </label> */}
         <br />
-        <label>
+        <Input labelName="Earliest Starting Date" type="date" name="earliest_starting_date" placeholder="Enter Earliest Starting Date"  value={earliest_starting_date}
+            onChange={(e) => setEarliest(e.target.value)}/>
+        {/* <label>
           Earliest Starting Date
           <input
             type="date"
@@ -260,14 +291,14 @@ export const CandidateCreate = () => {
             value={earliest_starting_date}
             onChange={(e) => setEarliest(e.target.value)}
           />
-        </label>
+        </label> */}
         <br />
         {data.map((row, index) => (
           <div key={index}>
             <br />
-            <label>
-              Language
-              <Dropdown
+            {/* <label>
+              Language */}
+              <Dropdown labelName="Language"
                 options={languageList.data}
                 onChange={(e) => {
                   const selectedValue = e.target.value;
@@ -275,22 +306,25 @@ export const CandidateCreate = () => {
                   setLanguage(selectedValue);
                 }}
               />
-            </label>
+            {/* </label> */}
             <label>
               Experience
-              <input
+              <Input
                 name="year"
                 type="number"
+                placeholder="Year"
                 value={row.year}
                 onChange={(e) => {
                   const updatedData = [...data];
                   updatedData[index].year = e.target.value;
                   setData(updatedData);
                 }}
-              />
-              <input
+                 />
+             
+              <Input
                 name="month"
                 type="number"
+                placeholder="Month"
                 value={row.month}
                 onChange={(e) => {
                   const updatedData = [...data];
@@ -299,19 +333,19 @@ export const CandidateCreate = () => {
                 }}
               />
             </label>
-            {data.length > 1 && (
-              <button type="button" onClick={() => handleRemove(index)}>
-                -
-              </button>
+            {data.length > 1 && (            
+              <Button type="button" onClick={() => handleRemove(index)} text="-" btnColor="" />
+               
             )}
           </div>
         ))}
         {data.length < 4 && (
-          <button type="button" onClick={handleAdd}>
-            +
-          </button>
+          <Button type="button" onClick={handleAdd} text="+" btnColor=""/>
+          // <button type="button" onClick={handleAdd}>
+          //   +
+          // </button>
         )}
-        <button type="submit">Submit</button>
+        <Button type="submit" onClick="" text="Submit" btnColor=""/>
       </form>
     </>
   );
