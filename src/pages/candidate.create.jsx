@@ -20,9 +20,10 @@ export const CandidateCreate = () => {
   const [position_id, setPosition] = useState([]);
   const [agency_id, setAgency] = useState([]);
   const [languageList, setLanguageList] = useState([]);
-  const [devlanguage_id, setLanguage] = useState("");
 
-  const [data, setData] = useState([{ language: "", year: "", month: "" }]);
+  const [data, setData] = useState([
+    { devlanguage_id: "", year: "", month: "" },
+  ]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +34,7 @@ export const CandidateCreate = () => {
           "'month'": row.month,
           "'year'": row.year,
         },
-        "'devlanguage_id'": devlanguage_id, // Assuming language is selected from dropdown
+        "'devlanguage_id'": row.devlanguage_id, // Assuming language is selected from dropdown
       }));
 
       const formData = {
@@ -52,14 +53,12 @@ export const CandidateCreate = () => {
         position_id: position_id.toString(), // Assuming position.data is the selected position
         agency_id: agency_id.toString(), // Assuming agency.data is the selected agency
       };
-      console.log(formData);
-      // Send POST request to API
+
       const response = await axios.post(
         "http://localhost:8000/api/candidates",
         formData
       );
-
-      console.log("done", response.data); // Handle the response as needed
+      
     } catch (error) {
       console.log(error);
     }
@@ -94,7 +93,6 @@ export const CandidateCreate = () => {
           "http://localhost:8000/api/agencies"
         );
         setAgency(agencyResponse.data);
-        // console.log(agencyResponse.data);
       } catch (error) {
         console.log(error);
       }
@@ -270,9 +268,10 @@ export const CandidateCreate = () => {
               <Dropdown
                 options={languageList.data}
                 onChange={(e) => {
-                  const selectedValue = e.target.value;
-                  console.log("Selected value:", selectedValue);
-                  setLanguage(selectedValue);
+                  const updatedData = [...data];
+                  updatedData[index].devlanguage_id = e.target.value;
+
+                  setData(updatedData);
                 }}
               />
             </label>

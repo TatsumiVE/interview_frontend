@@ -8,3 +8,5 @@ export * from "./login.slider";
 export * from "./notfound";
 export * from "./setting";
 export * from "../pages/candidate.create";
+export * from "./candidate.detail";
+export * from "./interviewer.create";

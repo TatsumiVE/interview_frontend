@@ -1,0 +1,16 @@
+.stage {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.25rem;
+}
+
+.stage > span {
+  background-color: var(--color-2);
+  padding: 0 0.8rem;
+  font-size: 0.8rem;
+}
+
+.stage > span[class="active"] {
+  background-color: goldenrod;
+}

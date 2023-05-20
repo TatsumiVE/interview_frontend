@@ -8,7 +8,7 @@ export const MainNavigation = () => (
     <NavigationLink to="/candidate" icon="fa-user-group">
       Candidate
     </NavigationLink>
-    <NavigationLink to="/employee" icon="fa-user-tie">
+    <NavigationLink to="/interviewer" icon="fa-user-tie">
       Employee
     </NavigationLink>
     <NavigationLink to="/interview" icon="fa-calendar-days">
@@ -16,9 +16,6 @@ export const MainNavigation = () => (
     </NavigationLink>
     <NavigationLink to="/setting" icon="fa-gear">
       Setting
-    </NavigationLink>
-    <NavigationLink to="/candidate/create" icon="fa-gear">
-      Candidate Create
     </NavigationLink>
   </nav>
 );

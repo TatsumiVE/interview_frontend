@@ -1,31 +1,54 @@
-import { useState } from "react";
-import { CandidateTable, CandidateList } from "../components";
-
+import axios from "axios";
+import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 export const Candidate = () => {
-  // eslint-disable-next-line no-unused-vars
-  const [isTable, setIsTable] = useState(true);
-
-  const data = [
-    { avatar: "1", name: "Mg Mg", rating: 2, stage: 3, date: "1ldsfaslkjf" },
-    { avatar: "2", name: "Mg Mg", rating: 2, stage: 3, date: "2ldsfaslkjf" },
-    { avatar: "3", name: "Mg Mg", rating: 2, stage: 3, date: "3ldsfaslkjf" },
-    { avatar: "4", name: "Mg Mg", rating: 2, stage: 3, date: "4ldsfaslkjf" },
-    { avatar: "5", name: "Mg Mg", rating: 2, stage: 3, date: "5ldsfaslkjf" },
-    { avatar: "6", name: "Mg Mg", rating: 2, stage: 3, date: "6ldsfaslkjf" },
-  ];
+  const getCandidates = async () => {
+    const response = await axios.get("http://127.0.0.1:8000/api/candidates");
+    return response.data.data;
+  };
+  const showInfo = () => {};
+  const {
+    data: candidates,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["get", "candidates"],
+    queryFn: getCandidates,
+  });
+  if (isLoading) return "Loading...";
+  if (isError) return "something went wrong";
+  if (error) return "An error has occurred: " + error.message;
 
   return (
-    <>
-      <div className="candidate-top">
-        <p className="candidate-count">
-          Total Candidates <span>{data.length}</span>
-        </p>
-        <div>
-          <button className="candidate-view">Pipeline View</button>
-          <button className="candidate-view">Table View</button>
-        </div>
-      </div>
-      {isTable ? <CandidateTable data={data} /> : <CandidateList data={data} />}
-    </>
+    <div>
+      <table className="candidate-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Phone Number</th>
+            <th>Applied Position</th>
+            <th>Language</th>
+          </tr>
+        </thead>
+        <tbody>
+          {candidates.map((candidate) => (
+            <tr key={candidate.id} onClick={showInfo}>
+              <td>{candidate.name}</td>
+              <td>{candidate.email}</td>
+              <td>{candidate.gender}</td>
+              <td>{candidate.phone_number}</td>
+              <td>{candidate.position_id.name}</td>
+              <td>{candidate.languages}</td>
+              <td>
+                <Link to={`/candidate/${candidate.id}`}>View Details</Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };

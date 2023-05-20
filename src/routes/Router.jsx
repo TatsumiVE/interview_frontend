@@ -4,32 +4,39 @@ import {
   Dashboard,
   Candidate,
   Employee,
-  InterviewList,
   Setting,
   NotFound,
   Login,
   CandidateCreate,
+  CandidateDetails,
+  InterviewerCreate,
 } from "../pages";
 import { Layout } from "../layout";
+import { CandidateList } from "../components";
+
 const Router = () => {
   const { isLogin } = useAuth();
 
   return (
     <Routes>
       {isLogin ? (
-        <Route path="/*" element={<Layout />}>
-          <Route path="" element={<Navigate to="dashboard" replace />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="candidate" element={<Candidate />} />
-          <Route path="employee" element={<Employee />} />
-          <Route path="interview" element={<InterviewList />} />
+          <Route path="interviewer" element={<Employee />} />
+          <Route path="interview" element={<CandidateList />} />
           <Route path="setting" element={<Setting />} />
-          <Route path="candidate/create" element={<CandidateCreate />} />
-
+          <Route
+            path="interview/candidate/create"
+            element={<CandidateCreate />}
+          />
+          <Route path="candidate/:id" element={<CandidateDetails />} />
+          <Route path="interviewer/create" element={<InterviewerCreate />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       ) : (
-        <Route path="/*">
+        <Route path="/">
           <Route path="login" element={<Login />} />
           <Route path="*" element={<Navigate to="login" replace />} />
         </Route>
