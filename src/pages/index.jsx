@@ -10,3 +10,5 @@ export * from "./setting";
 export * from "../pages/candidate.create";
 export * from "./candidate.detail";
 export * from "./interviewer.create";
+export * from "./candidate.create";
+export * from "./interview.result";

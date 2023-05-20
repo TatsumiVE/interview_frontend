@@ -1,10 +1,11 @@
-export const Dropdown = ({ options, selectedValue, onChange }) => {
+export const Dropdown = ({ options, selectedValue, onChange,labelName}) => {
   if (!options) {
     return null;
   }
 
   return (
-    <select value={selectedValue} onChange={onChange}>
+    <label>{labelName}
+    <select value={selectedValue} onChange={onChange} className="select">
       <option value="">Select</option>
       {options.map((option) => (
         <option key={option.id} value={option.id}>
@@ -12,5 +13,6 @@ export const Dropdown = ({ options, selectedValue, onChange }) => {
         </option>
       ))}
     </select>
+    </label>
   );
 };
