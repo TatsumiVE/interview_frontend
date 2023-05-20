@@ -9,6 +9,7 @@ import {
   NotFound,
   Login,
   CandidateCreate,
+  InterviewResult,
 } from "../pages";
 import { Layout } from "../layout";
 const Router = () => {
@@ -25,7 +26,7 @@ const Router = () => {
           <Route path="interview" element={<InterviewList />} />
           <Route path="setting" element={<Setting />} />
           <Route path="candidate/create" element={<CandidateCreate />} />
-
+          <Route path="interview/result" element={<InterviewResult />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       ) : (

@@ -20,5 +20,8 @@ export const MainNavigation = () => (
     <NavigationLink to="/candidate/create" icon="fa-gear">
       Candidate Create
     </NavigationLink>
+    <NavigationLink to="/interview/result" icon="fa-gear">
+      Interview Result
+    </NavigationLink>
   </nav>
 );
