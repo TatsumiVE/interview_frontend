@@ -46,8 +46,12 @@ export const CandidateList = () => {
               <td>{candidate.email}</td>
               <td>{candidate.gender}</td>
               <td>{candidate.phone_number}</td>
-              <td>{candidate.positions_id.name}</td>
-              <td>{candidate.languages}</td>
+              <td>{candidate.position.name}</td>
+              <td>
+                {candidate.specific_languages
+                  .map((language) => language.devlanguage.name)
+                  .join(", ")}
+              </td>
               <td>
                 <Link to={`/candidate/interview/${candidate.id}`}>
                   Interview

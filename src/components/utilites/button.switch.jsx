@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export const ButtonSwitch = ({ handleClick, isOn, label }) => {
   return (
     <div onClick={handleClick} className="btn-switch">
@@ -9,4 +11,10 @@ export const ButtonSwitch = ({ handleClick, isOn, label }) => {
       </button>
     </div>
   );
+};
+
+ButtonSwitch.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+  isOn: PropTypes.bool.isRequired,
+  label: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 };

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { Dropdown } from "../components";
+import { Dropdown } from "../../components/utilites";
 
 export const InterviewerCreate = () => {
   const [position_id, setPosition] = useState("");

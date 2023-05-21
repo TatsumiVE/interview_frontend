@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-import { useAuth } from "../store/AuthContext";
+import { useAuth } from "../../store/AuthContext";
 
 export const LoginForm = () => {
   const { handleLogin } = useAuth();

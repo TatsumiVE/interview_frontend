@@ -24,7 +24,7 @@ const Router = () => {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="candidate" element={<Candidate />} />
+          <Route path="candidates" element={<Candidate />} />
           <Route path="interviewer" element={<Employee />} />
           <Route path="interview" element={<CandidateList />} />
           <Route path="setting" element={<Setting />} />
@@ -32,7 +32,7 @@ const Router = () => {
             path="interview/candidate/create"
             element={<CandidateCreate />}
           />
-          <Route path="candidate/:id" element={<CandidateDetails />} />
+          <Route path="candidates/:id" element={<CandidateDetails />} />
           <Route path="interviewer/create" element={<InterviewerCreate />} />
           <Route path="candidate/create" element={<CandidateCreate />} />
           <Route path="interview/result" element={<InterviewResult />} />

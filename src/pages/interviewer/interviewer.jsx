@@ -37,14 +37,20 @@ export const Employee = () => {
           </tr>
         </thead>
         <tbody>
-          {interviewers.map((interviewer) => (
-            <tr key={interviewer.id}>
-              <td>{interviewer.id}</td>
-              <td>{interviewer.name}</td>
-              <td>{interviewer.position_id.name}</td>
-              <td>{interviewer.position_id.department.name}</td>
+          {isSuccess && interviewers.length > 0 ? (
+            interviewers.map((interviewer) => (
+              <tr key={interviewer.id}>
+                <td>{interviewer.id}</td>
+                <td>{interviewer.name}</td>
+                <td>{interviewer.position_id.name}</td>
+                <td>{interviewer.position_id.department.name}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td>Interviewer List is Not Found</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

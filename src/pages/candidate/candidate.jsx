@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 export const Candidate = () => {
   const getCandidates = async () => {
     const response = await axios.get("http://127.0.0.1:8000/api/candidates");
+    console.log(response.data.data);
     return response.data.data;
   };
   const showInfo = () => {};
@@ -40,10 +41,15 @@ export const Candidate = () => {
               <td>{candidate.email}</td>
               <td>{candidate.gender}</td>
               <td>{candidate.phone_number}</td>
-              <td>{candidate.position_id.name}</td>
-              <td>{candidate.languages}</td>
+              <td>{candidate.position.name}</td>
               <td>
-                <Link to={`/candidate/${candidate.id}`}>View Details</Link>
+                {" "}
+                {candidate.specific_languages
+                  .map((language) => language.devlanguage.name)
+                  .join(", ")}
+              </td>
+              <td>
+                <Link to={`/candidates/${candidate.id}`}>View Details</Link>
               </td>
             </tr>
           ))}

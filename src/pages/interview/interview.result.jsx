@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Input, Button } from "../components";
+import { Input, Button } from "../../components/utilites";
 export const InterviewResult = () => {
   const [result, setResult] = useState("");
   const [interview_summarize, setSummarize] = useState("");
@@ -43,7 +43,7 @@ export const InterviewResult = () => {
           onChange={(e) => setResult(e.target.value)}
         />
         <p> Candidate ID</p>
-        <Button type="submit" text="Cancle" btnColor="" />
+        <Button type="submit" text="Cancel" btnColor="" />
         <Button type="submit" text="Submit" btnColor="" />
       </form>
     </>
