@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;600&display=swap');
+
+// $weight: (light: 100, medium: 400, bold: 600);
+// $align: (center, left, right, justify);
+
+body, a {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+}
+
+@each $color,$val in $colors {
+  .txt-#{$color} {
+    color: $val;
+  }
+  .bg-#{$color} {
+    background: $val;
+  }
+}
