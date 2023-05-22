@@ -44,7 +44,13 @@ export const CandidateList = () => {
             <tr key={candidate.id}>
               <td>{candidate.name}</td>
               <td>{candidate.email}</td>
-              <td>{candidate.gender}</td>
+              <td>
+                {candidate.gender == 1
+                  ? "Male"
+                  : candidate.gender == 2
+                  ? "Female"
+                  : "Non-Binary"}
+              </td>
               <td>{candidate.phone_number}</td>
               <td>{candidate.position.name}</td>
               <td>
@@ -55,6 +61,12 @@ export const CandidateList = () => {
               <td>
                 <Link to={`/candidate/interview/${candidate.id}`}>
                   Interview
+                </Link>
+                /
+                <Link
+                  to={`/candidate/interview-assemssment/${candidate.id}/${candidate.interviewAssignId}`}
+                >
+                  Assessment
                 </Link>
               </td>
             </tr>

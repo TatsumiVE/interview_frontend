@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
-
-const BarChart = () => {
+import Chart from "chart.js/auto";
+export const BarChart = () => {
   const [labels, setLabels] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [datasets, setDatasets] = useState([]);
@@ -11,13 +11,13 @@ const BarChart = () => {
     const fetchData = async () => {
       try {
         const response = await axios
-          .get("http://localhost:8000/api/dev_languages")
+          .get("http://localhost:8000/api/dev-languages")
           .then(({ data }) => {
+            console.log(data.data);
             setLanguages(data.data);
-            return response;
           });
       } catch (error) {
-        console.error("Error fetching languages data:", error);
+        console.log("Error fetching languages data:", error);
       }
     };
     fetchData();
@@ -50,7 +50,7 @@ const BarChart = () => {
           },
         ]);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.log("Error fetching data:", error);
       }
     };
     fetchData();
@@ -69,9 +69,7 @@ const BarChart = () => {
 
   return (
     <div className="bar-chart">
-      <Bar data={data} />
+      {labels.length > 0 && datasets.length > 0 && <Bar data={data} />}
     </div>
   );
 };
-
-export default BarChart;

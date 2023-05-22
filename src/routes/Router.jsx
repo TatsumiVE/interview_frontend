@@ -40,9 +40,10 @@ const Router = () => {
           <Route path="candidate/interview/:id" element={<InterviewCreate />} />
           <Route path="interview/result" element={<InterviewResult />} />
           <Route
-            path="interview/assessment"
+            path="/candidate/interview-assessment/:candidateId/:interviewAssignId"
             element={<InterviewAssessment />}
           />
+
           <Route path="*" element={<NotFound />} />
         </Route>
       ) : (

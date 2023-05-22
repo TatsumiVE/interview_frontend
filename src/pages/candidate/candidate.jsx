@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 export const Candidate = () => {
   const getCandidates = async () => {
     const response = await axios.get("http://127.0.0.1:8000/api/candidates");
-    console.log(response.data.data);
     return response.data.data;
   };
   const showInfo = () => {};

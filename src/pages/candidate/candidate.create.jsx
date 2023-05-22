@@ -43,7 +43,7 @@ export const CandidateCreate = () => {
         month: row.month,
         year: row.year,
       },
-      devlanguage_id: row.devlanguage_id, // Assuming language is selected from dropdown
+      devlanguage_id: row.devlanguage_id,
     }));
 
     const formData = {
@@ -83,7 +83,6 @@ export const CandidateCreate = () => {
           "http://localhost:8000/api/dev_languages"
         );
         setLanguageList(languageResponse.data);
-        console.log(languageResponse.data);
 
         const positionResponse = await axios.get(
           "http://localhost:8000/api/positions"
@@ -266,7 +265,13 @@ export const CandidateCreate = () => {
 
             <div className="card-input--btnPlus">
               {data.length < 4 && (
-                <Button type="button" onClick={handleAdd} text="+" btnColor="" className="txt-light btn-primary btnRight" />
+                <Button
+                  type="button"
+                  onClick={handleAdd}
+                  text="+"
+                  btnColor=""
+                  className="txt-light btn-primary btnRight"
+                />
               )}
             </div>
 
@@ -284,7 +289,6 @@ export const CandidateCreate = () => {
                           setData(updatedData);
                         }}
                       />
-
                     </div>
                     <div className="card-input--btnMinus">
                       {data.length > 1 && (
@@ -330,13 +334,20 @@ export const CandidateCreate = () => {
               ))}
             </div>
             <div className="button-group">
-              <Button type="submit" text="Submit" className="txt-light btn-primary" />
-              <Button type="submit" text="Cancel" className="txt-light btn-default" />
+              <Button
+                type="submit"
+                text="Submit"
+                className="txt-light btn-primary"
+              />
+              <Button
+                type="submit"
+                text="Cancel"
+                className="txt-light btn-default"
+              />
             </div>
           </form>
         </div>
       </div>
     </>
-
   );
 };
