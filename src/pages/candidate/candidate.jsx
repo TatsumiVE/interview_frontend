@@ -1,30 +1,41 @@
-import React, { useMemo } from 'react';
-import { useTable, useGlobalFilter, usePagination } from 'react-table';
+import React, { useMemo,useState, useEffect  } from 'react';
+import { useTable, useGlobalFilter, usePagination} from 'react-table';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 export const Candidate = () => {
+  const [candidateData, setCandidateData] = useState([]);
+
   const getCandidates = async () => {
     const response = await axios.get('http://127.0.0.1:8000/api/candidates');
     return response.data.data;
   };
 
+  useEffect(() => {
+    const fetchCandidates = async () => {
+      const data = await getCandidates();
+      setCandidateData(data);
+    };
+
+    fetchCandidates();
+  }, []);
+
   const showInfo = () => {};
 
-  const {
-    data: candidates,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['get', 'candidates'],
-    queryFn: getCandidates,
-  });
+  // const {
+  //   data:candidates,
+  //   isLoading,
+  //   isError,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ['get', 'candidates'],
+  //   queryFn: getCandidates,
+  // });
 
-  if (isLoading) return 'Loading...';
-  if (isError) return 'Something went wrong';
-  if (error) return 'An error has occurred: ' + error.message;
+  // if (isLoading) return 'Loading...';
+  // if (isError) return 'Something went wrong';
+  // if (error) return 'An error has occurred: ' + error.message;
 
   const columns = useMemo(
     () => [
@@ -66,14 +77,16 @@ export const Candidate = () => {
   } = useTable(
     {
       columns,
-      data: candidates,
+      data: candidateData,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
-    usePagination
+    usePagination,
+    
   );
 
   const { globalFilter, pageIndex } = state;
+  if (candidateData.length === 0) return 'Loading...';
 
   return (
     <div>
