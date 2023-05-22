@@ -49,7 +49,7 @@ export const Candidate = () => {
                   .join(", ")}
               </td>
               <td>
-                <Link to={`/candidates/${candidate.id}`}>View Details</Link>
+                <Link to={`/candidate/${candidate.id}`}>View Details</Link>
               </td>
             </tr>
           ))}

@@ -32,7 +32,7 @@ const Router = () => {
             path="interview/candidate/create"
             element={<CandidateCreate />}
           />
-          <Route path="candidates/:id" element={<CandidateDetails />} />
+          <Route path="candidate/:id" element={<CandidateDetails />} />
           <Route path="interviewer/create" element={<InterviewerCreate />} />
           <Route path="candidate/create" element={<CandidateCreate />} />
           <Route path="interview/result" element={<InterviewResult />} />
