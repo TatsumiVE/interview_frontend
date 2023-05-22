@@ -11,10 +11,10 @@ import {
   CandidateDetails,
   InterviewerCreate,
   InterviewResult,
-  InterviewCreate,
 } from "../pages";
 import { Layout } from "../layout";
 import { CandidateList } from "../components";
+import { InterviewCreate } from "../pages/interview/interview.form";
 
 const Router = () => {
   const { isLogin } = useAuth();
@@ -36,6 +36,7 @@ const Router = () => {
           <Route path="candidate/:id" element={<CandidateDetails />} />
           <Route path="interviewer/create" element={<InterviewerCreate />} />
           <Route path="candidate/create" element={<CandidateCreate />} />
+          <Route path="candidate/interview/:id" element={<InterviewCreate />} />
           <Route path="interview/result" element={<InterviewResult />} />
 
           <Route path="*" element={<NotFound />} />

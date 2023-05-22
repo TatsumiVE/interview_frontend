@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import Chart from "chart.js/auto";
+import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
 
@@ -11,10 +10,11 @@ const BarChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/dev_languages")
+        const response = await axios
+          .get("http://localhost:8000/api/dev_languages")
           .then(({ data }) => {
             setLanguages(data.data);
-          })
+          });
       } catch (error) {
         console.error("Error fetching languages data:", error);
       }
@@ -67,9 +67,9 @@ const BarChart = () => {
   };
 
   return (
-      <div className="bar-chart">
-        <Bar data={data} />
-      </div>
+    <div className="bar-chart">
+      <Bar data={data} />
+    </div>
   );
 };
 

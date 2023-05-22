@@ -31,7 +31,7 @@ export const Candidate = () => {
             <th>Gender</th>
             <th>Phone Number</th>
             <th>Applied Position</th>
-            <th>Language</th>
+            <th>Language(s)</th>
           </tr>
         </thead>
         <tbody>
@@ -39,11 +39,16 @@ export const Candidate = () => {
             <tr key={candidate.id} onClick={showInfo}>
               <td>{candidate.name}</td>
               <td>{candidate.email}</td>
-              <td>{candidate.gender}</td>
+              <td>
+                {candidate.gender == 1
+                  ? "Male"
+                  : candidate.gender == 2
+                  ? "Female"
+                  : "Non-Binary"}
+              </td>
               <td>{candidate.phone_number}</td>
               <td>{candidate.position.name}</td>
               <td>
-                {" "}
                 {candidate.specific_languages
                   .map((language) => language.devlanguage.name)
                   .join(", ")}
