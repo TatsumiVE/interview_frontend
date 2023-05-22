@@ -14,10 +14,10 @@ import {
   InterviewAssessment,
 
 } from "../pages";
-import { Layout } from "../layout";
-import { CandidateList } from "../components";
 
-const Router = () => {
+import { CandidateList, Layout } from "../components";
+
+export const Router = () => {
   const { isLogin } = useAuth();
 
   return (
@@ -48,4 +48,4 @@ const Router = () => {
   );
 };
 
-export default Router;
+

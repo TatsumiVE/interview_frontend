@@ -9,3 +9,4 @@ export * from "./notfound";
 export * from "./setting";
 export * from "./interview";
 export * from "./barchart";
+export * from "./detailInfo";

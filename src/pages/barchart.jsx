@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Chart from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
-
+import Chart from "chart.js/auto";
 const BarChart = () => {
   const [labels, setLabels] = useState([]);
   const [languages, setLanguages] = useState([]);

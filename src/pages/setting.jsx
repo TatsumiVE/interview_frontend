@@ -1,3 +1,4 @@
+import { DetailInfo } from "./detailInfo";
 import { InterviewCreate } from "./interview/interview.form";
 
 export const Setting = () => {
@@ -5,6 +6,8 @@ export const Setting = () => {
     <>
     Setting
     <InterviewCreate />
+    <br/>
+    <DetailInfo />
     </>
   );
 };
