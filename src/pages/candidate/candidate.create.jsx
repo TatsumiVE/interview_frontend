@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Dropdown, Input, Button } from "../../components/utilites";
+import { Dropdown, Input, Button, Textarea } from "../../components/utilites";
 import { useMutation } from "react-query";
 
 export const CandidateCreate = () => {
