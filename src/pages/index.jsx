@@ -12,3 +12,4 @@ export * from "./candidate/candidate.detail";
 export * from "./interviewer/interviewer.create";
 export * from "./candidate/candidate.create";
 export * from "./interview/interview.result";
+export * from "./barchart";
