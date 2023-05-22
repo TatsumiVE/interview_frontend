@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { Dropdown } from "../../components/utilites";
+import { Button, Dropdown, Input } from "../../components/utilites";
 
 export const InterviewerCreate = () => {
   const [position_id, setPosition] = useState("");
@@ -43,32 +43,36 @@ export const InterviewerCreate = () => {
   if (isLoading) return "Loading...";
   if (isError) return "error";
   return (
-    <div>
+    <div className="card">
       <form
         onSubmit={(e) => {
           e.preventDefault();
           createInterviewer();
         }}
       >
-        <label>
-          Interviewer Name
-          <input
-            type="text"
-            name="name"
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter Name"
-          ></input>
-        </label>
-
-        <label>
-          Position
-          <Dropdown
-            options={positions}
-            selectedValue={position_id}
-            onChange={(e) => setPosition(e.target.value)}
-          />
-        </label>
-        <button type="submit">Create</button>
+        <div className="card-wrap">
+          <div className="card-input__group">
+            <Input
+              labelName="Name"
+              type="text"
+              name="name"
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter Name"
+            ></Input>
+          </div>
+          <div className="card-input__group">
+            <Dropdown
+              labelName="Position"
+              options={positions}
+              selectedValue={position_id}
+              onChange={(e) => setPosition(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="btn-group">
+          <Button type="submit" text="Create" className="txt-light btn-primary" />
+          <Button type="submit" text="Cancel" className="txt-light btn-default" />
+        </div>
       </form>
     </div>
   );

@@ -11,6 +11,7 @@ import {
   CandidateDetails,
   InterviewerCreate,
   InterviewResult,
+  InterviewAssessment,
 } from "../pages";
 import { Layout } from "../layout";
 import { CandidateList } from "../components";
@@ -28,14 +29,12 @@ const Router = () => {
           <Route path="interviewer" element={<Employee />} />
           <Route path="interview" element={<CandidateList />} />
           <Route path="setting" element={<Setting />} />
-          <Route
-            path="interview/candidate/create"
-            element={<CandidateCreate />}
-          />
+          <Route path="interview/candidate/create" element={<CandidateCreate />}/>
           <Route path="candidates/:id" element={<CandidateDetails />} />
           <Route path="interviewer/create" element={<InterviewerCreate />} />
           <Route path="candidate/create" element={<CandidateCreate />} />
           <Route path="interview/result" element={<InterviewResult />} />
+          <Route path="interview/assessment" element={<InterviewAssessment/>}/>
           <Route path="*" element={<NotFound />} />
         </Route>
       ) : (

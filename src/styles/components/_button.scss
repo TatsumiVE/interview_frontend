@@ -1,0 +1,18 @@
+.btn {
+    cursor: pointer;
+    margin: 3px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border-style: none; 
+
+    @each $color,$val in $colors {
+        &.txt-#{$color}{
+            color:$val;
+        }
+        &.btn-#{$color} {
+            background: $val;
+        }
+
+    }
+
+}
