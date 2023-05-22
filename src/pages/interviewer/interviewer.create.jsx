@@ -4,8 +4,9 @@ import { useMutation, useQuery } from "react-query";
 import { Button, Dropdown, Input } from "../../components/utilites";
 
 export const InterviewerCreate = () => {
-  const [position_id, setPosition] = useState("");
+  const [position_id, setPosition] = useState("");  
   const [name, setName] = useState("");
+
   const fetchData = async () => {
     const response = await axios.get("http://localhost:8000/api/positions");
 
@@ -39,6 +40,8 @@ export const InterviewerCreate = () => {
     mutationKey: ["post", "postions"],
     mutationFn: addInterviewer,
   });
+
+  
 
   if (isLoading) return "Loading...";
   if (isError) return "error";
