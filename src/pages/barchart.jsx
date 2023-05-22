@@ -14,6 +14,7 @@ const BarChart = () => {
           .get("http://localhost:8000/api/dev_languages")
           .then(({ data }) => {
             setLanguages(data.data);
+            return response;
           });
       } catch (error) {
         console.error("Error fetching languages data:", error);
