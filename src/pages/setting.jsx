@@ -1,3 +1,10 @@
+import { InterviewCreate } from "./interview/interview.form";
+
 export const Setting = () => {
-  return <>Setting</>;
+  return (
+    <>
+    Setting
+    <InterviewCreate />
+    </>
+  );
 };
