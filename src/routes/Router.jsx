@@ -11,7 +11,6 @@ import {
   CandidateDetails,
   InterviewerCreate,
   InterviewResult,
-  InterviewCreate,
 } from "../pages";
 import { Layout } from "../layout";
 import { CandidateList } from "../components";

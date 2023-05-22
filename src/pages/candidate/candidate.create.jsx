@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Dropdown, Input, Button } from "../../components/utilites";
+import { Dropdown, Input, Button, Textarea } from "../../components/utilites";
 import { useMutation } from "react-query";
 
 export const CandidateCreate = () => {
@@ -182,7 +182,13 @@ export const CandidateCreate = () => {
           />
         </label> */}
         <br />
-        <label>
+        <Textarea 
+            labelName="Address"
+            name="residential_address"
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder ="Please enter your address" />
+
+        {/* <label>
           Address
           <textarea
             name="residential_address"
@@ -191,7 +197,7 @@ export const CandidateCreate = () => {
           >
             Enter Residential Address
           </textarea>
-        </label>
+        </label> */}
 
         {/* <label>
           Residential Address
