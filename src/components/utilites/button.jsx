@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 
-export const Button = ({ type, className, onClick, text }) => {
+export const Button = ({ type, className, onClick, text ,...rest}) => {
   return (
     <>
       <button
         type={type ? type : "button"}
         className={`btn ${className}`}
-        onClick={onClick}
+        onClick={onClick} {...rest}
       >
         {text}
       </button>

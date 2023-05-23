@@ -6,10 +6,10 @@ export const MainNavigation = () => (
       Dashboard
     </NavigationLink>
     <NavigationLink to="/candidates" icon="fa-user-group">
-      Candidates
+    Candidates
     </NavigationLink>
     <NavigationLink to="/interviewer" icon="fa-user-tie">
-      Employee
+    Interviewer
     </NavigationLink>
     <NavigationLink to="/interview" icon="fa-calendar-days">
       Interview

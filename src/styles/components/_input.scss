@@ -9,7 +9,8 @@ input[type='date'],
   border-radius: 5px;
   margin: 5px 5px;
   border:1px solid;
-  border-color: map-get($colors,secondary);
+  border-color: map-get($colors,primary);
+ 
 }
 
 label{
