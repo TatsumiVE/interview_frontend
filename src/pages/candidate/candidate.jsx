@@ -82,48 +82,54 @@ export const Candidate = () => {
     },
     useGlobalFilter,
     usePagination,
-    
+
   );
 
   const { globalFilter, pageIndex } = state;
   if (candidateData.length === 0) return 'Loading...';
 
   return (
-    <div>
-      <input
-        type="text"
-        value={globalFilter || ''}
-        onChange={(e) => setGlobalFilter(e.target.value)}
-        placeholder="Search..."
-      />
-      <table {...getTableProps()} className="candidate-table">
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} onClick={showInfo}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+    <div className='table-wrap'>
+      <div className='table-wrap__head'>
+        <div className='search-content'>
+        <input
+            type="text"
+            value={globalFilter || ''}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder="  Search..."
+          />
+        </div>
+      </div>
+      <div className='table-wrap__main'>
+        <table {...getTableProps()} className="custom-table">
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>{column.render('Header')}</th>
                 ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <div>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()} onClick={showInfo}>
+                  {row.cells.map((cell) => (
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div className='table-wrap__pagination'>
         <button onClick={() => previousPage()} disabled={!canPreviousPage}>
           Previous
         </button>
-        <span>
+        <span className='page-content'>
           Page{' '}
           <strong>
             {pageIndex + 1} of {pageOptions.length}
@@ -138,34 +144,49 @@ export const Candidate = () => {
 };
 
 
-// import React from 'react';
-// import { useTable } from 'react-table';
-// import axios from "axios";
-// import { useQuery } from "react-query";
-// import { Link } from "react-router-dom";
+
+//v1
+// import React, { useMemo,useState, useEffect  } from 'react';
+// import { useTable, useGlobalFilter, usePagination} from 'react-table';
+// import { useQuery } from 'react-query';
+// import { Link } from 'react-router-dom';
+// import axios from 'axios';
+
 // export const Candidate = () => {
+//   const [candidateData, setCandidateData] = useState([]);
+
 //   const getCandidates = async () => {
 //     const response = await axios.get("http://127.0.0.1:8000/api/candidates");
+//     console.log(response.data.data);
 //     return response.data.data;
 //   };
 
+//   useEffect(() => {
+//     const fetchCandidates = async () => {
+//       const data = await getCandidates();
+//       setCandidateData(data);
+//     };
+
+//     fetchCandidates();
+//   }, []);
+
 //   const showInfo = () => {};
 
-//   const {
-//     data: candidates,
-//     isLoading,
-//     isError,
-//     error,
-//   } = useQuery({
-//     queryKey: ["get", "candidates"],
-//     queryFn: getCandidates,
-//   });
+//   // const {
+//   //   data:candidates,
+//   //   isLoading,
+//   //   isError,
+//   //   error,
+//   // } = useQuery({
+//   //   queryKey: ['get', 'candidates'],
+//   //   queryFn: getCandidates,
+//   // });
 
-//   if (isLoading) return "Loading...";
-//   if (isError) return "Something went wrong";
-//   if (error) return "An error has occurred: " + error.message;
+//   // if (isLoading) return 'Loading...';
+//   // if (isError) return 'Something went wrong';
+//   // if (error) return 'An error has occurred: ' + error.message;
 
-//   const columns = React.useMemo(
+//   const columns = useMemo(
 //     () => [
 //       { Header: 'Name', accessor: 'name' },
 //       { Header: 'Email', accessor: 'email' },
@@ -193,67 +214,34 @@ export const Candidate = () => {
 //     getTableProps,
 //     getTableBodyProps,
 //     headerGroups,
-//     rows,
+//     page,
+//     nextPage,
+//     previousPage,
+//     canPreviousPage,
+//     canNextPage,
+//     pageOptions,
+//     state,
+//     setGlobalFilter,
 //     prepareRow,
-//   } = useTable({ columns, data: candidates });
-
-//   return (
-//     <div>
-//       <table {...getTableProps()} className="candidate-table">
-//         <thead>
-//           {headerGroups.map((headerGroup) => (
-//             <tr {...headerGroup.getHeaderGroupProps()}>
-//               {headerGroup.headers.map((column) => (
-//                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-//               ))}
-//             </tr>
-//           ))}
-//         </thead>
-//         <tbody {...getTableBodyProps()}>
-//           {rows.map((row) => {
-//             prepareRow(row);
-//             return (
-//               <tr {...row.getRowProps()} onClick={showInfo}>
-//                 {row.cells.map((cell) => (
-//                   <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-//                 ))}
-//               </tr>
-//             );
-//           })}
-//         </tbody>
-//       </table>
-//     </div>
+//   } = useTable(
+//     {
+//       columns,
+//       data: candidateData,
+//       initialState: { pageIndex: 0 },
+//     },
+//     useGlobalFilter,
+//     usePagination,
+    
 //   );
-// };
 
-
-// import axios from "axios";
-// import { useQuery } from "react-query";
-// import { Link } from "react-router-dom";
-// export const Candidate = () => {
-//   const getCandidates = async () => {
-//     const response = await axios.get("http://127.0.0.1:8000/api/candidates");
-//     console.log(response.data.data);
-//     return response.data.data;
-//   };
-//   const showInfo = () => {};
-//   const {
-//     data: candidates,
-//     isLoading,
-//     isError,
-//     error,
-//   } = useQuery({
-//     queryKey: ["get", "candidates"],
-//     queryFn: getCandidates,
-//   });
-//   if (isLoading) return "Loading...";
-//   if (isError) return "something went wrong";
-//   if (error) return "An error has occurred: " + error.message;
+//   const { globalFilter, pageIndex } = state;
+//   if (candidateData.length === 0) return 'Loading...';
 
 //   return (
-//     <div>
-//       <table className="candidate-table">
-//         <thead>
+//     <div className='table-wrap'>
+//       <div className='table-wrap__main'>
+//       <table className="custom-table">
+//         <thead >
 //           <tr>
 //             <th>Name</th>
 //             <th>Email</th>
@@ -284,6 +272,8 @@ export const Candidate = () => {
 //           ))}
 //         </tbody>
 //       </table>
+//       </div>
+      
 //     </div>
 //   );
 // };
