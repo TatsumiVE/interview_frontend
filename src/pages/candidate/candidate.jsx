@@ -96,7 +96,7 @@ export const Candidate = () => {
             type="text"
             value={globalFilter || ''}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="Search..."
+            placeholder="  Search..."
           />
         </div>
       </div>

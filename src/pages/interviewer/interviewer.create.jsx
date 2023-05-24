@@ -4,12 +4,13 @@ import { useMutation, useQuery } from "react-query";
 import { Button, Dropdown, Input } from "../../components/utilites";
 
 export const InterviewerCreate = () => {
-  const [position_id, setPosition] = useState("");  
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [position_id, setPosition] = useState("");
+  const [department_id, setDepartment] = useState("");
 
-  const fetchData = async () => {
+  const fetchPosition = async () => {
     const response = await axios.get("http://localhost:8000/api/positions");
-
     console.log(response.data.data);
     return response.data.data;
   };
@@ -20,16 +21,30 @@ export const InterviewerCreate = () => {
     isError,
   } = useQuery({
     queryKey: ["get", "positions"],
-    queryFn: fetchData,
+    queryFn: fetchPosition,
+  });
+
+  const fetchDepartment = async () => {
+    const response = await axios.get("http://localhost:8000/api/departments");
+    console.log(response.data.data);
+    return response.data.data;
+  }
+
+  const {
+    data:departments,
+    // isLoading,
+    // isError
+  }=useQuery({
+    queryKey:["get","departments"],
+    queryFn:fetchDepartment,
   });
 
   const addInterviewer = async () => {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/interviewers",
-        { name, position_id }
+        { name, email, department_id, position_id }
       );
-
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -41,10 +56,9 @@ export const InterviewerCreate = () => {
     mutationFn: addInterviewer,
   });
 
-  
-
   if (isLoading) return "Loading...";
   if (isError) return "error";
+
   return (
     <div className="card">
       <form
@@ -60,8 +74,25 @@ export const InterviewerCreate = () => {
               type="text"
               name="name"
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter Name"
+              placeholder=" Enter Name"
             ></Input>
+          </div>
+          <div className="card-input__group">
+            <Input
+              labelName="Email"
+              type="email"
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder=" Enter Email"
+            ></Input>
+          </div>
+          <div className="card-input__group">
+            <Dropdown
+              labelName="Department"
+              options={departments}
+              selectedValue={department_id}
+              onChange={(e) => setDepartment(e.target.value)}
+            />
           </div>
           <div className="card-input__group">
             <Dropdown
