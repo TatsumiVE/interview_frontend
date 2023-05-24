@@ -1,11 +1,22 @@
+import { useAuth } from "../../store/AuthContext";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+
 export const CandidateList = () => {
-  // const navigate = useNavigate();
+  const { token, user } = useAuth();
 
   const getCandidates = async () => {
-    const response = await axios.get("http://127.0.0.1:8000/api/candidates");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await axios.get(
+      "http://127.0.0.1:8000/api/candidates",
+      config
+    );
     console.log(response.data);
     return response.data.data;
   };
@@ -19,12 +30,13 @@ export const CandidateList = () => {
     queryKey: ["get", "candidates"],
     queryFn: getCandidates,
   });
-  if (isLoading) return "Loading...";
-  if (isError) return "something went wrong";
-  if (error) return "An error has occurred: " + error.message;
 
+  if (isLoading) return "Loading...";
+  if (isError) return "Something went wrong";
+  if (error) return "An error has occurred: " + error.message;
   return (
     <div>
+      <p>Welcome, !</p>
       <button type="button">
         <Link to="candidate/create">Create Candidate</Link>
       </button>
@@ -64,7 +76,7 @@ export const CandidateList = () => {
                 </Link>
                 /
                 <Link
-                  to={`/candidate/interview-assemssment/${candidate.id}/${candidate.interviewAssignId}`}
+                  to={`/candidate/interview-assessment/${candidate.id}/${user.id}`}
                 >
                   Assessment
                 </Link>

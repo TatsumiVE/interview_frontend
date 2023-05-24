@@ -9,12 +9,14 @@ import {
   Login,
   CandidateCreate,
   CandidateDetails,
+  CandidateList,
   InterviewerCreate,
   InterviewResult,
   InterviewAssessment,
+  InterviewCreate,
 } from "../pages";
 
-import { CandidateList, Layout } from "../components";
+import { Layout } from "../components";
 
 export const Router = () => {
   const { isLogin } = useAuth();
@@ -39,7 +41,7 @@ export const Router = () => {
           <Route path="candidate/interview/:id" element={<InterviewCreate />} />
           <Route path="interview/result" element={<InterviewResult />} />
           <Route
-            path="/candidate/interview-assessment/:candidateId/:interviewAssignId"
+            path="/candidate/interview-assessment/:candidateId/:interviewerId"
             element={<InterviewAssessment />}
           />
 
@@ -54,5 +56,3 @@ export const Router = () => {
     </Routes>
   );
 };
-
-

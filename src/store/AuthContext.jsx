@@ -7,9 +7,11 @@ const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthContextProvider = ({ children }) => {
-  const [initial, setInitial] = useState(localStorage.getItem("token"));
+  const initialToken = localStorage.getItem("token");
+  const initialUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-  const [token, setToken] = useState(initial);
+  const [token, setToken] = useState(initialToken);
+  const [user, setUser] = useState(initialUser);
 
   const isLogin = !!token;
 
@@ -23,8 +25,12 @@ export const AuthContextProvider = ({ children }) => {
         }
       );
       setToken(response.data.data.token);
+      setUser(response.data.data);
+
       console.log("token done");
       localStorage.setItem("token", response.data.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.data));
+
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -35,11 +41,16 @@ export const AuthContextProvider = ({ children }) => {
   const handleLogout = () => {
     setToken(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={{ token, isLogin, handleLogin, handleLogout }}>
-      {children}
-    </AuthContext.Provider>
+    <>
+      <AuthContext.Provider
+        value={{ token, isLogin, user, handleLogin, handleLogout }}
+      >
+        {children}
+      </AuthContext.Provider>
+    </>
   );
 };
