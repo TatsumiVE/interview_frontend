@@ -5,8 +5,8 @@ import { useState } from "react";
 
 export const CandidateDetails = () => {
   const { id } = useParams();
-
   const [selectedStage, setSelectedStage] = useState();
+
   const getCandidateDetails = async () => {
     const response = await axios.get(
       `http://127.0.0.1:8000/api/candidate-detail/${id}`
@@ -60,7 +60,7 @@ export const CandidateDetails = () => {
               ? "Male"
               : candidate.gender == "2"
               ? "Female"
-              : "No Boundry"}
+              : "Non Binary"}
           </p>
           <p>Phone Number:{candidate.phone_number}</p>
           <p>Residential Address:{candidate.residential_address}</p>

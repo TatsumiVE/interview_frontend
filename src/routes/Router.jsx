@@ -13,6 +13,7 @@ import {
   InterviewerCreate,
   InterviewResult,
   InterviewAssessment,
+  UserCreate,
   InterviewCreate,
 } from "../pages";
 
@@ -40,10 +41,13 @@ export const Router = () => {
           <Route path="candidate/create" element={<CandidateCreate />} />
           <Route path="candidate/interview/:id" element={<InterviewCreate />} />
           <Route path="interview/result" element={<InterviewResult />} />
+
           <Route
             path="/candidate/interview-assessment/:candidateId/:interviewerId"
             element={<InterviewAssessment />}
           />
+
+          <Route path="interviewer/user/create/:id" element={<UserCreate />} />
 
           <Route path="*" element={<NotFound />} />
         </Route>

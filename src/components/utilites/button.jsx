@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 
-export const Button = ({ type, className, onClick, text }) => {
+export const Button = ({ type, className, onClick, text ,...rest}) => {
   return (
     <>
       <button
         type={type ? type : "button"}
         className={`btn ${className}`}
-        onClick={onClick}
+        onClick={onClick} {...rest}
       >
         {text}
       </button>
@@ -14,9 +14,9 @@ export const Button = ({ type, className, onClick, text }) => {
   );
 };
 
-Button.propTypes = {
-  type: PropTypes.string,
-  className: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-  text: PropTypes.string.isRequired,
-};
+// Button.propTypes = {
+//   type: PropTypes.string,
+//   className: PropTypes.string.isRequired,
+//   onClick: PropTypes.func.isRequired,
+//   text: PropTypes.string.isRequired,
+// };

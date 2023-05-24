@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
 import Chart from "chart.js/auto";
+
 export const BarChart = () => {
   const [labels, setLabels] = useState([]);
   const [languages, setLanguages] = useState([]);
@@ -26,7 +27,9 @@ export const BarChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/candidate");
+        const response = await axios.get(
+          "http://localhost:8000/api/candidate-barchart"
+        );
         const candidates = response.data.data;
         //   .then(({data})=>{
         //     setDatasets(data.data);
@@ -45,8 +48,10 @@ export const BarChart = () => {
           {
             label: "Candidate",
             data: candidateCounts,
-            backgroundColor: "rgb(226, 152, 14)",
-            borderColor: "rgb(226, 152, 14)",
+            // backgroundColor: "rgb(226, 152, 14)",
+            // borderColor: "rgb(226, 152, 14)",
+            backgroundColor: "#19376D",
+            borderColor: "#19376D",
           },
         ]);
       } catch (error) {

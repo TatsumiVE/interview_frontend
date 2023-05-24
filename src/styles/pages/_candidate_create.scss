@@ -28,7 +28,7 @@
         padding: 10px 5px;
         margin: 10px 0;
         border: 1px solid;
-        border-color: map-get($colors, secondary);
+        border-color: map-get($colors, primary);
     }
     &--language {
         width: 50%;
@@ -60,7 +60,7 @@ textarea {
     border-radius: 5px;
     margin: 5px 5px;
     border: 1px solid;
-    border-color: map-get($colors, secondary);
+    border-color: map-get($colors, primary);
 }
 
 .button-group{
