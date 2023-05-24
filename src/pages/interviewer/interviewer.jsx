@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -21,7 +22,10 @@ export const Employee = () => {
     return <div>Error occurred while fetching data</div>;
   }
 
+
+  const { globalFilter, pageIndex } = state;
   return (
+
     <div className="table-wrap">
       <div className="table-wrap__head">
         <div className="search-content">
@@ -31,8 +35,11 @@ export const Employee = () => {
           <Button>
             <Link to="create">Create Interviewer</Link>
           </Button>
+
         </div>
+        
       </div>
+
 
       <div className="table-wrap__main">
         <table className="custom-table">
@@ -413,6 +420,15 @@ export const Employee = () => {
 
 
     
+
+
+
+
+    
+
+
+
+
 
 //v1
 // import axios from "axios";
