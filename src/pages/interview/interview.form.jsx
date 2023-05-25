@@ -31,19 +31,7 @@ export const InterviewCreate = () => {
     mutationFn: createInterview,
   });
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const requestData = data.map((row) => ({
-  //     interviewer_id: row,
-  //   }));
 
-  //   const updatedFormData = {
-  //     ...formData,
-  //     interviewer_id: requestData,
-  //   };
-
-  //   interviewProcess(updatedFormData);
-  // };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -91,7 +79,7 @@ export const InterviewCreate = () => {
         departments: departmentResponse.data,
       };
     } catch (error) {
-      console.log(error);
+        return error.message;
     }
   };
 
@@ -201,23 +189,14 @@ export const InterviewCreate = () => {
           <div key={index} className="card-input--box">
             <div className="card-input--first">
               <div className="card-input--language">
-                {/* <Dropdown
-                  labelName="Interviewers"
-                  options={interviewer_id}
-                  value={interviewerId}
-                  onChange={(e) => {
-                    const updatedData = [...data];
-                    updatedData[index] = e.target.value;
-                    setData(updatedData);
-                  }}
-                /> */}
+            
                 <Dropdown
                   labelName="Interviewers"
-                  options={interviewer_id} // Change to interviewer_id instead of interviewer_id.data
+                  options={interviewer_id}
                   selectedValue={formData.interviewerId}
                   onChange={(e) => {
                     const updatedData = [...data];
-                    console.log(updatedData);
+
                     updatedData[index] = e.target.value;
                     setData(updatedData);
                   }}

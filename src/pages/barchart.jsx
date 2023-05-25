@@ -14,7 +14,7 @@ export const BarChart = () => {
         const response = await axios
           .get("http://localhost:8000/api/dev-languages")
           .then(({ data }) => {
-            console.log(data.data);
+         
             setLanguages(data.data);
           });
       } catch (error) {
@@ -31,9 +31,7 @@ export const BarChart = () => {
           "http://localhost:8000/api/candidate-barchart"
         );
         const candidates = response.data.data;
-        //   .then(({data})=>{
-        //     setDatasets(data.data);
-        // })
+
         const candidateCounts = languages.map((language) => {
           const count = candidates.reduce(
             (acc, candidate) =>
@@ -48,8 +46,7 @@ export const BarChart = () => {
           {
             label: "Candidate",
             data: candidateCounts,
-            // backgroundColor: "rgb(226, 152, 14)",
-            // borderColor: "rgb(226, 152, 14)",
+    
             backgroundColor: "#19376D",
             borderColor: "#19376D",
           },
@@ -72,9 +69,21 @@ export const BarChart = () => {
     datasets: datasets,
   };
 
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        stepSize: 5,
+        ticks: {
+          precision: 0,
+        },
+      },
+    },
+  };
+
   return (
-    <div className="bar-chart">
-      {labels.length > 0 && datasets.length > 0 && <Bar data={data} />}
-    </div>
+      <div className="bar-chart">
+        <Bar data={data} options={options}/>
+      </div>
   );
 };

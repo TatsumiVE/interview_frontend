@@ -59,7 +59,7 @@ export const InterviewAssessment = () => {
   const postAssessment = async (e) => {
     e.preventDefault();
     const selectedTopics = getSelectedTopics();
-    console.log(selectedTopics);
+
     const response = await axios.post("http://127.0.0.1:8000/api/interviews", {
       interview_stage_id: assessment.interview.interview_stage.id,
       candidate_id: assessment.interview.candidate.id,

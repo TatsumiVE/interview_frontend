@@ -140,7 +140,6 @@ export const CandidateDetails = () => {
 
       {isSuccess && Object.keys(data).length > 0 ? (
         <>
-          {console.log(data.candidate)}
           <p>Name: {candidate.name}</p>
           <p>Email: {candidate.email}</p>
           <p>

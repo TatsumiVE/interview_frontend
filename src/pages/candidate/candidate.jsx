@@ -135,6 +135,6 @@ Candidate.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
       id: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+    }),
+  }),
 };
