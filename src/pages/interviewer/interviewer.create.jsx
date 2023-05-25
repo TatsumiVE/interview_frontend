@@ -11,7 +11,6 @@ export const InterviewerCreate = () => {
 
   const fetchPosition = async () => {
     const response = await axios.get("http://localhost:8000/api/positions");
-    console.log(response.data.data);
     return response.data.data;
   };
 
@@ -26,7 +25,7 @@ export const InterviewerCreate = () => {
 
   const fetchDepartment = async () => {
     const response = await axios.get("http://localhost:8000/api/departments");
-    console.log(response.data.data);
+
     return response.data.data;
   }
 
@@ -104,8 +103,8 @@ export const InterviewerCreate = () => {
           </div>
         </div>
         <div className="btn-group">
-          <Button type="submit" text="Create" className="txt-light btn-primary" />
-          <Button type="submit" text="Cancel" className="txt-light btn-default" />
+          <Button type="submit" text="Create" className="txt-light btn-primary"/>
+          <Button type="button" text="Cancel" className="txt-light btn-default"/>
         </div>
       </form>
     </div>

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
 import Chart from "chart.js/auto";
 
-const BarChart = () => {
+export const BarChart = () => {
   const [labels, setLabels] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [datasets, setDatasets] = useState([]);
@@ -11,12 +11,14 @@ const BarChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/dev-languages")
+        const response = await axios
+          .get("http://localhost:8000/api/dev-languages")
           .then(({ data }) => {
+         
             setLanguages(data.data);
-          })
+          });
       } catch (error) {
-        console.error("Error fetching languages data:", error);
+        console.log("Error fetching languages data:", error);
       }
     };
     fetchData();
@@ -25,11 +27,11 @@ const BarChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/candidate-barchart");
+        const response = await axios.get(
+          "http://localhost:8000/api/candidate-barchart"
+        );
         const candidates = response.data.data;
-        //   .then(({data})=>{
-        //     setDatasets(data.data);
-        // })
+
         const candidateCounts = languages.map((language) => {
           const count = candidates.reduce(
             (acc, candidate) =>
@@ -44,14 +46,13 @@ const BarChart = () => {
           {
             label: "Candidate",
             data: candidateCounts,
-            // backgroundColor: "rgb(226, 152, 14)",
-            // borderColor: "rgb(226, 152, 14)",
-            backgroundColor:"#19376D",
-            borderColor:"#19376D"
+    
+            backgroundColor: "#19376D",
+            borderColor: "#19376D",
           },
         ]);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.log("Error fetching data:", error);
       }
     };
     fetchData();
@@ -86,5 +87,3 @@ const BarChart = () => {
       </div>
   );
 };
-
-export default BarChart;

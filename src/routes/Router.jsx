@@ -9,16 +9,16 @@ import {
   Login,
   CandidateCreate,
   CandidateDetails,
+  CandidateList,
   InterviewerCreate,
   InterviewResult,
   InterviewAssessment,
-  CandidateList,
   UserCreate,
   InterviewerUpdate,
-
+  InterviewCreate,
 } from "../pages";
 
-import {Layout } from "../components";
+import { Layout } from "../components";
 
 export const Router = () => {
   const { isLogin } = useAuth();
@@ -33,14 +33,26 @@ export const Router = () => {
           <Route path="interviewer" element={<Employee />} />
           <Route path="interview" element={<CandidateList />} />
           <Route path="setting" element={<Setting />} />
-          <Route path="interview/candidate/create" element={<CandidateCreate />}/>
+          <Route
+            path="interview/candidate/create"
+            element={<CandidateCreate />}
+          />
           <Route path="candidates/:id" element={<CandidateDetails />} />
-          <Route path="interviewer/create" element={<InterviewerCreate />} />       
+          <Route path="interviewer/create" element={<InterviewerCreate />} />
           <Route path="candidate/create" element={<CandidateCreate />} />
+          <Route path="candidate/interview/:id" element={<InterviewCreate />} />
           <Route path="interview/result" element={<InterviewResult />} />
           <Route path="interview/assessment" element={<InterviewAssessment/>}/>
           <Route path="interviewer/user/create/:id" element={<UserCreate/>}/>
           <Route path="interviewer/update/:id" element={<InterviewerUpdate/>}/>
+
+          <Route
+            path="/candidate/interview-assessment/:candidateId/:interviewerId"
+            element={<InterviewAssessment />}
+          />
+
+          <Route path="interviewer/user/create/:id" element={<UserCreate />} />
+
           <Route path="*" element={<NotFound />} />
         </Route>
       ) : (
@@ -52,5 +64,3 @@ export const Router = () => {
     </Routes>
   );
 };
-
-

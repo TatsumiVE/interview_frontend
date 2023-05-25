@@ -9,7 +9,7 @@ export const Dropdown = ({ options, selectedValue, onChange, labelName }) => {
     <label>
       {labelName}
       <select value={selectedValue} onChange={onChange} className="select">
-        <option value="">Select</option>
+        <option value="">Select {labelName}</option>
         {options.map((option) => (
           <option key={option.id} value={option.id}>
             {option.name}

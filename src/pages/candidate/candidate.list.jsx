@@ -1,223 +1,99 @@
-import React, { useMemo,useState, useEffect  } from 'react';
-import { useTable, useGlobalFilter, usePagination} from 'react-table';
-import { useQuery } from 'react-query';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+
+import { useAuth } from "../../store/AuthContext";
+import axios from "axios";
+import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 
 export const CandidateList = () => {
-  const [candidateData, setCandidateData] = useState([]);
+  const { token, user } = useAuth();
 
   const getCandidates = async () => {
-    const response = await axios.get('http://127.0.0.1:8000/api/candidates');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await axios.get(
+      "http://127.0.0.1:8000/api/candidates",
+      config
+    );
+
     return response.data.data;
   };
 
-  useEffect(() => {
-    const fetchCandidates = async () => {
-      const data = await getCandidates();
-      setCandidateData(data);
-    };
-
-    fetchCandidates();
-  }, []);
-
-  const showInfo = () => {};
-
-  // const {
-  //   data:candidates,
-  //   isLoading,
-  //   isError,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ['get', 'candidates'],
-  //   queryFn: getCandidates,
-  // });
-
-  // if (isLoading) return 'Loading...';
-  // if (isError) return 'Something went wrong';
-  // if (error) return 'An error has occurred: ' + error.message;
-
-  const columns = useMemo(
-    () => [
-      { Header: 'Name', accessor: 'name' },
-      { Header: 'Email', accessor: 'email' },
-      { Header: 'Gender', accessor: 'gender' },
-      { Header: 'Phone Number', accessor: 'phone_number' },
-      { Header: 'Applied Position', accessor: 'position.name' },
-      {
-        Header: 'Language',
-        accessor: (row) =>
-          row.specific_languages
-            .map((language) => language.devlanguage.name)
-            .join(', '),
-      },
-      {
-        Header: 'Action',
-        Cell: ({ row }) => ( 
-          <Link to={`/candidate/interview/${row.original.id}`}>Interviewer</Link>
-        ),
-      },
-    ],
-    []
-  );
-
   const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    page,
-    nextPage,
-    previousPage,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    state,
-    setGlobalFilter,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data: candidateData,
-      initialState: { pageIndex: 0 },
-    },
-    useGlobalFilter,
-    usePagination,
+    data: candidates,
+    isLoading,
+    isError,
+    isSuccess,
+    error,
+  } = useQuery({
+    queryKey: ["get", "candidates"],
+    queryFn: getCandidates,
+  });
 
-  );
-
-  const { globalFilter, pageIndex } = state;
-  if (candidateData.length === 0) return 'Loading...';
-
+  if (isLoading) return "Loading...";
+  if (isError) return "Something went wrong";
+  if (error) return "An error has occurred: " + error.message;
   return (
-    <div className='table-wrap'>
-      <div className='table-wrap__head'>
-        <div className='search-content'>
-        <input
-            type="text"
-            value={globalFilter || ''}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="  Search..."
-          />
-        </div>
-      </div>
-      <div className='table-wrap__main'>
-        <table {...getTableProps()} className="custom-table">
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                ))}
+    <div>
+      <button type="button">
+        <Link to="candidate/create">Create Candidate</Link>
+      </button>
+      <table className="candidate-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Phone Number</th>
+            <th>Applied Position</th>
+            <th>Language</th>
+          </tr>
+        </thead>
+        <tbody>
+          {isSuccess && candidates.length > 0 ? (
+            candidates.map((candidate) => (
+              <tr key={candidate.id}>
+                <td>{candidate.name}</td>
+                <td>{candidate.email}</td>
+                <td>
+                  {candidate.gender == 1
+                    ? "Male"
+                    : candidate.gender == 2
+                    ? "Female"
+                    : "Non-Binary"}
+                </td>
+                <td>{candidate.phone_number}</td>
+                <td>{candidate.position.name}</td>
+                <td>
+                  {candidate.specific_languages
+                    .map((language) => language.devlanguage.name)
+                    .join(", ")}
+                </td>
+                <td>
+                  <Link to={`/candidate/interview/${candidate.id}`}>
+                    Interview
+                  </Link>
+                  /
+                  <Link
+                    to={`/candidate/interview-assessment/${candidate.id}/${user.id}`}
+                  >
+                    Assessment
+                  </Link>
+                </td>
               </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()} onClick={showInfo}>
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className='table-wrap__pagination'>
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          Previous
-        </button>
-        <span className='page-content'>
-          Page{' '}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>
-        </span>
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          Next
-        </button>
-      </div>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6">
+                {isLoading ? "Loading..." : "No candidates found."}
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };
-
-
-
-
-
-
-// import axios from "axios";
-// import { useQuery } from "react-query";
-// import { Link } from "react-router-dom";
-// export const CandidateList = () => {
-
-//   const getCandidates = async () => {
-//     const response = await axios.get("http://127.0.0.1:8000/api/candidates");
-//     console.log(response.data);
-//     return response.data.data;
-//   };
-
-//   const {
-//     data: candidates,
-//     isLoading,
-//     isError,
-//     error,
-//   } = useQuery({
-//     queryKey: ["get", "candidates"],
-//     queryFn: getCandidates,
-//   });
-//   if (isLoading) return "Loading...";
-//   if (isError) return "something went wrong";
-//   if (error) return "An error has occurred: " + error.message;
-
-//   return (
-//     <div className="table-wrap">
-//       <div className="table-wrap__head">
-//        <div className="create-content">
-//         <button type="button">
-//             <Link to="candidate/create">Create Candidate</Link>
-//           </button>
-//        </div>
-//       </div>
-
-//       <div className="table-wrap__main">
-//         <table className="custom-table">
-//           <thead>
-//             <tr>
-//               <th>Name</th>
-//               <th>Email</th>
-//               <th>Gender</th>
-//               <th>Phone Number</th>
-//               <th>Applied Position</th>
-//               <th>Language</th>
-//               <th></th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {candidates.map((candidate) => (
-//               <tr key={candidate.id}>
-//                 <td>{candidate.name}</td>
-//                 <td>{candidate.email}</td>
-//                 <td>{candidate.gender}</td>
-//                 <td>{candidate.phone_number}</td>
-//                 <td>{candidate.position.name}</td>
-//                 <td>
-//                   {candidate.specific_languages
-//                     .map((language) => language.devlanguage.name)
-//                     .join(", ")}
-//                 </td>
-//                 <td>
-//                   <Link to={`/candidate/interview/${candidate.id}`}>
-//                     Interview
-//                   </Link>
-//                 </td>
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   );
-// };

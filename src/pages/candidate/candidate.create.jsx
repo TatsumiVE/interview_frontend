@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Dropdown, Input, Button, Textarea } from "../../components/utilites";
+import { Dropdown, Input, Button } from "../../components/utilites";
 import { useMutation } from "react-query";
 
 export const CandidateCreate = () => {
@@ -15,8 +15,8 @@ export const CandidateCreate = () => {
   const [last_salary, setLast] = useState("");
   const [cv_path, setCv] = useState("");
   const [earliest_starting_date, setEarliest] = useState("");
-  const [position_id, setPosition] = useState([]);
-  const [agency_id, setAgency] = useState([]);
+  const [position, setPosition] = useState("");
+  const [agency, setAgency] = useState("");
   const [languageList, setLanguageList] = useState([]);
 
   const [data, setData] = useState([
@@ -43,7 +43,7 @@ export const CandidateCreate = () => {
         month: row.month,
         year: row.year,
       },
-      devlanguage_id: row.devlanguage_id, // Assuming language is selected from dropdown
+      devlanguage_id: row.devlanguage_id,
     }));
 
     const formData = {
@@ -59,8 +59,8 @@ export const CandidateCreate = () => {
       expected_salary,
       last_salary,
       earliest_starting_date,
-      position_id: position_id.toString(),
-      agency_id: agency_id.toString(),
+      position_id: position,
+      agency_id: agency,
     };
 
     createCandidate(formData);
@@ -80,10 +80,9 @@ export const CandidateCreate = () => {
     const fetchData = async () => {
       try {
         const languageResponse = await axios.get(
-          "http://localhost:8000/api/dev_languages"
+          "http://localhost:8000/api/dev-languages"
         );
         setLanguageList(languageResponse.data);
-        console.log(languageResponse.data);
 
         const positionResponse = await axios.get(
           "http://localhost:8000/api/positions"
@@ -208,16 +207,16 @@ export const CandidateCreate = () => {
                 <div className="card-input">
                   <Dropdown
                     labelName="Position"
-                    options={position_id.data}
-                    selectedValue={position_id}
+                    options={position.data}
+                    selectedValue={position}
                     onChange={(e) => setPosition(e.target.value)}
                   ></Dropdown>
                 </div>
                 <div className="card-input">
                   <Dropdown
                     labelName="Agency"
-                    options={agency_id.data}
-                    selectedValue={agency_id}
+                    options={agency.data}
+                    selectedValue={agency}
                     onChange={(e) => setAgency(e.target.value)}
                   />
                 </div>
@@ -266,7 +265,13 @@ export const CandidateCreate = () => {
 
             <div className="card-input--btnPlus">
               {data.length < 4 && (
-                <Button type="button" onClick={handleAdd} text="+" btnColor="" className="txt-light btn-primary btnRight" />
+                <Button
+                  type="button"
+                  onClick={handleAdd}
+                  text="+"
+                  btnColor=""
+                  className="txt-light btn-primary btnRight"
+                />
               )}
             </div>
 
@@ -284,7 +289,6 @@ export const CandidateCreate = () => {
                           setData(updatedData);
                         }}
                       />
-
                     </div>
                     <div className="card-input--btnMinus">
                       {data.length > 1 && (
@@ -330,13 +334,20 @@ export const CandidateCreate = () => {
               ))}
             </div>
             <div className="button-group">
-              <Button type="submit" text="Submit" className="txt-light btn-primary" />
-              <Button type="submit" text="Cancel" className="txt-light btn-default" />
+              <Button
+                type="submit"
+                text="Submit"
+                className="txt-light btn-primary"
+              />
+              <Button
+                type="submit"
+                text="Cancel"
+                className="txt-light btn-default"
+              />
             </div>
           </form>
         </div>
       </div>
     </>
-
   );
 };
