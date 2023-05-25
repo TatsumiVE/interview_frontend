@@ -1,203 +1,221 @@
-import React from "react";
+
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useTable, usePagination, useGlobalFilter } from "react-table";
 import axios from "axios";
-import { useQuery } from "react-query";
 import { Button } from "../../components";
 
 export const Employee = () => {
-  const { data: interviewers, isLoading, isError } = useQuery(
-    "interviewers",
-    async () => {
-      const response = await axios.get("http://localhost:8000/api/interviewers");
-      return response.data.data;
-    }
+  const [interviewers, setInterviewers] = useState([]);
+
+  const getInterviewers = async () => {
+    const response = await axios.get("http://localhost:8000/api/interviewers");
+    return response.data.data;
+  };
+
+  useEffect(() => {
+    const fetchInterviewers = async () => {
+      const data = await getInterviewers();
+      setInterviewers(data);
+    };
+    fetchInterviewers();
+  }, []);
+
+  const columns = useMemo(
+    () => [
+      { Header: "No.", accessor: "id" },
+      { Header: "Name", accessor: "name" },
+      { Header: "Email", accessor: "email" },
+      { Header: "Department", accessor: "department_id.name" },
+      { Header: "Position", accessor: "position_id.name" },
+      {
+        Header: "Action",
+        Cell: ({ row }) => (
+          <div>
+            <button type="button">
+              <Link to={`user/create/${row.original.id}`}>Create Role</Link>
+            </button>
+            <button type="button">
+              <Link to={`update/${row.original.id}`}>Update Interviewer</Link>
+            </button>
+          </div>
+
+          
+        ),
+      },
+      
+    ],
+    []
   );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    page,
+    nextPage,
+    previousPage,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    state,
+    setGlobalFilter,
+    prepareRow,
+  } = useTable(
+    {
+      columns,
+      data: interviewers,
+      initialState: { pageIndex: 0 },
+    },
+    useGlobalFilter,
+    usePagination
+  );
 
-  if (isError) {
-    return <div>Error occurred while fetching data</div>;
-  }
+  const { globalFilter, pageIndex } = state;
 
   return (
     <div className="table-wrap">
       <div className="table-wrap__head">
         <div className="search-content">
-          <input type="text" placeholder="Search..." />
-        </div>
-        <div className="create-content">
-          <Button>
-            <Link to="create">Create Interviewer</Link>
-          </Button>
-        </div>
+          <input
+              type="text"
+              value={globalFilter || ""}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              placeholder="  Search..."
+            />
+          </div>
+          <div className="create-content">
+            <button type="button" className="txt-light btn-primary" text="Create Interviewer">
+              <Link to="create">Create Interviewer</Link>
+            </button>
+          </div>
       </div>
-
+ 
       <div className="table-wrap__main">
-        <table className="custom-table">
+        <table {...getTableProps()} className="custom-table">
           <thead>
-            <tr>
-              <th>No.</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Department</th>
-              <th>Position</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {interviewers.map((interviewer, index) => (
-              <tr key={interviewer.id}>
-                <td>{interviewer.id}</td>
-                <td>{interviewer.name}</td>
-                <td>{interviewer.email}</td>
-                <td>{interviewer.department_id.name}</td>
-                <td>{interviewer.position_id.name}</td>
-                <td>
-                  <button type="button">
-                    <Link to ={`user/create/${interviewer.id}`}>Create User</Link>                  
-  
-                  </button>
-                </td>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                  </th>
+                ))}
               </tr>
             ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
+      <div className="table-wrap__pagination">
+        <button type="button" onClick={() => previousPage()} disabled={!canPreviousPage}>
+           &lt;&lt;
+        </button>
+        <span className="page-content">
+          Page {""}
+          <strong>
+            {pageIndex + 1} of {pageOptions.length}
+          </strong>
+        </span>
+        <button onClick={() => nextPage()} disabled={!canNextPage} >
+           &gt;&gt;
+        </button>
+        
+      </div>
     </div>
   );
-}
+};
 
-// import React, { useState, useEffect, useMemo } from "react";
+
+
+
+//simple table
+// import React from "react";
 // import { Link } from "react-router-dom";
-// import { useTable, usePagination, useGlobalFilter } from "react-table";
 // import axios from "axios";
+// import { useQuery } from "react-query";
 // import { Button } from "../../components";
 
 // export const Employee = () => {
-//   const [interviewers, setInterviewers] = useState([]);
-
-//   const getInterviewers = async () => {
-//     const response = await axios.get("http://localhost:8000/api/interviewers");
-//     return response.data.data;
-//   };
-
-//   useEffect(() => {
-//     const fetchInterviewers = async () => {
-//       const data = await getInterviewers();
-//       setInterviewers(data);
-//     };
-//     fetchInterviewers();
-//   }, []);
-
-//   const columns = useMemo(
-//     () => [
-//       { Header: "No.", accessor: "id" },
-//       { Header: "Name", accessor: "name" },
-//       { Header: "Email", accessor: "email" },
-//       { Header: "Department", accessor: "department_id.name" },
-//       { Header: "Position", accessor: "position_id.name" },
-//       { Header: "Action", accessor: "cid", Cell: ({ id }) => <Link to={`user/create/${id}`}>Create User</Link> },
-      
-//     ],
-//     []
+//   const { data: interviewers, isLoading, isError } = useQuery(
+//     "interviewers",
+//     async () => {
+//       const response = await axios.get("http://localhost:8000/api/interviewers");
+//       return response.data.data;
+//     }
 //   );
 
-//   const {
-//     getTableProps,
-//     getTableBodyProps,
-//     headerGroups,
-//     page,
-//     nextPage,
-//     previousPage,
-//     canPreviousPage,
-//     canNextPage,
-//     pageOptions,
-//     state,
-//     setGlobalFilter,
-//     prepareRow,
-//   } = useTable(
-//     {
-//       columns,
-//       data: interviewers,
-//       initialState: { pageIndex: 0 },
-//     },
-//     useGlobalFilter,
-//     usePagination
-//   );
+//   if (isLoading) {
+//     return <div>Loading...</div>;
+//   }
 
-//   const { globalFilter, pageIndex } = state;
+//   if (isError) {
+//     return <div>Error occurred while fetching data</div>;
+//   }
 
 //   return (
 //     <div className="table-wrap">
 //       <div className="table-wrap__head">
 //         <div className="search-content">
-//           <input
-//               type="text"
-//               value={globalFilter || ""}
-//               onChange={(e) => setGlobalFilter(e.target.value)}
-//               placeholder="  Search..."
-//             />
-//           </div>
-//           <div className="create-content">
-//             <button type="button" className="txt-light btn-primary" text="Create Interviewer">
-//               <Link to="create">Create Interviewer</Link>
-//             </button>
-//           </div>
+//           <input type="text" placeholder="Search..." />
+//         </div>
+//         <div className="create-content">
+//           <Button>
+//             <Link to="create">Create Interviewer</Link>
+//           </Button>
+//         </div>
 //       </div>
- 
+
 //       <div className="table-wrap__main">
-//         <table {...getTableProps()} className="custom-table">
+//         <table className="custom-table">
 //           <thead>
-//             {headerGroups.map((headerGroup) => (
-//               <tr {...headerGroup.getHeaderGroupProps()}>
-//                 {headerGroup.headers.map((column) => (
-//                   <th {...column.getHeaderProps()}>
-//                     {column.render("Header")}
-//                   </th>
-//                 ))}
+//             <tr>
+//               <th>No.</th>
+//               <th>Name</th>
+//               <th>Email</th>
+//               <th>Department</th>
+//               <th>Position</th>
+//               <th>Action</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {interviewers.map((interviewer, index) => (
+//               <tr key={interviewer.id}>
+//                 <td>{interviewer.id}</td>
+//                 <td>{interviewer.name}</td>
+//                 <td>{interviewer.email}</td>
+//                 <td>{interviewer.department_id.name}</td>
+//                 <td>{interviewer.position_id.name}</td>
+//                 <td>
+//                   <button type="button">
+//                     <Link to ={`user/create/${interviewer.id}`}>Create Role</Link>                 
+  
+//                   </button>
+//                 </td>
 //               </tr>
 //             ))}
-//           </thead>
-//           <tbody {...getTableBodyProps()}>
-//             {page.map((row) => {
-//               prepareRow(row);
-//               return (
-//                 <tr {...row.getRowProps()}>
-//                   {row.cells.map((cell) => (
-//                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-//                   ))}
-//                 </tr>
-//               );
-//             })}
 //           </tbody>
 //         </table>
 //       </div>
-//       <div className="table-wrap__pagination">
-//         <button type="button" onClick={() => previousPage()} disabled={!canPreviousPage}>
-//            &lt;&lt;
-//         </button>
-//         <span className="page-content">
-//           Page {""}
-//           <strong>
-//             {pageIndex + 1} of {pageOptions.length}
-//           </strong>
-//         </span>
-//         <button onClick={() => nextPage()} disabled={!canNextPage} >
-//            &gt;&gt;
-//         </button>
-        
-//       </div>
 //     </div>
 //   );
-// };
-
+// }
 
 
 
 //v3
-// import React from "react";
+//   import React from "react";
 // import { useQuery } from "react-query";
 // import axios from "axios";
 // import { Link } from "react-router-dom";

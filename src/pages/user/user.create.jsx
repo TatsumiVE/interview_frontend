@@ -1,63 +1,119 @@
 
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
+import { useState, useEffect } from 'react';
 
 export const UserCreate = () => {
-  const { id } = useParams();
-  
-  const getInterviewer = async () => {
-    const response = await axios.get(`http://localhost:8000/api/interviewers/${id}`);
-    console.log(response.data.data);
-    return response.data.data;
-  }
+  const { id } = useParams(); 
+  const [interviewer, setInterviewer] = useState({
+    interviewer_id:id,
+    password:'',
+    role:'',
+  });
 
-  const { data: data, isLoading, isError, isSuccess, error } = useQuery(
-    ['get', 'interviewers', id], getInterviewer
+  const getInterviewer = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/interviewers/${id}`);
+     
+      return response.data.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getRoles = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/roles");
+     
+      return response.data.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const { data: interviewers, isLoading: isInterviewerLoading, isError: isInterviewerError, isSuccess: isInterviewerSuccess, error: interviewerError } = useQuery(
+    ['interviewers', id],
+    getInterviewer
   );
 
-  if(isLoading) return "Loading...";
-  if(isError) return "Something went wrong...";
-  if(error) return "An error has occurred:"+error.message;
-  const interviewer = data[0];
+  const { data: roles, isLoading: isRolesLoading, isError: isRolesError, isSuccess: isRolesSuccess, error: rolesError } = useQuery(
+    'roles',
+    getRoles
+  );
+ 
 
-  const handleUpdate = () => {
+  const addUser = async () => {
+    try {
+      const response = await axios.post("http://localhost:8000/api/users", 
+       interviewer        
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  }
+  const { mutate: createUser } = useMutation(
+    {
+      mutationKey:["post","users"],
+      mutationFn: addUser,
+    }
+  );
+
+  if (isInterviewerLoading || isRolesLoading) return 'Loading...';
+  if (isInterviewerError) return 'Something went wrong...';
+  if (interviewerError) return `An error has occurred: ${interviewerError.message}`;
+  if (isRolesError) return 'Something went wrong...';
+  if (rolesError) return `An error has occurred: ${rolesError.message}`;
+
+  const handleSubmit= (e) => {
+    e.preventDefault();
+    createUser();
+  };
+
   return (
-    <></>
-    // <div>
-    //   <input
-    //     type="text"
-    //     placeholder="Name"
-    //     value={interviewer.name}
-    //     // onChange={(e) => setName(e.target.value)}
-    //   />
-    //   <input
-    //     type="email"
-    //     placeholder="Email"
-    //     value={interviewer.email}
-    //     // onChange={(e) => setEmail(e.target.value)}
-    //   />
-    //   <input
-    //     type="password"
-    //     placeholder="Password"
-    //     value=""
-    //     // onChange={(e) => setPassword(e.target.value)}
-    //   />
-    //   <input
-    //     type="password"
-    //     placeholder="Confirm Password"
-    //     value=""
-    //     // onChange={(e) => setEmail(e.target.value)}
-    //   />
-    //   <select name="role">
-    //     <option value="role1">1</option>
-    //     <option value="role1">2</option>
-    //     <option value="role1">3</option>
-    //   </select>
-    //   <button onClick={handleUpdate}>Create User</button>
-    // </div>
+    <>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={interviewers.name}
+           
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={interviewers.email}
+           
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder=" Enter Password"            
+            onChange={(e) => setInterviewer({ ...interviewer, password: e.target.value })}
+          />
+          <input
+            type="password"
+            name="password_confirmation"
+            placeholder=" Enter Confirm Password"           
+            onChange={(e) => e.target.value }
+          />
+          <select name="role"  onChange={(e) =>setInterviewer({...interviewer,role:e.target.value})}>
+            <option value="">Select Role</option>
+            {roles.map((role) => (
+               
+              <option key={role.id} value={role.id}>
+                {role.name}
+              </option>
+            ))}
+          </select>
+          <button type="submit">Create Role</button>
+        </div>
+      </form>
+    </>
   );
 };

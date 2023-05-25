@@ -68,9 +68,21 @@ const BarChart = () => {
     datasets: datasets,
   };
 
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        stepSize: 5,
+        ticks: {
+          precision: 0,
+        },
+      },
+    },
+  };
+
   return (
       <div className="bar-chart">
-        <Bar data={data} />
+        <Bar data={data} options={options}/>
       </div>
   );
 };
