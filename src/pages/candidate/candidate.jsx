@@ -118,7 +118,7 @@ export const Candidate = () => {
           Previous
         </button>
         <span className="page-content">
-          Page{" "}
+          Page
           <strong>
             {pageIndex + 1} of {pageOptions.length}
           </strong>
