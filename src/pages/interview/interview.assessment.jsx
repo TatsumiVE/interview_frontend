@@ -210,7 +210,7 @@ export const InterviewAssessment = () => {
               labelName="Grades"
               options={grades}
               selectedValue={grade}
-              onChange={(e) => setGrade(e.target.value)} // Update the event handler
+              onChange={(e) => setGrade(e.target.value)} 
             />
 
             <br />
