@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Dropdown, Input, Button, Textarea } from "../../components/utilites";
+import { Dropdown, Input, Button } from "../../components/utilites";
 import { useMutation } from "react-query";
 
 export const CandidateCreate = () => {
@@ -15,8 +15,8 @@ export const CandidateCreate = () => {
   const [last_salary, setLast] = useState("");
   const [cv_path, setCv] = useState("");
   const [earliest_starting_date, setEarliest] = useState("");
-  const [position_id, setPosition] = useState([]);
-  const [agency_id, setAgency] = useState([]);
+  const [position, setPosition] = useState("");
+  const [agency, setAgency] = useState("");
   const [languageList, setLanguageList] = useState([]);
 
   const [data, setData] = useState([
@@ -59,8 +59,8 @@ export const CandidateCreate = () => {
       expected_salary,
       last_salary,
       earliest_starting_date,
-      position_id: position_id.toString(),
-      agency_id: agency_id.toString(),
+      position_id: position,
+      agency_id: agency,
     };
 
     createCandidate(formData);
@@ -80,7 +80,7 @@ export const CandidateCreate = () => {
     const fetchData = async () => {
       try {
         const languageResponse = await axios.get(
-          "http://localhost:8000/api/dev_languages"
+          "http://localhost:8000/api/dev-languages"
         );
         setLanguageList(languageResponse.data);
 
@@ -207,16 +207,16 @@ export const CandidateCreate = () => {
                 <div className="card-input">
                   <Dropdown
                     labelName="Position"
-                    options={position_id.data}
-                    selectedValue={position_id}
+                    options={position.data}
+                    selectedValue={position}
                     onChange={(e) => setPosition(e.target.value)}
                   ></Dropdown>
                 </div>
                 <div className="card-input">
                   <Dropdown
                     labelName="Agency"
-                    options={agency_id.data}
-                    selectedValue={agency_id}
+                    options={agency.data}
+                    selectedValue={agency}
                     onChange={(e) => setAgency(e.target.value)}
                   />
                 </div>
