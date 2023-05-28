@@ -1,148 +1,63 @@
-import { useMemo, useState, useEffect } from "react";
-import { useTable, useGlobalFilter, usePagination } from "react-table";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { NavLink, Outlet, useParams } from "react-router-dom";
+import { useQuery } from "react-query";
 import { useAuth } from "../../store/AuthContext";
-export const Candidate = () => {
-  const [candidateData, setCandidateData] = useState([]);
+import candidateService from "../../services/candidateService";
+
+export const CandidateDetails = () => {
   const { token } = useAuth();
-  const getCandidates = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const response = await axios.get(
-      "http://127.0.0.1:8000/api/candidates",
-      config
-    );
-    return response.data.data;
-  };
-
-  useEffect(() => {
-    const fetchCandidates = async () => {
-      const data = await getCandidates();
-      setCandidateData(data);
-    };
-
-    fetchCandidates();
-  }, []);
-
-  const columns = useMemo(
-    () => [
-      { Header: "Name", accessor: "name" },
-      { Header: "Email", accessor: "email" },
-      { Header: "Gender", accessor: "gender" },
-      { Header: "Phone Number", accessor: "phone_number" },
-      { Header: "Applied Position", accessor: "position.name" },
-      {
-        Header: "Language",
-        accessor: (row) =>
-          row.specific_languages
-            .map((language) => language.devlanguage.name)
-            .join(", "),
-      },
-      {
-        Header: "Action",
-        Cell: ({ row }) => (
-          <Link to={`/candidates/${row.original.id}`}>View Details</Link>
-        ),
-      },
-    ],
-    []
-  );
+  const { id } = useParams();
+  const [data, setData] = useState({});
 
   const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    page,
-    nextPage,
-    previousPage,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    state,
-    setGlobalFilter,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data: candidateData,
-      initialState: { pageIndex: 0 },
-    },
-    useGlobalFilter,
-    usePagination
+    data: candidateData,
+    isSuccess,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(["get", "candidate-detail", id], () =>
+    candidateService.get(id, token)
   );
 
-  const { globalFilter, pageIndex } = state;
-  if (candidateData.length === 0) return "Loading...";
+  useEffect(() => {
+    if (isSuccess) {
+      setData(candidateData.data);
+    }
+  }, [candidateData, isSuccess]);
 
-  return (
-    <div className="table-wrap">
-      <div className="table-wrap__head">
-        <div className="search-content">
-          <input
-            type="text"
-            value={globalFilter || ""}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="  Search..."
-          />
+  const activeClassName = ({ isActive }) => (isActive ? "active" : "");
+
+  if (isLoading) return "Loading....";
+  if (isError) return "Something went wrong";
+  if (error) return "An error has occurred: " + error.message;
+
+  if (isSuccess && data?.candidate)
+    return (
+      <div className="candidate-page">
+        <div className="c-header">
+          <img className="c-avatar" src="" />
+          <div>
+            <p>{data.candidate?.name}</p>
+            <p className="c-role">Junior web developer</p>
+          </div>
+        </div>
+        <div className="c-nav">
+          <NavLink to="details" className={activeClassName}>
+            DETAILS
+          </NavLink>
+          <NavLink to="cv" className={activeClassName}>
+            CV
+          </NavLink>
+          <NavLink to="stages" className={activeClassName}>
+            STAGES
+          </NavLink>
+          <NavLink to="interviews" className={activeClassName}>
+            INTERVIEWS
+          </NavLink>
+        </div>
+        <div className="c-main">
+          <Outlet context={data} />
         </div>
       </div>
-      <div className="table-wrap__main">
-        <table {...getTableProps()} className="custom-table">
-          <thead>
-            {headerGroups.map((headerGroup, index) => (
-              <tr {...headerGroup.getHeaderGroupProps()} key={index}>
-                {headerGroup.headers.map((column, columnIndex) => (
-                  <th {...column.getHeaderProps()} key={columnIndex}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()} key={row.id}>
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()} key={cell.column.id}>
-                      {cell.render("Cell")}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className="table-wrap__pagination">
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          Previous
-        </button>
-        <span className="page-content">
-          Page
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>
-        </span>
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          Next
-        </button>
-      </div>
-    </div>
-  );
-};
-
-Candidate.propTypes = {
-  row: PropTypes.shape({
-    original: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }),
-  }),
+    );
 };

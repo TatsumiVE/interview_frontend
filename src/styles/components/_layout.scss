@@ -13,7 +13,7 @@
   width: 220px;
   min-height: 100vh;
   color: white;
-  background-color: rgb(28, 33, 45);
+  background-color: var(--color-4);
   z-index: 2;
 }
 
@@ -27,5 +27,5 @@
   width: 100%;
   min-height: calc(100vh - 72px);
   padding: 2rem;
-  background-color: rgb(245, 247, 249);
+  background-color: var(--color-3);
 }
