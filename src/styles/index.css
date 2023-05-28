@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;600&display=swap");
+
 body * {
   box-sizing: border-box;
 }
@@ -134,7 +135,8 @@ table {
   border-spacing: 0;
 }
 
-body, a {
+body,
+a {
   font-family: "Roboto", sans-serif;
   font-weight: 100;
   font-size: 16px;
@@ -145,11 +147,11 @@ a {
 }
 
 .txt-primary {
-  color: #13005A;
+  color: #13005a;
 }
 
 .bg-primary {
-  background: #13005A;
+  background: #13005a;
 }
 
 .txt-secondary {
@@ -402,7 +404,7 @@ a {
   gap: 0.25rem;
 }
 
-.rating > i[class*=solid] {
+.rating > i[class*="solid"] {
   color: gold;
 }
 
@@ -419,7 +421,7 @@ a {
   font-size: 0.8rem;
 }
 
-.stage > span[class=active] {
+.stage > span[class="active"] {
   background-color: goldenrod;
 }
 
@@ -490,7 +492,7 @@ a {
   background-color: var(--color-4);
 }
 
-.btn-switch > button[class=active] {
+.btn-switch > button[class="active"] {
   background-color: var(--color-3);
 }
 
@@ -498,11 +500,11 @@ a {
   color: white;
 }
 
-input[type=text],
-input[type=email],
-input[type=tel],
-input[type=number],
-input[type=date],
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
 .select {
   width: 300px;
   height: 40px;
@@ -525,10 +527,10 @@ label {
   border-style: none;
 }
 .btn.txt-primary {
-  color: #13005A;
+  color: #13005a;
 }
 .btn.btn-primary {
-  background: #13005A;
+  background: #13005a;
 }
 .btn.txt-secondary {
   color: rgb(226, 152, 14);
@@ -793,4 +795,4 @@ textarea {
 
 .card-input__group {
   padding: 30px 15px 0 15px;
-}/*# sourceMappingURL=index.css.map */
+} /*# sourceMappingURL=index.css.map */

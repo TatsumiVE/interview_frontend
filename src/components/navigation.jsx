@@ -1,34 +1,40 @@
+import { useAuth } from "../store/AuthContext";
 import { NavigationLink } from "./navigation.link";
 
-export const MainNavigation = () => (
-  <nav className="navbar">
-    <NavigationLink to="/dashboard" icon="fa-table-columns">
-      Dashboard
-    </NavigationLink>
-    <NavigationLink to="/candidates" icon="fa-user-group">
-    Candidates
-    </NavigationLink>
-    <NavigationLink to="/interviewer" icon="fa-user-tie">
-    Interviewer
-    </NavigationLink>
-    <NavigationLink to="/user" icon="fa-user-group">
+export const MainNavigation = () => {
+  const { can } = useAuth();
+
+  return (
+    <nav className="navbar">
+      {can("dashboardView") && (
+        <NavigationLink to="/dashboard" icon="fa-table-columns">
+          Dashboard
+        </NavigationLink>
+      )}
+      {can("candidateList") && (
+        <NavigationLink to="/candidates" icon="fa-user-group">
+          Candidates
+        </NavigationLink>
+      )}
+      {can("interviewerList") && (
+        <NavigationLink to="/interviewer" icon="fa-user-tie">
+          Interviewer
+        </NavigationLink>
+      )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/interview" icon="fa-calendar-days">
+          Interview
+        </NavigationLink>
+      )}
+      {can("settingView") && (
+        <NavigationLink to="/setting" icon="fa-gear">
+          Setting
+        </NavigationLink>
+      )}
+
+<NavigationLink to="/user" icon="fa-user-group">
       User
     </NavigationLink>
-    <NavigationLink to="/user" icon="fa-table-columns">
-      Position
-    </NavigationLink>
-    {/* <NavigationLink to="/user" icon="fa-user-group">
-      Department
-    </NavigationLink>
-    <NavigationLink to="/user" icon="fa-table-columns">
-      Language
-    </NavigationLink> */}
-    <NavigationLink to="/interview" icon="fa-calendar-days">
-      Interview
-    </NavigationLink>
-    <NavigationLink to="/setting" icon="fa-gear">
-      Setting
-    </NavigationLink>
-    
-  </nav>
-);
+    </nav>
+  );
+};

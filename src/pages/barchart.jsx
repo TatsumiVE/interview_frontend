@@ -2,19 +2,23 @@ import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
 import Chart from "chart.js/auto";
-
+import { useAuth } from "../store/AuthContext";
 export const BarChart = () => {
   const [labels, setLabels] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [datasets, setDatasets] = useState([]);
-
+  const { token } = useAuth();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios
-          .get("http://localhost:8000/api/dev-languages")
+          .get("http://localhost:8000/api/dev-languages", config)
           .then(({ data }) => {
-         
             setLanguages(data.data);
           });
       } catch (error) {
@@ -28,7 +32,8 @@ export const BarChart = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/candidate-barchart"
+          "http://localhost:8000/api/candidate-barchart",
+          config
         );
         const candidates = response.data.data;
 
@@ -46,7 +51,7 @@ export const BarChart = () => {
           {
             label: "Candidate",
             data: candidateCounts,
-    
+
             backgroundColor: "#19376D",
             borderColor: "#19376D",
           },
@@ -82,8 +87,8 @@ export const BarChart = () => {
   };
 
   return (
-      <div className="bar-chart">
-        <Bar data={data} options={options}/>
-      </div>
+    <div className="bar-chart">
+      <Bar data={data} options={options} />
+    </div>
   );
 };

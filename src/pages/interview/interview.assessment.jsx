@@ -4,11 +4,13 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import React from "react";
+import { useAuth } from "../../store/AuthContext";
 
 export const InterviewAssessment = () => {
   const { candidateId, interviewerId } = useParams();
   const [comment, setComment] = useState("");
   const [grade, setGrade] = useState("");
+  const { token } = useAuth();
   const grades = [
     { id: 1, name: "A" },
     { id: 2, name: "B" },
@@ -17,18 +19,31 @@ export const InterviewAssessment = () => {
 
   const getAssessmentInfo = async () => {
     const response = await axios.get(
-      `http://127.0.0.1:8000/api/interview-process/${candidateId},${interviewerId}`
+      `http://127.0.0.1:8000/api/interview-process/${candidateId},${interviewerId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return response.data.data;
   };
 
   const getTopics = async () => {
-    const response = await axios.get("http://127.0.0.1:8000/api/topics");
+    const response = await axios.get("http://127.0.0.1:8000/api/topics", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data.data;
   };
 
   const getRates = async () => {
-    const response = await axios.get("http://127.0.0.1:8000/api/rates");
+    const response = await axios.get("http://127.0.0.1:8000/api/rates", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data.data;
   };
 
@@ -60,14 +75,22 @@ export const InterviewAssessment = () => {
     e.preventDefault();
     const selectedTopics = getSelectedTopics();
 
-    const response = await axios.post("http://127.0.0.1:8000/api/interviews", {
-      interview_stage_id: assessment.interview.interview_stage.id,
-      candidate_id: assessment.interview.candidate.id,
-      interview_assign_id: assessment.id,
-      comment: comment,
-      grade: grade,
-      data: selectedTopics,
-    });
+    const response = await axios.post(
+      "http://127.0.0.1:8000/api/interviews",
+      {
+        interview_stage_id: assessment.interview.interview_stage.id,
+        candidate_id: assessment.interview.candidate.id,
+        interview_assign_id: assessment.id,
+        comment: comment,
+        grade: grade,
+        data: selectedTopics,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data.data;
   };
 
@@ -158,9 +181,6 @@ export const InterviewAssessment = () => {
                 {data.interview_stage.location === 1 ? "Online" : "In Person"}
               </h3>
             </div>
-            <div>
-              <input type="text" className="" placeholder="Enter record_path" />
-            </div>
           </div>
           <div className="card__card-question">
             <div className="question-title">
@@ -210,7 +230,7 @@ export const InterviewAssessment = () => {
               labelName="Grades"
               options={grades}
               selectedValue={grade}
-              onChange={(e) => setGrade(e.target.value)} 
+              onChange={(e) => setGrade(e.target.value)}
             />
 
             <br />

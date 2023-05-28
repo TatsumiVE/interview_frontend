@@ -10,7 +10,12 @@ export const UserCreate = () => {
     password: '',
     role: '',
   });
-
+  const { token } = useAuth();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const getInterviewer = async () => {
     try {
       const response = await axios.get(`http://localhost:8000/api/interviewers/${id}`);
@@ -29,10 +34,13 @@ export const UserCreate = () => {
     }
   };
 
-  const { data: interviewers, isLoading: isInterviewerLoading, isError: isInterviewerError, isSuccess: isInterviewerSuccess, error: interviewerError } = useQuery(
-    ['interviewers', id],
-    getInterviewer
-  );
+  const {
+    data: interviewers,
+    isLoading: isInterviewerLoading,
+    isError: isInterviewerError,
+    isSuccess: isInterviewerSuccess,
+    error: interviewerError,
+  } = useQuery(["interviewers", id], getInterviewer);
 
   const { data: roles, isLoading: isRolesLoading, isError: isRolesError, isSuccess: isRolesSuccess, error: rolesError } = useQuery(
     'roles',
@@ -50,10 +58,11 @@ export const UserCreate = () => {
 
   const { mutate: createUser } = useMutation(addUser);
 
-  if (isInterviewerLoading || isRolesLoading) return 'Loading...';
-  if (isInterviewerError) return 'Something went wrong...';
-  if (interviewerError) return `An error has occurred: ${interviewerError.message}`;
-  if (isRolesError) return 'Something went wrong...';
+  if (isInterviewerLoading || isRolesLoading) return "Loading...";
+  if (isInterviewerError) return "Something went wrong...";
+  if (interviewerError)
+    return `An error has occurred: ${interviewerError.message}`;
+  if (isRolesError) return "Something went wrong...";
   if (rolesError) return `An error has occurred: ${rolesError.message}`;
 
   const handleSubmit = (e) => {

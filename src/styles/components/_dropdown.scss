@@ -31,3 +31,11 @@
   background-color: #f0f0f0;
 }
 
+.custom-dropdown option[disabled] {
+  pointer-events: none;
+  cursor: default;
+}
+
+.custom-dropdown option[disabled]:hover {
+  background-color: transparent;
+}

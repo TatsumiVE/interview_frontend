@@ -1,0 +1,165 @@
+// test
+
+.a {
+  width: 100%;
+  display: flex;
+  position: relative;
+  flex-direction: row;
+}
+
+.b {
+  width: 0;
+  height: 0;
+  border-bottom: 30px solid transparent;
+  border-top: 30px solid transparent;
+  border-left: 20px solid var(--color-4);
+}
+
+.c {
+  height: 60px;
+  width: 300px;
+  background-color: var(--color-4);
+}
+/* */
+
+.candidate-page {
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.candidate-page a {
+  color: white;
+  padding: 0.5rem 1rem;
+}
+
+/* header */
+
+.c-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.c-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--color-1);
+}
+
+.c-role {
+  font-weight: normal;
+  color: var(--font-secondary);
+}
+
+/* navigation */
+
+.c-nav {
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 4px solid var(--color-4);
+}
+
+.c-nav > a.active {
+  position: relative;
+  color: var(--color-1);
+}
+
+.c-nav > a.active::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 4px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--color-1);
+}
+
+/* details section */
+
+.c-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2rem;
+}
+
+/* stage section */
+
+.c-stage {
+}
+
+.stage-nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav-box {
+  font-size: 0;
+  // display: flex;
+  // align-items: center;
+  // flex-direction: row;
+}
+
+.nav-item {
+  width: 110px;
+  height: 80px;
+  display: inline-block;
+  background-color: green;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 80px;
+}
+
+.nav-item:before,
+.nav-item:after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border: 32px solid transparent;
+}
+
+.nav-item:before {
+  border-top-color: green;
+  border-right-color: green;
+  border-bottom-color: green;
+}
+
+.nav-item:after {
+  border-left-color: blue;
+}
+
+/* general */
+
+.info-card {
+  background-color: var(--color-4);
+  border-radius: 1rem;
+  border: 2px solid var(--color-2);
+}
+
+.info-header {
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--color-2);
+}
+
+.info-main {
+  padding: 1rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 40%));
+  gap: 1rem;
+}
+
+.info-card .label {
+  font-weight: normal;
+  color: var(--font-secondary);
+}

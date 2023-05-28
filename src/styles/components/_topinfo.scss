@@ -1,73 +1,39 @@
 .topinfo {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    box-shadow: 1px 1px 10px rgb(233, 233, 233);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: var(--color-2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.9);
 }
 
 .topinfo-path {
-    font-weight: bold;
 }
 
 .topinfo-userinfo {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 .userinfo-username {
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: right;
-    color: rgb(23, 122, 254);
+  font-size: 1rem;
+  text-align: right;
 }
 
 .userinfo-role {
-    font-size: 0.8rem;
-    text-align: right;
-    color: rgb(68, 67, 67);
+  font-size: 0.8rem;
+  text-align: right;
 }
 
 .userinfo-avatar {
-    cursor: pointer;
-    position: relative;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid rgb(23, 122, 254);
-}
-
-.userinfo-dropdown {
-    font-size: 0.8rem;
-    list-style: none;
-    position: absolute;
-    top: 58px;
-    right: 1rem;
-    border-radius: 5px;
-    background-color: white;
-    border: 1px solid rgb(23, 122, 254);
-}
-
-.userinfo-dropdown > li {
-    cursor: pointer;
-    width: 100px;
-    padding: 0.25rem 1rem;
-    border-bottom: 1px solid rgb(245, 247, 249);
-}
-
-.userinfo-dropdown > li:first-child {
-    border-radius: 5px 5px 0 0;
-}
-
-.userinfo-dropdown > li:last-child {
-    border-radius: 0 0 5px 5px;
-    border-bottom: none;
-}
-
-.userinfo-dropdown > li:hover {
-    background-color: rgb(245, 247, 249);
+  cursor: pointer;
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--color-1);
 }

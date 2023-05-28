@@ -1,19 +1,26 @@
 import { useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
 import { Dropdown, Button } from "../../components";
+import { useAuth } from "../../store/AuthContext";
 
 export const InterviewCreate = () => {
-  const { id } = useParams();
+  const { id, stageId } = useParams();
   const [data, setData] = useState([{ interviewer_id: "" }]);
-  const [department_id, setDepartment] = useState("");
-  const [position_id, setPosition] = useState("");
+  const navigate = useNavigate();
   const [interviewer_id, setInterviewers] = useState([]);
-
+  const { token } = useAuth();
+  const interviewStages = [
+    { id: 1, name: "First Interview" },
+    { id: 2, name: "Technical Interview" },
+    { id: 3, name: "Final Interview" },
+  ];
+  const selectedStageId = parseInt(stageId, 10) + 1;
   const [formData, setFormData] = useState({
     candidate_id: id,
-    stage_name: "",
+    stage_name:
+      interviewStages.find((stage) => stage.id === selectedStageId)?.id || "",
     interview_date: "",
     interview_time: "",
     location: "",
@@ -21,7 +28,12 @@ export const InterviewCreate = () => {
   const createInterview = async (formData) => {
     const response = await axios.post(
       "http://localhost:8000/api/interview-process",
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return response;
   };
@@ -30,7 +42,6 @@ export const InterviewCreate = () => {
     mutationKey: ["post", "interview-process"],
     mutationFn: createInterview,
   });
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,8 +54,9 @@ export const InterviewCreate = () => {
       ...formData,
       interviewer_id: requestData,
     };
-
     interviewProcess(updatedFormData);
+
+    navigate("/interview?message=interview");
   };
 
   const handleAdd = () => {
@@ -59,27 +71,17 @@ export const InterviewCreate = () => {
 
   const fetchData = async () => {
     try {
-      const positionResponse = await axios.get(
-        "http://localhost:8000/api/positions"
-      );
-      setPosition(positionResponse.data);
-
-      const departmentResponse = await axios.get(
-        "http://localhost:8000/api/departments"
-      );
-      setDepartment(departmentResponse.data);
-
       const interviewerResponse = await axios.get(
-        "http://localhost:8000/api/interviewers"
+        "http://localhost:8000/api/interviewers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setInterviewers(interviewerResponse.data.data);
-
-      return {
-        positions: positionResponse.data,
-        departments: departmentResponse.data,
-      };
     } catch (error) {
-        return error.message;
+      return error.message;
     }
   };
 
@@ -94,11 +96,6 @@ export const InterviewCreate = () => {
     queryFn: fetchData,
   });
 
-  const interviewStages = [
-    { id: 1, name: "First Interview" },
-    { id: 2, name: "Technical Interview" },
-    { id: 3, name: "Final Interview" },
-  ];
   const location = [
     { id: 1, name: "Online" },
     { id: 2, name: "Personal" },
@@ -132,27 +129,18 @@ export const InterviewCreate = () => {
             setFormData({ ...formData, interview_time: e.target.value })
           }
         />
+        <Dropdown
+          labelName="Interview Stages"
+          options={interviewStages.map((stage) => ({
+            id: stage.id,
+            name: stage.name,
+            selected: stage.id === selectedStageId,
+            disabled: stage.id !== selectedStageId,
+          }))}
+          selectedValue={selectedStageId.toString()}
+          className="custom-dropdown"
+        />
 
-        <br />
-        {isSuccess ? (
-          <>
-            <Dropdown
-              labelName="Positions"
-              options={datas.positions.data}
-              selectedValue={position_id}
-              onChange={(e) => setPosition(e.target.value)}
-            ></Dropdown>
-            <br />
-            <Dropdown
-              labelName="Departments"
-              options={datas.departments.data}
-              selectedValue={department_id}
-              onChange={(e) => setDepartment(e.target.value)}
-            ></Dropdown>
-          </>
-        ) : (
-          <p>No Language is Not provided</p>
-        )}
         <br />
         <Dropdown
           labelName="Location"
@@ -160,15 +148,6 @@ export const InterviewCreate = () => {
           selectedValue={formData.location.toString()}
           onChange={(e) =>
             setFormData({ ...formData, location: e.target.value })
-          }
-        ></Dropdown>
-        <br />
-        <Dropdown
-          labelName="Interview Stages"
-          options={interviewStages}
-          selectedValue={formData.stage_name}
-          onChange={(e) =>
-            setFormData({ ...formData, stage_name: e.target.value })
           }
         ></Dropdown>
         <br />
@@ -189,7 +168,6 @@ export const InterviewCreate = () => {
           <div key={index} className="card-input--box">
             <div className="card-input--first">
               <div className="card-input--language">
-            
                 <Dropdown
                   labelName="Interviewers"
                   options={interviewer_id}

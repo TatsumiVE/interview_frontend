@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Dropdown, Input, Button } from "../../components/utilites";
 import { useMutation } from "react-query";
-
+import { useAuth } from "../../store/AuthContext";
 export const CandidateCreate = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +18,12 @@ export const CandidateCreate = () => {
   const [position, setPosition] = useState("");
   const [agency, setAgency] = useState("");
   const [languageList, setLanguageList] = useState([]);
-
+  const { token } = useAuth();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const [data, setData] = useState([
     { devlanguage_id: "", year: "", month: "" },
   ]);
@@ -26,7 +31,8 @@ export const CandidateCreate = () => {
   const addCandidate = async (formData) => {
     const response = await axios.post(
       "http://localhost:8000/api/candidates",
-      formData
+      formData,
+      config
     );
     return response;
   };
@@ -80,18 +86,21 @@ export const CandidateCreate = () => {
     const fetchData = async () => {
       try {
         const languageResponse = await axios.get(
-          "http://localhost:8000/api/dev-languages"
+          "http://localhost:8000/api/dev-languages",
+          config
         );
         setLanguageList(languageResponse.data);
 
         const positionResponse = await axios.get(
-          "http://localhost:8000/api/positions"
+          "http://localhost:8000/api/positions",
+          config
         );
         setPosition(positionResponse.data);
         console.log(positionResponse.data);
 
         const agencyResponse = await axios.get(
-          "http://localhost:8000/api/agencies"
+          "http://localhost:8000/api/agencies",
+          config
         );
         setAgency(agencyResponse.data);
       } catch (error) {
