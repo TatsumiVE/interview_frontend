@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -14,6 +11,7 @@ export const InterviewerUpdate = () => {
     department_id:"",
     position_id:""
   });
+  console.log(interviewer);
 
 
   const updateInterviewer=useMutation(async ()=>{

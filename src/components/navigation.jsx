@@ -11,11 +11,24 @@ export const MainNavigation = () => (
     <NavigationLink to="/interviewer" icon="fa-user-tie">
     Interviewer
     </NavigationLink>
+    <NavigationLink to="/user" icon="fa-user-group">
+      User
+    </NavigationLink>
+    <NavigationLink to="/user" icon="fa-table-columns">
+      Position
+    </NavigationLink>
+    {/* <NavigationLink to="/user" icon="fa-user-group">
+      Department
+    </NavigationLink>
+    <NavigationLink to="/user" icon="fa-table-columns">
+      Language
+    </NavigationLink> */}
     <NavigationLink to="/interview" icon="fa-calendar-days">
       Interview
     </NavigationLink>
     <NavigationLink to="/setting" icon="fa-gear">
       Setting
     </NavigationLink>
+    
   </nav>
 );
