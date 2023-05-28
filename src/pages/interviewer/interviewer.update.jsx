@@ -2,19 +2,28 @@ import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
+import { useAuth } from "../../store/AuthContext";
 export const InterviewerUpdate = () => {
   const { id } = useParams();
+  const { token } = useAuth();
   const [interviewer, setInterviewer] = useState({
     name: "",
     email: "",
     department_id: "",
     position_id: "",
   });
-
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const updateInterviewer = useMutation(async () => {
     try {
-      axios.put(`http://localhost:8000/api/interviewers/${id}`, interviewer);
+      axios.put(
+        `http://localhost:8000/api/interviewers/${id}`,
+        interviewer,
+        config
+      );
     } catch (error) {
       console.error(error);
     }
@@ -28,7 +37,8 @@ export const InterviewerUpdate = () => {
   const getInterviewer = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/interviewers/${id}`
+        `http://localhost:8000/api/interviewers/${id}`,
+        config
       );
       setInterviewer(response.data.data);
       return response.data.data;
@@ -39,7 +49,10 @@ export const InterviewerUpdate = () => {
 
   const getDepartment = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/departments");
+      const response = await axios.get(
+        "http://localhost:8000/api/departments",
+        config
+      );
       return response.data.data;
     } catch (error) {
       console.error(error);
@@ -48,7 +61,10 @@ export const InterviewerUpdate = () => {
 
   const getPosition = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/positions");
+      const response = await axios.get(
+        "http://localhost:8000/api/positions",
+        config
+      );
       return response.data.data;
     } catch (error) {
       console.error(error);

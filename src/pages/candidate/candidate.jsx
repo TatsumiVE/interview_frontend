@@ -3,12 +3,20 @@ import { useTable, useGlobalFilter, usePagination } from "react-table";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import { useAuth } from "../../store/AuthContext";
 export const Candidate = () => {
   const [candidateData, setCandidateData] = useState([]);
-
+  const { token } = useAuth();
   const getCandidates = async () => {
-    const response = await axios.get("http://127.0.0.1:8000/api/candidates");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.get(
+      "http://127.0.0.1:8000/api/candidates",
+      config
+    );
     return response.data.data;
   };
 

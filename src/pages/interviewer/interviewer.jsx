@@ -1,15 +1,21 @@
-
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useTable, usePagination, useGlobalFilter } from "react-table";
 import axios from "axios";
-import { Button } from "../../components";
-
+import { useAuth } from "../../store/AuthContext";
 export const Employee = () => {
   const [interviewers, setInterviewers] = useState([]);
-
+  const { token } = useAuth();
   const getInterviewers = async () => {
-    const response = await axios.get("http://localhost:8000/api/interviewers");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.get(
+      "http://localhost:8000/api/interviewers",
+      config
+    );
     return response.data.data;
   };
 
@@ -39,11 +45,8 @@ export const Employee = () => {
               <Link to={`update/${row.original.id}`}>Update Interviewer</Link>
             </button>
           </div>
-
-          
         ),
       },
-      
     ],
     []
   );
@@ -78,19 +81,23 @@ export const Employee = () => {
       <div className="table-wrap__head">
         <div className="search-content">
           <input
-              type="text"
-              value={globalFilter || ""}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-              placeholder="  Search..."
-            />
-          </div>
-          <div className="create-content">
-            <button type="button" className="txt-light btn-primary" text="Create Interviewer">
-              <Link to="create">Create Interviewer</Link>
-            </button>
-          </div>
+            type="text"
+            value={globalFilter || ""}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder="  Search..."
+          />
+        </div>
+        <div className="create-content">
+          <button
+            type="button"
+            className="txt-light btn-primary"
+            text="Create Interviewer"
+          >
+            <Link to="create">Create Interviewer</Link>
+          </button>
+        </div>
       </div>
- 
+
       <div className="table-wrap__main">
         <table {...getTableProps()} className="custom-table">
           <thead>
@@ -119,8 +126,12 @@ export const Employee = () => {
         </table>
       </div>
       <div className="table-wrap__pagination">
-        <button type="button" onClick={() => previousPage()} disabled={!canPreviousPage}>
-           &lt;&lt;
+        <button
+          type="button"
+          onClick={() => previousPage()}
+          disabled={!canPreviousPage}
+        >
+          &lt;&lt;
         </button>
         <span className="page-content">
           Page {""}
@@ -128,13 +139,10 @@ export const Employee = () => {
             {pageIndex + 1} of {pageOptions.length}
           </strong>
         </span>
-        <button onClick={() => nextPage()} disabled={!canNextPage} >
-           &gt;&gt;
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
+          &gt;&gt;
         </button>
-        
       </div>
     </div>
   );
 };
-
-

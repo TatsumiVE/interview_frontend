@@ -2,15 +2,24 @@ import axios from "axios";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { Button, Dropdown, Input } from "../../components/utilites";
-
+import { useAuth } from "../../store/AuthContext";
 export const InterviewerCreate = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [position_id, setPosition] = useState("");
   const [department_id, setDepartment] = useState("");
+  const { token } = useAuth();
 
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const fetchPosition = async () => {
-    const response = await axios.get("http://localhost:8000/api/positions");
+    const response = await axios.get(
+      "http://localhost:8000/api/positions",
+      config
+    );
     return response.data.data;
   };
 
@@ -24,25 +33,25 @@ export const InterviewerCreate = () => {
   });
 
   const fetchDepartment = async () => {
-    const response = await axios.get("http://localhost:8000/api/departments");
+    const response = await axios.get(
+      "http://localhost:8000/api/departments",
+      config
+    );
 
     return response.data.data;
-  }
+  };
 
-  const {
-    data:departments,
-    // isLoading,
-    // isError
-  }=useQuery({
-    queryKey:["get","departments"],
-    queryFn:fetchDepartment,
+  const { data: departments } = useQuery({
+    queryKey: ["get", "departments"],
+    queryFn: fetchDepartment,
   });
 
   const addInterviewer = async () => {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/interviewers",
-        { name, email, department_id, position_id }
+        { name, email, department_id, position_id },
+        config
       );
       console.log(response.data);
     } catch (error) {
@@ -103,8 +112,16 @@ export const InterviewerCreate = () => {
           </div>
         </div>
         <div className="btn-group">
-          <Button type="submit" text="Create" className="txt-light btn-primary"/>
-          <Button type="button" text="Cancel" className="txt-light btn-default"/>
+          <Button
+            type="submit"
+            text="Create"
+            className="txt-light btn-primary"
+          />
+          <Button
+            type="button"
+            text="Cancel"
+            className="txt-light btn-default"
+          />
         </div>
       </form>
     </div>

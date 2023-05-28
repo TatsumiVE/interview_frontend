@@ -7,10 +7,10 @@ export const TopInfo = () => {
   const [user, setUser] = useState({});
   const [showDropdown, setShowDropdown] = useState(false);
   const location = useLocation(); // test
-  const { handleLogout } = useAuth();
+  const { token, handleLogout } = useAuth();
 
   useEffect(() => {
-    getUser()
+    getUser(token)
       .then((res) => res.data)
       .then((data) => setUser(data));
   }, []);
