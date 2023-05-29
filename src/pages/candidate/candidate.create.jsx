@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Dropdown, Input, Button } from "../../components/utilites";
+import { Dropdown, Input, Button, TextArea, InputCheckbox } from "../../components/utilites";
 import { useMutation } from "react-query";
 import { useAuth } from "../../store/AuthContext";
+
 export const CandidateCreate = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -114,249 +115,228 @@ export const CandidateCreate = () => {
   return (
     <>
       <div className="card">
-        <div className="card-flap">
-          <form onSubmit={handleSubmit} className="card-form">
-            <div className="card-wrap">
-              <div className="card-left">
-                <div className="card-input">
-                  <Input
-                    labelName="Name"
-                    type="text"
-                    name="name"
-                    placeholder="Enter Candidate Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div className="card-input">
-                  <Input
-                    labelName="Email"
-                    type="email"
-                    name="email"
-                    placeholder="Enter Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="card-input">
-                  <Input
-                    labelName="Phone Number"
-                    type="tel"
-                    name="phoneNumber"
-                    placeholder="Enter Phone Number"
-                    value={phone_number}
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                </div>
-                <div className="card-input">
-                  <Input
-                    labelName="Date of Birth"
-                    type="date"
-                    name="date_of_birth"
-                    placeholder="Enter Date of Birth"
-                    value={date_of_birth}
-                    onChange={(e) => setBirth(e.target.value)}
-                  />
-                </div>
-                <div className="card-input">
-                  <label>
-                    Address
-                    <textarea
-                      name="residential_address"
-                      value={residential_address}
-                      onChange={(e) => setAddress(e.target.value)}
-                    >
-                      Enter Residential Address
-                    </textarea>
-                  </label>
-                </div>
+        <form onSubmit={handleSubmit} className="card-form">
+          <div className="card-wrap">
+            <div className="card-left">
+              <Input
+                labelName="Name"
+                type="text"
+                name="name"
+                placeholder=" Enter Candidate Name..."
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <Input
+                labelName="Email"
+                type="email"
+                name="email"
+                placeholder=" Enter Email..."
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
 
-                <div className="card-input">
-                  <Input
-                    type="checkbox"
-                    name="willingness_to_travel"
-                    value=""
-                    placeholder=""
-                    onChange={(e) => setTravel(e.target.checked)}
-                    labelName="Willingness To Travel"
-                  />
-                </div>
+              <Input
+                labelName="Phone Number"
+                type="tel"
+                name="phoneNumber"
+                placeholder=" Enter Phone Number..."
+                value={phone_number}
+                onChange={(e) => setPhone(e.target.value)}
+              />
 
-                <div className="card-input">
-                  <Input
-                    labelName="Male"
-                    type="radio"
-                    name="gender"
-                    placeholder=""
-                    value="0"
-                    checked={gender === "1"}
-                    onChange={(e) => setGender(e.target.value)}
-                  />
-                  <Input
-                    labelName="Female"
-                    type="radio"
-                    name="gender"
-                    placeholder=""
-                    value="1"
-                    checked={gender === "2"}
-                    onChange={(e) => setGender(e.target.value)}
-                  />
-                  <Input
-                    labelName="Non Binary"
-                    type="radio"
-                    name="gender"
-                    placeholder=""
-                    value="2"
-                    checked={gender === "3"}
-                    onChange={(e) => setGender(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="card-right">
-                <div className="card-input">
-                  <Dropdown
-                    labelName="Position"
-                    options={position.data}
-                    selectedValue={position}
-                    onChange={(e) => setPosition(e.target.value)}
-                  ></Dropdown>
-                </div>
-                <div className="card-input">
-                  <Dropdown
-                    labelName="Agency"
-                    options={agency.data}
-                    selectedValue={agency}
-                    onChange={(e) => setAgency(e.target.value)}
-                  />
-                </div>
-                <div className="card-input">
-                  <Input
-                    labelName="Expected Salary"
-                    type="number"
-                    name="expected_salary"
-                    placeholder="Enter Expected Salary"
-                    value={expected_salary}
-                    onChange={(e) => setExpected(e.target.value)}
-                  />
-                </div>
-                <div className="card-input">
-                  <Input
-                    labelName="Last Salary"
-                    type="number"
-                    name="last_salary"
-                    placeholder="Enter Last Salary"
-                    value={last_salary}
-                    onChange={(e) => setLast(e.target.value)}
-                  />
-                </div>
-                <div className="card-input">
-                  <Input
-                    labelName="CV Path"
-                    type="text"
-                    name="cv_path"
-                    placeholder="Enter Cv Path"
-                    value={cv_path}
-                    onChange={(e) => setCv(e.target.value)}
-                  />
-                </div>
-                <div className="card-input">
-                  <Input
-                    labelName="Earliest Starting Date"
-                    type="date"
-                    name="earliest_starting_date"
-                    placeholder="Enter Earliest Starting Date"
-                    value={earliest_starting_date}
-                    onChange={(e) => setEarliest(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
+              <Input
+                labelName="Date of Birth"
+                type="date"
+                name="date_of_birth"
+                placeholder=" Enter Date of Birth..."
+                value={date_of_birth}
+                onChange={(e) => setBirth(e.target.value)}
+              />
 
-            <div className="card-input--btnPlus">
-              {data.length < 4 && (
-                <Button
-                  type="button"
-                  onClick={handleAdd}
-                  text="+"
-                  btnColor=""
-                  className="txt-light btn-primary btnRight"
+              <TextArea
+                labelName="Address"
+                name="residential_address"
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder=" Enter Residential Address..."
+                className=""
+              />
+
+              <InputCheckbox
+                type="checkbox"
+                name="willingness_to_travel"
+                value=""
+                placeholder=""
+                onChange={(e) => setTravel(e.target.checked)}
+                labelName="Willingness To Travel"
+              />
+
+              <div className="radio-group">
+                <InputCheckbox
+                  labelName="Male"
+                  type="radio"
+                  name="gender"
+                  placeholder=""
+                  value="1"
+                  checked={gender === "1"}
+                  onChange={(e) => setGender(e.target.value)}
                 />
-              )}
-            </div>
+                <InputCheckbox
+                  labelName="Female"
+                  type="radio"
+                  name="gender"
+                  placeholder=""
+                  value="2"
+                  checked={gender === "2"}
+                  onChange={(e) => setGender(e.target.value)}
+                />
+                <InputCheckbox
+                  labelName="Non Binary"
+                  type="radio"
+                  name="gender"
+                  placeholder=""
+                  value="3"
+                  checked={gender === "3"}
+                  onChange={(e) => setGender(e.target.value)}
+                />
+              </div>
 
-            <div className="card-input--border">
-              {data.map((row, index) => (
-                <div key={index} className="card-input--box">
-                  <div className="card-input--first">
-                    <div className="card-input--language">
-                      <Dropdown
-                        labelName="Language"
-                        options={languageList.data}
-                        onChange={(e) => {
-                          const updatedData = [...data];
-                          updatedData[index].devlanguage_id = e.target.value;
-                          setData(updatedData);
-                        }}
+            </div>
+            <div className="card-right">
+              <Dropdown
+                labelName="Position"
+                options={position.data}
+                selectedValue={position}
+                onChange={(e) => setPosition(e.target.value)}
+              ></Dropdown>
+              <Dropdown
+                labelName="Agency"
+                options={agency.data}
+                selectedValue={agency}
+                onChange={(e) => setAgency(e.target.value)}
+              />
+              <Input
+                labelName="Expected Salary"
+                type="number"
+                name="expected_salary"
+                placeholder=" Enter Expected Salary..."
+                value={expected_salary}
+                onChange={(e) => setExpected(e.target.value)}
+              />
+              <Input
+                labelName="Last Salary"
+                type="number"
+                name="last_salary"
+                placeholder=" Enter Last Salary..."
+                value={last_salary}
+                onChange={(e) => setLast(e.target.value)}
+              />
+
+              <Input
+                labelName="CV Path"
+                type="text"
+                name="cv_path"
+                placeholder=" Enter Cv Path..."
+                value={cv_path}
+                onChange={(e) => setCv(e.target.value)}
+              />
+
+              <Input
+                labelName="Earliest Starting Date"
+                type="date"
+                name="earliest_starting_date"
+                placeholder="Enter Earliest Starting Date..."
+                value={earliest_starting_date}
+                onChange={(e) => setEarliest(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="card-btnPlus">
+            {data.length < 4 && (
+              <Button
+                type="button"
+                onClick={handleAdd}
+                text="+"
+                btnColor=""
+                className="txt-light btn-primary btnRight"
+              />
+            )}
+          </div>
+          <div className="card-border">
+            {data.map((row, index) => (
+              <div key={index} className="card-box">
+                <div className="card-language">
+                  <Dropdown
+                    labelName="Language"
+                    options={languageList.data}
+                    onChange={(e) => {
+                      const updatedData = [...data];
+                      updatedData[index].devlanguage_id = e.target.value;
+                      setData(updatedData);
+                    }}
+                  />
+                  <div className="card-btnMinus">
+                    {data.length > 1 && (
+                      <Button
+                        type="button"
+                        onClick={() => handleRemove(index)}
+                        text="-"
+                        className="txt-light btn-default btnRight"
                       />
-                    </div>
-                    <div className="card-input--btnMinus">
-                      {data.length > 1 && (
-                        <Button
-                          type="button"
-                          onClick={() => handleRemove(index)}
-                          text="-"
-                          className="txt-light btn-default btnRight"
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <div className="card-input--second">
-                    <label>
-                      Experience
-                      <div className="card-input--experience">
-                        <Input
-                          name="year"
-                          type="number"
-                          placeholder="Enter Year"
-                          value={row.year}
-                          onChange={(e) => {
-                            const updatedData = [...data];
-                            updatedData[index].year = e.target.value;
-                            setData(updatedData);
-                          }}
-                        />
-                        <Input
-                          name="month"
-                          type="number"
-                          placeholder="Enter Month"
-                          value={row.month}
-                          onChange={(e) => {
-                            const updatedData = [...data];
-                            updatedData[index].month = e.target.value;
-                            setData(updatedData);
-                          }}
-                        />
-                      </div>
-                    </label>
+                    )}
                   </div>
                 </div>
-              ))}
-            </div>
-            <div className="button-group">
-              <Button
-                type="submit"
-                text="Submit"
-                className="txt-light btn-primary"
-              />
-              <Button
-                type="submit"
-                text="Cancel"
-                className="txt-light btn-default"
-              />
-            </div>
-          </form>
-        </div>
-      </div>
+                <div className="card-experience">
+                  <label className="experience-label">
+                    Experience
+                  </label>
+                  <div className="experience-group">
+                    <Input
+                      labelName=""
+                      name="year"
+                      type="number"
+                      placeholder=" Enter Year..."
+                      value={row.year}
+                      onChange={(e) => {
+                        const updatedData = [...data];
+                        updatedData[index].year = e.target.value;
+                        setData(updatedData);
+                      }}
+                    />
+                    <Input
+                      labelName=""
+                      name="month"
+                      type="number"
+                      placeholder=" Enter Month..."
+                      value={row.month}
+                      onChange={(e) => {
+                        const updatedData = [...data];
+                        updatedData[index].month = e.target.value;
+                        setData(updatedData);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="button-group">
+            <Button
+              type="submit"
+              text="Submit"
+              className="txt-light btn-primary"
+
+            />
+            <Button
+              type="button"
+              text="Cancel"
+              className="txt-light btn-default"
+
+            />
+          </div>
+        </form >
+
+      </div >
     </>
   );
 };

@@ -3,6 +3,8 @@ import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
+import { Input, Dropdown, Button } from '../../components';
+
 export const InterviewerUpdate = () => {
   const { id } = useParams();
   const { token } = useAuth();
@@ -108,69 +110,52 @@ export const InterviewerUpdate = () => {
   if (positionError) return `An error has occurred: ${positionError.message}`;
 
   return (
-    <>
-      <form onSubmit={handleUpdate}>
-        <div>
-          <input
-            type="text"
-            name="name"
-            placeholder=" Enter Name"
-            value={interviewer.name}
-            onChange={(e) =>
-              setInterviewer({ ...interviewer, name: e.target.value })
-            }
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder=" Enter Email"
-            value={interviewer.email}
-            onChange={(e) =>
-              setInterviewer({ ...interviewer, email: e.target.value })
-            }
-          />
-          <select
-            name="department"
-            value={interviewer.department_id}
-            onChange={(e) =>
-              setInterviewer({ ...interviewer, department_id: e.target.value })
-            }
-          >
-            <option value="">Select Department</option>
-            {departments.map((department) => (
-              <option
-                key={department.id}
-                value={department.id}
-                selected={department.id === interviewer.department_id}
-              >
-                {department.name}
-              </option>
-            ))}
-          </select>
-          <select
-            name="position"
-            value={interviewer.position_id}
-            onChange={(e) =>
-              setInterviewer({ ...interviewer, position_id: e.target.value })
-            }
-          >
-            <option value="">Select Position</option>
-            {positions.map((position) => (
-              <option
-                key={position.id}
-                value={position.id}
-                selected={position.id === interviewer.position_id}
-              >
-                {position.name}
-              </option>
-            ))}
-          </select>
-          <div>
-            <button type="submit">Update</button>
-            <button type="button">Cancel</button>
-          </div>
+    <div className='card-min'>
+      <div className="card-min__header">
+        <h2>Update Interviewer</h2>
+      </div>
+      <form onSubmit={handleUpdate} className='card-min__form'>
+
+        <Input
+          labelName="Name"
+          type="text"
+          name="name"
+          placeholder="Enter Name..."
+          value={interviewer.name}
+          onChange={(e) => setInterviewer({ ...interviewer, name: e.target.value })}
+        />
+
+        <Input
+          labelName="Email"
+          type="email"
+          name="email"
+          placeholder="Enter Email..."
+          value={interviewer.email}
+          onChange={(e) => setInterviewer({ ...interviewer, email: e.target.value })}
+
+        />
+
+        <Dropdown
+          labelName="Department"
+          options={departments}
+          selectedValue={interviewer.department_id}
+          onChange={(e) => setInterviewer({ ...interviewer, department_id: e.target.value })}
+        ></Dropdown>
+
+
+        <Dropdown
+          labelName="Position"
+          options={positions}
+          selectedValue={interviewer.position_id}
+          onChange={(e) => setInterviewer({ ...interviewer, position_id: e.target.value })}
+        ></Dropdown>
+
+        <div className='button-group--user'>
+          <Button type="submit" className='txt-light btn-primary' text="Update" />
+          <Button type="button" className='txt-light btn-default' text="Cancel" />
         </div>
-      </form>
-    </>
+
+      </form >
+    </div >
   );
 };

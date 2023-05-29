@@ -4,8 +4,9 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
+import { ButtonLink } from "../../components";
 
-export const Candidate = () => {
+export const Candidate= () => {
   const [candidateData, setCandidateData] = useState([]);
   const { token } = useAuth();
   const getCandidates = async () => {
@@ -90,7 +91,8 @@ export const Candidate = () => {
             onChange={(e) => setGlobalFilter(e.target.value)}
             placeholder="  Search..."
           />
-        </div>
+        </div>       
+
       </div>
       <div className="table-wrap__main">
         <table {...getTableProps()} className="custom-table">

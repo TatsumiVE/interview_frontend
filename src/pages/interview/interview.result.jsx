@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Input, Button } from "../../components/utilites";
+import { Input, Button, TextArea, InputCheckbox } from "../../components/utilites";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { useMutation } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
+
 export const InterviewResult = () => {
   const location = useLocation();
   const candidateName = location.state?.candidateName || "";
@@ -43,52 +44,68 @@ export const InterviewResult = () => {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit} className="form">
-        <p>Candidate Name: {candidateName}</p>
-        <Input
-          labelName="Interview Result Date"
-          type="date"
-          name="interview_result_date"
-          value={interview_result_date}
-          onChange={(e) => setInterviewResultDate(e.target.value)}
-        />
-        <p>Interview Summarize</p>
-        <textarea
-          name="interview_summarize"
-          value={interview_summarize}
-          onChange={(e) => setInterviewSummarize(e.target.value)}
-        >
-          Interview Summarize
-        </textarea>
-        <Input
-          labelName="Pass"
-          type="radio"
-          name="result"
-          placeholder=""
-          value="1"
-          checked={interview_result === "1"}
-          onChange={(e) => setResult(e.target.value)}
-        />
-        <Input
-          labelName="Fail"
-          type="radio"
-          name="result"
-          placeholder=""
-          value="0"
-          checked={interview_result === "0"}
-          onChange={(e) => setResult(e.target.value)}
-        />
-        <Input
-          labelName="Record Path"
-          type="text"
-          name="record_path"
-          placeholder="Enter Record Path"
-          onChange={(e) => setRecordPath(e.target.value)}
-        />
+    <div className="card-min">
+      <div className="card-min__header">
+        <h2>Interview Result Form</h2>
+      </div>
+      <div className="form-container">
+        <form onSubmit={handleSubmit} className="card-min__form">
+          <p><span className="txt-default">Candidate Name: </span>{candidateName}</p>
+          <Input
+            labelName="Interview Result Date"
+            type="date"
+            name="interview_result_date"
+            value={interview_result_date}
+            onChange={(e) => setInterviewResultDate(e.target.value)}
+          />
 
-        <Button type="submit" className="txt-light btn-primary" text="Create" />
-      </form>
-    </>
+          <TextArea
+            labelName="Interview Summarize"
+            name="interview_summarize"
+            value={interview_summarize}
+            placeholder=" Enter interview summarize..."
+            onChange={(e) => setInterviewSummarize(e.target.value)}
+          />
+
+          <div className="radio-group--modify">
+            <InputCheckbox
+              labelName="Pass"
+              type="radio"
+              name="result"
+              placeholder=""
+              value="1"
+              checked={interview_result === "1"}
+              onChange={(e) => setResult(e.target.value)}
+            />
+            <span className="radio-fail">
+              <InputCheckbox
+                labelName="Fail"
+                type="radio"
+                name="result"
+                placeholder=""
+                value="0"
+                checked={interview_result === "0"}
+                onChange={(e) => setResult(e.target.value)}
+              />
+            </span>
+
+          </div>
+
+          <Input
+            labelName="Record Path"
+            type="text"
+            name="record_path"
+            placeholder="Enter Record Path"
+            onChange={(e) => setRecordPath(e.target.value)}
+          />
+
+          <div className="button-group--user">
+            <Button type="submit" text="Create" className="txt-light btn-primary" />
+            <Button type="button" text="Cancel" className="txt-light btn-default" />
+          </div>
+        </form>
+      </div>
+
+    </div>
   );
 };

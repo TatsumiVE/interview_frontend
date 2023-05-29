@@ -5,3 +5,4 @@ export * from "./candidate.details";
 export * from "./candidate.cv";
 export * from "./candidate.stage";
 export * from "./candidate.interview";
+export * from "./candidate.update";

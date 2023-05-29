@@ -8,23 +8,26 @@ import {
   NotFound,
   Login,
   CandidateCreate,
-  CandidateDetails,
+  CandidateDetails,  
   InterviewerCreate,
   InterviewResult,
   InterviewAssessment,
   UserCreate,
   InterviewerUpdate,
   InterviewCreate,
-  CandidateList,
-  UserUpdate,
-  UserList,
   CDetails,
   CCv,
   CStages,
   CInterviews,
+  UserList,
+  CandidateUpdate,
+  CandidateList,
+  UserUpdate,
+
 } from "../pages";
 
 import { Layout } from "../components";
+
 
 export const Router = () => {
   const { isLogin } = useAuth();
@@ -35,6 +38,7 @@ export const Router = () => {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
+
           <Route path="candidates">
             <Route index element={<Candidate />} />
             <Route path=":id" element={<CandidateDetails />}>
@@ -45,6 +49,7 @@ export const Router = () => {
               <Route path="interviews" element={<CInterviews />} />
             </Route>
           </Route>
+
           <Route path="interviewer" element={<Employee />} />
           <Route path="interview" element={<CandidateList />} />
           <Route path="user" element={<UserList />} />
@@ -83,8 +88,12 @@ export const Router = () => {
             path="/candidate/interview-result/:candidateId/:stageId"
             element={<InterviewResult />}
           />
+           <Route path="candidates/update/:id" element={<CandidateUpdate />} />
 
           <Route path="interviewer/user/create/:id" element={<UserCreate />} />
+
+          <Route path="/user" element={<UserList />} />
+           <Route path="/user/update/:id" element={<UserUpdate />} />
 
           <Route path="*" element={<NotFound />} />
         </Route>
