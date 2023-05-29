@@ -1,26 +1,19 @@
 import PropTypes from "prop-types";
-export const Input = ({
-  labelName,
-  type,
-  name,
-  placeholder,
-  value,
-  onChange,
-}) => {
+
+export const Input = ({labelName,type,name,placeholder,value,onChange,}) => {
   return (
-    <>
+    <div className="input-form">
       <label>
         {labelName}
-        <input
-          className={name}
-          type={type}
-          name={name}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-        />
       </label>
-    </>
+      <input
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
+    </div>
   );
 };
 

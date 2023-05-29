@@ -1,13 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;600&display=swap');
 
-// $weight: (light: 100, medium: 400, bold: 600);
-// $align: (center, left, right, justify);
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+$weight: (light: 400, medium: 500, bold: 700);
+$align: (center, left, right, justify);
+
 * {
-  font-family: sans-serif;   
+  font-family: 'Roboto', sans-serif;
 }
 
 body, a {
-  font-family: sans-serif; 
+  font-family: 'Roboto', sans-serif;
   font-weight: 100;
   font-size: 16px;
 }
@@ -22,5 +24,24 @@ a {
   }
   .bg-#{$color} {
     background: $val;
+  }
+}
+
+@each $size, $val in $font-size {
+  .txt-#{$size} {
+    font-size: $val;
+    line-height: $val * 1.5;
+  }
+}
+
+@each $prefix, $val in $weight {
+  .txt-#{$prefix} {
+    font-weight: $val;
+  }
+}
+
+@each $val in $align {
+  .txt-#{$val} {
+    text-align: $val;
   }
 }

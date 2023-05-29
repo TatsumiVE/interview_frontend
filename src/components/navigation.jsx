@@ -26,6 +26,11 @@ export const MainNavigation = () => {
           Interview
         </NavigationLink>
       )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/user" icon="fa-user-tie">
+          User
+        </NavigationLink>
+      )}
       {can("settingView") && (
         <NavigationLink to="/setting" icon="fa-gear">
           Setting

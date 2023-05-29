@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
-import { Dropdown, Button } from "../../components";
+import { Dropdown, Button,Input } from "../../components";
 import { useAuth } from "../../store/AuthContext";
 
 export const InterviewCreate = () => {
@@ -107,12 +107,13 @@ export const InterviewCreate = () => {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div>
-      Interview Create
-      <br />
-      <form onSubmit={handleSubmit} className="card-form">
-        <label>Date and Time:</label>
-        <input
+    <div className="card-min">
+      <div className="card-min__header">
+        <h2>Interview Create</h2>
+      </div>
+      <form onSubmit={handleSubmit} className="card-min__form">
+        <Input
+          labelName="Date"
           type="date"
           name="interview_date"
           value={formData.interview_date}
@@ -121,7 +122,8 @@ export const InterviewCreate = () => {
           }
         />
 
-        <input
+        <Input
+          labelName="Time"
           type="time"
           name="time"
           value={formData.interview_time}
@@ -141,7 +143,7 @@ export const InterviewCreate = () => {
           className="custom-dropdown"
         />
 
-        <br />
+
         <Dropdown
           labelName="Location"
           options={location}
@@ -150,51 +152,53 @@ export const InterviewCreate = () => {
             setFormData({ ...formData, location: e.target.value })
           }
         ></Dropdown>
-        <br />
 
-        <div className="card-input--btnPlus">
+
+        <div className="btn-plus">
           {data.length < 4 && (
             <Button
               type="button"
               onClick={handleAdd}
               text="+"
               btnColor=""
-              className="txt-light btn-primary btnRight"
+              className="txt-light btn-primary"
             />
           )}
         </div>
 
         {data.map((interviewerId, index) => (
-          <div key={index} className="card-input--box">
-            <div className="card-input--first">
-              <div className="card-input--language">
-                <Dropdown
-                  labelName="Interviewers"
-                  options={interviewer_id}
-                  selectedValue={formData.interviewerId}
-                  onChange={(e) => {
-                    const updatedData = [...data];
+          <div key={index} >
+            <div className="interviewer-group">
+              <Dropdown
+                labelName="Interviewers"
+                options={interviewer_id}
+                selectedValue={formData.interviewerId}
+                onChange={(e) => {
+                  const updatedData = [...data];
 
-                    updatedData[index] = e.target.value;
-                    setData(updatedData);
-                  }}
-                />
-              </div>
-              <div className="card-input--btnMinus">
+                  updatedData[index] = e.target.value;
+                  setData(updatedData);
+                }}
+              />
+
+              <div className="btn-minus">
                 {data.length > 1 && (
                   <Button
                     type="button"
                     onClick={() => handleRemove(index)}
                     text="-"
-                    className="txt-light btn-default btnRight"
+                    className="txt-light btn-default"
                   />
                 )}
               </div>
+
             </div>
           </div>
         ))}
-
-        <Button type="submit" text="Create" className="txt-light btn-default" />
+        <div className='button-group--user'>
+          <Button type="submit" text="Create" className="txt-light btn-primary"></Button>
+          <Button type="button" text="Cancel" className="txt-light btn-default"></Button>
+        </div>
       </form>
     </div>
   );

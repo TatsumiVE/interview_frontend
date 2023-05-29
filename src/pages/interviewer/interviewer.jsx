@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useTable, usePagination, useGlobalFilter } from "react-table";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
+import { ButtonLink } from "../../components";
+
 export const Employee = () => {
   const [interviewers, setInterviewers] = useState([]);
   const { token } = useAuth();
@@ -84,17 +86,11 @@ export const Employee = () => {
             type="text"
             value={globalFilter || ""}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="  Search..."
+            placeholder="Search..."
           />
         </div>
         <div className="create-content">
-          <button
-            type="button"
-            className="txt-light btn-primary"
-            text="Create Interviewer"
-          >
-            <Link to="create">Create Interviewer</Link>
-          </button>
+          <ButtonLink type="button" className="btn-primary" route="create" linkText="txt-light" text="Create Interviewer" />
         </div>
       </div>
 

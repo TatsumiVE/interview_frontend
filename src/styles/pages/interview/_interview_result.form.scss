@@ -1,0 +1,13 @@
+.form-container {
+    margin-top: 20px;
+}
+
+.radio-group {
+    &--modify {
+        display: flex;
+        flex-direction: row;  
+        .radio-fail{
+            padding-left:40px;
+        }             
+    }
+}

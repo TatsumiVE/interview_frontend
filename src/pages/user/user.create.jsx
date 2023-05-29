@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../../store/AuthContext";
+import { Button,Input,Dropdown } from "../../components";
+
 export const UserCreate = () => {
   const { id } = useParams();
   const [interviewer, setInterviewer] = useState({
@@ -88,51 +90,55 @@ export const UserCreate = () => {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
+    <div className='card-min'>
+      <div className="card-min__header">
+        <h2>Create User Role</h2>
+      </div>
+      <form onSubmit={handleSubmit} className="card-min__form">
         <div>
-          <input
+          <Input
+            labelName="Name"
             type="text"
             name="name"
-            placeholder="Name"
+            placeholder=" Enter Name..."
             value={interviewers.name}
+
           />
-          <input
+          <Input
+            labelName="Email"
             type="email"
             name="email"
-            placeholder="Email"
+            placeholder=" Enter Email..."
             value={interviewers.email}
+
           />
-          <input
+          <Input
+            labelName="Password"
             type="password"
             name="password"
-            placeholder=" Enter Password"
-            onChange={(e) =>
-              setInterviewer({ ...interviewer, password: e.target.value })
-            }
+            placeholder=" Enter Password..."
+            onChange={(e) => setInterviewer({ ...interviewer, password: e.target.value })}
           />
-          <input
+          <Input
+            labelName="Confirm Password"
             type="password"
             name="password_confirmation"
-            placeholder=" Enter Confirm Password"
+            placeholder=" Enter Confirm Password..."
             onChange={(e) => e.target.value}
           />
-          <select
-            name="role"
-            onChange={(e) =>
-              setInterviewer({ ...interviewer, role: e.target.value })
-            }
-          >
-            <option value="">Select Role</option>
-            {roles.map((role) => (
-              <option key={role.id} value={role.id}>
-                {role.name}
-              </option>
-            ))}
-          </select>
-          <button type="submit">Create Role</button>
+          <Dropdown
+            labelName="Role"
+            options={roles}
+            selectedValue={roles.id}
+            onChange={(e) => setInterviewer({ ...interviewer, role: e.target.value })}
+          ></Dropdown>
+
+          <div className="button-group--user">
+            <Button type="submit" text="Create" className="txt-light btn-primary" />
+            <Button type="button" text="Cancel" className="txt-light btn-default" />
+          </div>
         </div>
       </form>
-    </>
+    </div>
   );
 };

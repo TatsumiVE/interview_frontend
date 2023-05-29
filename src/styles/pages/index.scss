@@ -1,13 +1,7 @@
-@import "./candidate";
-@import "./dashboard";
-@import "./setting";
-@import "./loginform";
-@import "./employee";
-@import "./interview";
-@import "./loginslider";
-@import "./barchart";
-@import "./interview_assessment";
-@import "./candidate_create";
-@import "./interviewer.create";
+@import "./candidate/index.scss";
+@import "./barchart/index.scss";
+@import "./interview/index.scss";
+@import "./login/index.scss";
+@import "./user/index.scss";
+
 @import "./table";
-@import "./candidate.detail.scss";
