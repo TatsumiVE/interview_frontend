@@ -8,7 +8,9 @@ import {
   QueryClientProvider,
 } from "react-query";
 import { Link } from "react-router-dom";
+
 const queryClient = new QueryClient();
+
 export const CandidateList = () => {
   const { token, user, can } = useAuth();
   const location = useLocation();

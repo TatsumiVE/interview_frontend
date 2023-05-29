@@ -2,106 +2,237 @@ import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Dropdown } from '../../components';
+import {useAuth} from '../../store/AuthContext';
 
 export const UserUpdate = () => {
-  const { id } = useParams();
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    interviewer_id:"",
-    role: "",
-  });
-
-  const updateUser = useMutation(async () => {
-    try {
-      await axios.put(`http://localhost:8000/api/users/${id}`, user);
-    } catch (error) {
-      console.error(error);
-    }
-  });
-
-  const handleUpdate = (event) => {
-    event.preventDefault();
-    updateUser.mutate();
+    const { id } = useParams();
+    const [user, setUser] = useState([]); 
+    const { token } = useAuth();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   };
-
-  const getUser = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8000/api/users/${id}`);
-      setUser(response.data.data);
-      console.log(user.interviewer_id.id);
-      return response.data.data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getRole = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/api/roles");
-      return response.data.data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const { data: users, isLoading: isUserLoading, isError: isUserError, isSuccess: isUserSuccess, error: userError } = useQuery(
-    ['users'],
-    getUser
-  );
-
-  const { data: roles, isLoading: isRoleLoading, isError: isRoleError, isSuccess: isRoleSuccess, error: roleError } = useQuery(
-    ['roles'],
-    getRole
-  );
-
-  if (isUserLoading || isRoleLoading) return 'Loading...';
-  if (isUserError || isRoleError) return 'Something went wrong...';
-  if (userError || roleError) return 'An error has occurred.';
    
-  const handleRoleChange = (event) => {
+console.log("sadaf",user);
+    const updateUser = useMutation(async () => {
+        try {
+            axios.put(`http://localhost:8000/api/users/${id}`, user,config);
+
+        } catch (error) {
+            console.error(error)
+        }
+    })
+
+    const handleUpdate = (event) => {
+        event.preventDefault();
+        updateUser.mutate()
+    }
+
+    const getUser = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8000/api/users/${id}`,config);
+            console.log(response.data.data);
+            setUser(response.data.data);
+            return response.data.data;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const getRole = async () => {
+        try {
+            const response = await axios.get("http://localhost:8000/api/roles",config);
+            return response.data.data;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const { data: users, isLoading: isUserLoading, isError: isUserError, isSuccess: isUserSuccess, error: userError } = useQuery(
+        ['users', id],
+        getUser
+    );
+
+    const { data: roles, isLoading: isRoleLoading, isError: isRoleError, isSuccess: isRoleSuccess, error: roleError } = useQuery(
+        ['roles'],
+        getRole
+    );
+
+
+
+    if (isUserLoading || isRoleLoading) return 'Loading...';
+    if (isUserError) return 'Something went wrong...';
+    if (userError) return `An error has occurred: ${interviewerError.message}`;
+    if (isRoleError) return 'Something went wrong...';
+    if (roleError) return `An error has occurred: ${roleError.message}`;
+
+    if(isUserSuccess&&isRoleSuccess && user.interviewer_id)
+    return (
+        <>
+        
+            <form onSubmit={handleUpdate}>
+                
+                <div>
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter Name"
+                        value={user.interviewer_id.name}
+                        onChange={(e) => setName(e.target.value )}
+
+                    //onChange={(e) => setUser({...user, interviewer_id: {...user.interviewer_id, name: e.target.value}})}
+                    />
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder=" Enter Email"
+                        value={user.interviewer_id.email}
+                        //onChange={(e) => setUser({...user, interviewer_id: {...user.interviewer_id, email: e.target.value}})}
+                        onChange={(e) => setEmail(e.target.value)}
+
+                    />
+                    {/* <select
+                        name="role"
+                        value={user.role}
+                        onChange={e => setUser({ ...user, role: e.target.value })}>
+                        <option value="">Select Role</option>
+                        {roles.map(role => (
+                            <option key={role.id} value={role.id} selected={role.name === user.role}>
+                                {role.name}
+                            </option>
+                        ))}
+                    </select> */}
+                    <Dropdown
+                        labelName="Role"
+                        options={roles}
+                        selectedValue={user.role[0].id}
+                        onChange={(e) => setUser({ ...user, role: e.target.value })}
+                    ></Dropdown>
+
+                    <div>
+                        <button type="submit">Update</button>
+                        <button type="button">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </>
+    )
+}
+
+
+
+
+
+
+// import React, { useState } from 'react';
+// import { useMutation, useQuery } from 'react-query';
+// import { useParams } from 'react-router-dom';
+// import axios from 'axios';
+// import {useAuth} from "../../store/AuthContext"
+// export const UserUpdate = () => {
+//   const { id } = useParams();
+//   const [user, setUser] = useState({
+//     name: "",
+//     email: "",
+//     interviewer_id:"",
+//     role: "",
+//   });
+//   const { token } = useAuth();
+//   const config = {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   };
+// console.log(token);
+//   const updateUser = useMutation(async () => {
+//     try {
+//       await axios.put(`http://localhost:8000/api/users/${id}`, user,config);
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   });
+
+//   const handleUpdate = (event) => {
+//     event.preventDefault();
+//     updateUser.mutate();
+//   };
+
+//   const getUser = async () => {
+//     try {
+//       const response = await axios.get(`http://localhost:8000/api/users/${id}`,config);
+//       setUser(response.data.data);
+//       console.log(user.interviewer_id.id);
+//       return response.data.data;
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+
+//   const getRole = async () => {
+//     try {
+//       const response = await axios.get("http://localhost:8000/api/roles",config);
+//       return response.data.data;
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+
+//   const { data: users, isLoading: isUserLoading, isError: isUserError, isSuccess: isUserSuccess, error: userError } = useQuery(
+//     ['users'],
+//     getUser
+//   );
+
+//   const { data: roles, isLoading: isRoleLoading, isError: isRoleError, isSuccess: isRoleSuccess, error: roleError } = useQuery(
+//     ['roles'],
+//     getRole
+//   );
+
+//   if (isUserLoading || isRoleLoading) return 'Loading...';
+//   if (isUserError || isRoleError) return 'Something went wrong...';
+//   if (userError || roleError) return 'An error has occurred.';
    
-   
-  };
 
-  return (
-    <>
-      <form onSubmit={handleUpdate}>
-        <div>
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter Name"
-            value={user.interviewer_id.name}
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
-          />
+//   return (
+//     <>
+//       <form onSubmit={handleUpdate}>
+//         <div>
+//           <input
+//             type="text"
+//             name="name"
+//             placeholder="Enter Name"
+//             value={user.interviewer_id.name}
+//             onChange={(e) => setUser({ ...user, name: e.target.value })}
+//           />
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter Email"
-            value={user.interviewer_id.email}
-            onChange={(e) => setUser({ ...user, email: e.target.value })}
-          />
+//           <input
+//             type="email"
+//             name="email"
+//             placeholder="Enter Email"
+//             value={user.interviewer_id.email}
+//             onChange={(e) => setUser({ ...user, email: e.target.value })}
+//           />
 
-          <select name="role" value={user.role} onChange={handleRoleChange} >
-            <option value="">Select Role</option>
-            {roles.map((role) => (
-              <option key={role.id} value={role.id} selected={role.id==user.role[0].id}>
-                {role.name}
-              </option>
-            ))}
-          </select>
+//           <select name="role" value={user.role} onChange={(e) => setUser({ ...user, email: e.target.value })} >
+//             <option value="">Select Role</option>
+//             {roles.map((role) => (
+//               <option key={role.id} value={role.id} defaultValue={role.id==user.role[0].id}>
+//                 {role.name}
+//               </option>
+//             ))}
+//           </select>
 
-          <div>
-            <button type="submit">Update</button>
-            <button type="button">Cancel</button>
-          </div>
-        </div>
-      </form>
-    </>
-  );
-};
+//           <div>
+//             <button type="submit">Update</button>
+//             <button type="button">Cancel</button>
+//           </div>
+//         </div>
+//       </form>
+//     </>
+//   );
+// };
 
 
 

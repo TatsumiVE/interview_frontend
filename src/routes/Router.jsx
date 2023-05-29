@@ -18,7 +18,6 @@ import {
   CandidateList,
   UserUpdate,
   UserList,
-  
   CDetails,
   CCv,
   CStages,
@@ -60,6 +59,10 @@ export const Router = () => {
           <Route
             path="candidate/interview/:id/:stageId"
             element={<InterviewCreate />}
+          />
+           <Route
+            path="user/update/:id"
+            element={<UserUpdate />}
           />
 
           <Route

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
+
 export const Candidate = () => {
   const [candidateData, setCandidateData] = useState([]);
   const { token } = useAuth();

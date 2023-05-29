@@ -3,11 +3,18 @@ import { useTable, useGlobalFilter, usePagination } from 'react-table';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import {useAuth} from '../../store/AuthContext';
+
 
 export const UserList = () => {
   const { id } = useParams();
   const [users, setUsers] = useState([]);
-
+  const { token } = useAuth();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   useEffect(() => {
     const fetchData = async () => {
       // try {
@@ -32,10 +39,10 @@ export const UserList = () => {
       // }
 
       try {
-            const usersResponse = await axios.get('http://localhost:8000/api/users');
+            const usersResponse = await axios.get('http://localhost:8000/api/users',config);
             const users = usersResponse.data.data;
         
-            const interviewerResponse = await axios.get('http://localhost:8000/api/interviewers');
+            const interviewerResponse = await axios.get('http://localhost:8000/api/interviewers',config);
             const interviewers = interviewerResponse.data.data;
         
             const filteredUsers = users.filter(user => user.interviewer === id);
