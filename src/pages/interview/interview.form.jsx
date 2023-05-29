@@ -7,8 +7,8 @@ import { useAuth } from "../../store/AuthContext";
 
 export const InterviewCreate = () => {
   const { id, stageId } = useParams();
-  const [data, setData] = useState([{ interviewer_id: "" }]);
-  const navigate = useNavigate();
+  const [data, setData] = useState([{}]);
+  // const navigate = useNavigate();
   const [interviewer_id, setInterviewers] = useState([]);
   const { token } = useAuth();
   const interviewStages = [
@@ -28,7 +28,10 @@ export const InterviewCreate = () => {
   const createInterview = async (formData) => {
     const response = await axios.post(
       "http://localhost:8000/api/interview-process",
-      formData,
+      {
+        ...formData,
+        interviewer_id: formData.interviewer_id.map((id) => parseInt(id, 10)),
+      },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -46,23 +49,21 @@ export const InterviewCreate = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const requestData = data.map((row) => ({
-      interviewer_id: row,
-    }));
+    const requestData = data.map((row) => row.interviewer_id);
 
     const updatedFormData = {
       ...formData,
       interviewer_id: requestData,
     };
+    console.log(updatedFormData);
     interviewProcess(updatedFormData);
 
-    navigate("/interview?message=interview");
+    // navigate("/interview?message=interview");
   };
 
   const handleAdd = () => {
-    setData([...data, { interviewer_id: "" }]);
+    setData([...data, { interviewer_id: "" }]); // Replace "" with a valid interviewer_id
   };
-
   const handleRemove = (index) => {
     const updatedData = [...data];
     updatedData.splice(index, 1);
@@ -174,8 +175,7 @@ export const InterviewCreate = () => {
                   selectedValue={formData.interviewerId}
                   onChange={(e) => {
                     const updatedData = [...data];
-
-                    updatedData[index] = e.target.value;
+                    updatedData[index].interviewer_id = e.target.value;
                     setData(updatedData);
                   }}
                 />

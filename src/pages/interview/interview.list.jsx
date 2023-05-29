@@ -8,6 +8,7 @@ import {
   QueryClientProvider,
 } from "react-query";
 import { Link } from "react-router-dom";
+import Can from "../../components/utilites/can";
 const queryClient = new QueryClient();
 export const CandidateList = () => {
   const { token, user, can } = useAuth();
@@ -94,6 +95,7 @@ export const CandidateList = () => {
   if (isLoading) return "Loading...";
   if (isError) return "Something went wrong";
   if (error) return "An error has occurred: " + error.message;
+
   return (
     <div>
       {can("candidateCreate") && (
@@ -136,13 +138,13 @@ export const CandidateList = () => {
                     .join(", ")}
                 </td>
                 <td>
-                  {can("interviewProcessCreate") && (
+                  <Can permission={"interviewProcessCreate"}>
                     <Link
                       to={`/candidate/interview/${candidate.id}/${candidate.interviews.length}`}
                     >
                       Interview
                     </Link>
-                  )}
+                  </Can>
                   /
                   <Link
                     to={`/candidate/interview-assessment/${candidate.id}/${user.id}`}
