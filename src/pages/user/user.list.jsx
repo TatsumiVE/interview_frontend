@@ -4,6 +4,7 @@ import { useTable, useGlobalFilter, usePagination } from 'react-table';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from "../../store/AuthContext";
+import { ButtonLink } from '../../components';
 
 export const UserList = () => {
     const { id } = useParams();
@@ -57,13 +58,10 @@ export const UserList = () => {
             {
                 Header: "Action",
                 Cell: ({ row }) => (
-                    <div>
-                        <button type="button">
-                            <Link to={`update/${row.original.id}`}>Update User</Link>
-                        </button>
-                    </div>
-
-
+                    <>
+                     <ButtonLink type="button" className="btn-success" route={`update/${row.original.id}`} text="Update" linkText="txt-light txt-sm"/>
+                       
+                    </>
                 ),
             },
         ],
@@ -135,8 +133,8 @@ export const UserList = () => {
             </div>
 
             <div className='table-wrap__pagination'>
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                    Previous
+                <button onClick={() => previousPage()} disabled={!canPreviousPage} className='txt-primary'>
+                    &lt;&lt;
                 </button>
                 <span className='page-content'>
                     Page {' '}
@@ -144,8 +142,8 @@ export const UserList = () => {
                         {pageIndex + 1} of {pageOptions.length}
                     </strong>
                 </span>
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
-                    Next
+                <button onClick={() => nextPage()} disabled={!canNextPage} className='txt-primary'>
+                    &gt;&gt;
                 </button>
             </div>
         </div>

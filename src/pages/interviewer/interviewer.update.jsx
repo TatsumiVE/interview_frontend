@@ -3,11 +3,12 @@ import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
-import { Input, Dropdown, Button } from '../../components';
+import { Input, Dropdown, Button, ButtonLink } from '../../components';
 
 export const InterviewerUpdate = () => {
   const { id } = useParams();
   const { token } = useAuth();
+  const [error,setError] = useState([]);
   const [interviewer, setInterviewer] = useState({
     name: "",
     email: "",
@@ -27,7 +28,7 @@ export const InterviewerUpdate = () => {
         config
       );
     } catch (error) {
-      console.error(error);
+      setError(error.response.data);
     }
   });
 
@@ -122,7 +123,9 @@ export const InterviewerUpdate = () => {
           placeholder="Enter Name..."
           value={interviewer.name}
           onChange={(e) => setInterviewer({ ...interviewer, name: e.target.value })}
+          errorMessage="*"
         />
+        {error.data && <span className="txt-danger txt-ss">{error.data}</span>}
 
         <Input
           labelName="Email"
@@ -131,15 +134,18 @@ export const InterviewerUpdate = () => {
           placeholder="Enter Email..."
           value={interviewer.email}
           onChange={(e) => setInterviewer({ ...interviewer, email: e.target.value })}
-
+          errorMessage="*"
         />
+        {error.data && <span className="txt-danger txt-ss">{error.data}</span>}
 
         <Dropdown
           labelName="Department"
           options={departments}
           selectedValue={interviewer.department_id}
           onChange={(e) => setInterviewer({ ...interviewer, department_id: e.target.value })}
-        ></Dropdown>
+          errorMessage="*"
+        />
+        {error.department && <span className="txt-danger txt-ss">{error.department}</span>}
 
 
         <Dropdown
@@ -147,11 +153,13 @@ export const InterviewerUpdate = () => {
           options={positions}
           selectedValue={interviewer.position_id}
           onChange={(e) => setInterviewer({ ...interviewer, position_id: e.target.value })}
-        ></Dropdown>
+          errorMessage="*"
+        />
+         {error.position && <span className="txt-danger txt-ss">{error.position}</span>}
 
         <div className='button-group--user'>
           <Button type="submit" className='txt-light btn-primary' text="Update" />
-          <Button type="button" className='txt-light btn-default' text="Cancel" />
+          <ButtonLink type="button" className="btn-default" route={"/interviewer"} text="Cancel" linkText="txt-light txt-sm"/>
         </div>
 
       </form >

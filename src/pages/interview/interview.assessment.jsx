@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "react-query";
-import { Button, Dropdown,InputCheckbox } from "../../components";
+import { Button, ButtonLink, Dropdown,InputCheckbox } from "../../components";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
@@ -146,7 +146,7 @@ export const InterviewAssessment = () => {
         <h2>Interview Assessment Form</h2>
       </div>
       <form onSubmit={createInterviewAssessment} className="card__form">
-        {/* <div className="card__body"> */}
+     
         <div className="card__txt">
           <div>
             <h3 className="txt-default">Candidate Name</h3>
@@ -160,20 +160,11 @@ export const InterviewAssessment = () => {
             <h3 className="txt-default">Date</h3>
             <h3>{data.interview_stage.interview_date}</h3>
 
-            {/* <input
-                type="date"
-                value={data.interview_stage.interview_date}
-                disabled
-              /> */}
           </div>
           <div>
             <h3 className="txt-default">Time</h3>
             <h3>{data.interview_stage.interview_time}</h3>
-            {/* <input
-                type="time"
-                value={data.interview_stage.interview_time}
-                disabled
-              /> */}
+           
           </div>
         </div>
         <div className="card__txt">
@@ -193,17 +184,15 @@ export const InterviewAssessment = () => {
               {data.interview_stage.location === 1 ? "Online" : "In Person"}
             </h3>
           </div>
-          <div>
-            <input type="text" className="input-record" placeholder=" Enter record_path..." />
-          </div>
+         
         </div>
         <div className="card__question">
           <div className="question__title">
             <h3 className="question__topic txt-default">Questions</h3>
-            <h3 className="question__rate txt-default">Rates</h3>
+            <h3 className="question__rate txt-default">Rates <span className="txt-danger">*</span></h3>
           </div>
           <div className="question__body">
-            {/* <div className="question-topic"> */}
+           
             {topics.map((topic) => (
               <React.Fragment key={topic.id}>
                 <div className="question-card">
@@ -212,7 +201,7 @@ export const InterviewAssessment = () => {
                 </div>
               </React.Fragment>
             ))}
-            {/* </div> */}
+           
           </div>
         </div>
         <div className="card__txt">
@@ -230,7 +219,7 @@ export const InterviewAssessment = () => {
           </div>
         </div>
 
-        <label className="comment-label">Comment</label>
+        <label className="comment-label">Comment <span className="txt-danger">*</span></label>
         <textarea
           name="comment"
           className="comment-box"
@@ -245,13 +234,14 @@ export const InterviewAssessment = () => {
           options={grades}
           selectedValue={grade}
           onChange={(e) => setGrade(e.target.value)}
+          errorMessage="*"
         />
 
         <div className="button-group--user">
           <Button type="submit" className="txt-light btn-primary" text="Create" />
-          <Button type="button" className="txt-light btn-default" text="Cancel" />
+          <ButtonLink type="button" className="btn-default" route={"/interview"} text="Cancel" linkText="txt-light txt-sm"/>
         </div>
-        {/* </div> */}
+      
       </form>
     </div>
   );

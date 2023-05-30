@@ -1,16 +1,17 @@
-import { Link, useOutletContext } from "react-router-dom";
+import { Link, useOutletContext, useParams } from "react-router-dom";
 
 export const CDetails = () => {
+  const {id}=useParams();
   const { candidate } = useOutletContext();
-
+  console.log(candidate);
+  console.log(id);
   return (
     <div className="c-details">
       <div className="info-card">
         <div className="info-header">
           <h2>Basic Information</h2>
-          <span>
-            <Link to="">Edit info</Link>
-          </span>
+
+         
         </div>
         <div className="info-main">
           <div className="field">
@@ -47,9 +48,7 @@ export const CDetails = () => {
         <div className="info-header">
           <h2>Professional Details</h2>
 
-          <span>
-            <Link to="">Edit info</Link>
-          </span>
+         
         </div>
         <div className="info-main">
           <div className="field">

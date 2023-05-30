@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { Button, Dropdown, Input } from "../../components/utilites";
+import { Button, ButtonLink, Dropdown, Input } from "../../components/utilites";
 import { useAuth } from "../../store/AuthContext";
 
 export const InterviewerCreate = () => {
@@ -84,32 +84,36 @@ export const InterviewerCreate = () => {
           type="text"
           name="name"
           onChange={(e) => setName(e.target.value)}
-          placeholder=" Enter Name"
-        ></Input>
+          placeholder=" Enter Name..."
+          errorMessage="*"
+        />
         <Input
           labelName="Email"
           type="email"
           name="email"
           onChange={(e) => setEmail(e.target.value)}
-          placeholder=" Enter Email"
-        ></Input>
+          placeholder=" Enter Email..."
+          errorMessage="*"
+        />
 
         <Dropdown
           labelName="Department"
           options={departments}
           selectedValue={department_id}
           onChange={(e) => setDepartment(e.target.value)}
+          errorMessage="*"
         />
         <Dropdown
           labelName="Position"
           options={positions}
           selectedValue={position_id}
           onChange={(e) => setPosition(e.target.value)}
+          errorMessage="*"
         />
 
         <div className="button-group--user">
           <Button type="submit" text="Create" className="txt-light btn-primary" />
-          <Button type="button" text="Cancel" className="txt-light btn-default" />
+          <ButtonLink type="button" className="btn-default" route={"/user"} text="Cancel" linkText="txt-light txt-sm"/>
         </div>
       </form>
     </div>

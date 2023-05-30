@@ -24,6 +24,18 @@ import {
   CandidateUpdate,
   CandidateList,
   UserUpdate,
+  AgencyList,
+  AgencyCreate,
+  AgencyUpdate,
+  DepartmentList,
+  DepartmentCreate,
+  DepartmentUpdate,
+  PositionList,
+  PositionCreate,
+  PositionUpdate,
+  DevLanguageList,
+  DevLanguageCreate,
+  DevLanguageUpdate
 
 } from "../pages";
 
@@ -89,6 +101,24 @@ export const Router = () => {
 
           <Route path="/user" element={<UserList />} />
            <Route path="/user/update/:id" element={<UserUpdate />} />
+
+          <Route path="/agency" element={<AgencyList />} />
+          <Route path="/agency/create" element={<AgencyCreate />} />
+          <Route path="/agency/update/:id" element={<AgencyUpdate />} />
+
+          
+          <Route path="/department" element={<DepartmentList />} />
+          <Route path="/department/create" element={<DepartmentCreate />} />
+          <Route path="/department/update/:id" element={<DepartmentUpdate />} />
+
+          <Route path="/position" element={<PositionList />} />
+          <Route path="/position/create" element={<PositionCreate />} />
+          <Route path="/position/update/:id" element={<PositionUpdate />} />
+
+          <Route path="/devlanguage" element={<DevLanguageList />} />
+          <Route path="/devlanguage/create" element={<DevLanguageCreate />} />
+          <Route path="/devlanguage/update/:id" element={<DevLanguageUpdate />} />
+
 
           <Route path="*" element={<NotFound />} />
         </Route>

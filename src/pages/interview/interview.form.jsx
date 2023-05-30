@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
-import { Dropdown, Button,Input } from "../../components";
+import { Dropdown, Button,Input, ButtonLink } from "../../components";
 import { useAuth } from "../../store/AuthContext";
 
 export const InterviewCreate = () => {
@@ -119,7 +119,9 @@ export const InterviewCreate = () => {
           value={formData.interview_date}
           onChange={(e) =>
             setFormData({ ...formData, interview_date: e.target.value })
+          
           }
+          errorMessage="*"
         />
 
         <Input
@@ -130,6 +132,7 @@ export const InterviewCreate = () => {
           onChange={(e) =>
             setFormData({ ...formData, interview_time: e.target.value })
           }
+          errorMessage="*"
         />
         <Dropdown
           labelName="Interview Stages"
@@ -141,6 +144,7 @@ export const InterviewCreate = () => {
           }))}
           selectedValue={selectedStageId.toString()}
           className="custom-dropdown"
+          errorMessage="*"
         />
 
 
@@ -151,7 +155,8 @@ export const InterviewCreate = () => {
           onChange={(e) =>
             setFormData({ ...formData, location: e.target.value })
           }
-        ></Dropdown>
+          errorMessage="*"
+        />
 
 
         <div className="btn-plus">
@@ -179,6 +184,7 @@ export const InterviewCreate = () => {
                   updatedData[index] = e.target.value;
                   setData(updatedData);
                 }}
+                errorMessage="*"
               />
 
               <div className="btn-minus">
@@ -197,7 +203,7 @@ export const InterviewCreate = () => {
         ))}
         <div className='button-group--user'>
           <Button type="submit" text="Create" className="txt-light btn-primary"></Button>
-          <Button type="button" text="Cancel" className="txt-light btn-default"></Button>
+          <ButtonLink type="button" className="btn-default" route={"/interview"} text="Cancel" linkText="txt-light txt-sm"/>
         </div>
       </form>
     </div>

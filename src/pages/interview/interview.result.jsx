@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Input, Button, TextArea, InputCheckbox } from "../../components/utilites";
+import { Input, Button, TextArea, InputCheckbox, ButtonLink } from "../../components/utilites";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { useMutation } from "react-query";
@@ -101,7 +101,7 @@ export const InterviewResult = () => {
 
           <div className="button-group--user">
             <Button type="submit" text="Create" className="txt-light btn-primary" />
-            <Button type="button" text="Cancel" className="txt-light btn-default" />
+            <ButtonLink type="button" className="btn-default" route={"/interview"} text="Cancel" linkText="txt-light txt-sm"/>
           </div>
         </form>
       </div>

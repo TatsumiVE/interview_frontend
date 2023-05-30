@@ -1,6 +1,9 @@
+
+
+
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Dropdown, Input, Button, TextArea, InputCheckbox } from "../../components/utilites";
+import { Dropdown, Input, Button, TextArea, InputCheckbox, ButtonLink } from "../../components/utilites";
 import { useMutation } from "react-query";
 import { useAuth } from "../../store/AuthContext";
 
@@ -207,13 +210,15 @@ export const CandidateCreate = () => {
                 options={position.data}
                 selectedValue={position}
                 onChange={(e) => setPosition(e.target.value)}
-              ></Dropdown>
+              />
+
               <Dropdown
                 labelName="Agency"
                 options={agency.data}
                 selectedValue={agency}
                 onChange={(e) => setAgency(e.target.value)}
               />
+
               <Input
                 labelName="Expected Salary"
                 type="number"
@@ -325,14 +330,8 @@ export const CandidateCreate = () => {
               type="submit"
               text="Submit"
               className="txt-light btn-primary"
-
             />
-            <Button
-              type="button"
-              text="Cancel"
-              className="txt-light btn-default"
-
-            />
+            <ButtonLink type="button" className="btn-default" route={"/interview"} text="Cancel" linkText="txt-light txt-sm"/>
           </div>
         </form >
 

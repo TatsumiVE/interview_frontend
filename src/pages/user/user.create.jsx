@@ -1,31 +1,43 @@
+
 import { useQuery, useMutation } from "react-query";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../../store/AuthContext";
-import { Button,Input,Dropdown } from "../../components";
+import { Button, Input, Dropdown, ButtonLink } from "../../components";
 
 export const UserCreate = () => {
   const { id } = useParams();
+  const { token } = useAuth();
+  const [error, setError] = useState([]);
+  const [errorResult,setErrorResult] = useState("");
   const [interviewer, setInterviewer] = useState({
     interviewer_id: id,
     password: "",
     role: "",
   });
-  const { token } = useAuth();
+
+
+
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
+
   const getInterviewer = async () => {
     try {
+
+
       const response = await axios.get(
         `http://localhost:8000/api/interviewers/${id}`,
         config
       );
 
       return response.data.data;
+
+
+
     } catch (error) {
       console.error(error);
     }
@@ -64,13 +76,33 @@ export const UserCreate = () => {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/users",
-        interviewer
-      );
+        interviewer,
+        config
+      );   
+
       return response;
     } catch (error) {
-      console.error(error);
+     
+      setError(error.response.data.err_msg.errors);    
+     
     }
   };
+
+
+
+
+  const showAlert = (message) => {
+    const alertBox = document.createElement('div');
+    alertBox.className = 'alert';
+    alertBox.textContent = message;
+    document.body.appendChild(alertBox);
+
+    setTimeout(() => {
+      document.body.removeChild(alertBox);
+
+    }, 5000);
+  };
+
 
   const { mutate: createUser } = useMutation({
     mutationKey: ["post", "users"],
@@ -93,7 +125,8 @@ export const UserCreate = () => {
     <div className='card-min'>
       <div className="card-min__header">
         <h2>Create User Role</h2>
-      </div>
+      </div>  
+     
       <form onSubmit={handleSubmit} className="card-min__form">
         <div>
           <Input
@@ -102,7 +135,6 @@ export const UserCreate = () => {
             name="name"
             placeholder=" Enter Name..."
             value={interviewers.name}
-
           />
           <Input
             labelName="Email"
@@ -110,32 +142,40 @@ export const UserCreate = () => {
             name="email"
             placeholder=" Enter Email..."
             value={interviewers.email}
-
           />
+
           <Input
             labelName="Password"
             type="password"
             name="password"
             placeholder=" Enter Password..."
             onChange={(e) => setInterviewer({ ...interviewer, password: e.target.value })}
+            errorMessage="*"
           />
+          {error.password && <span className="txt-danger txt-ss">{error.password}</span>}
+
           <Input
             labelName="Confirm Password"
             type="password"
             name="password_confirmation"
             placeholder=" Enter Confirm Password..."
-            onChange={(e) => e.target.value}
+            onChange={(e) => setInterviewer({ ...interviewer, password_confirmation: e.target.value })}
+            errorMessage="*"
           />
+          {error.password && <span className="txt-danger txt-ss">{error.password}</span>}
+
           <Dropdown
             labelName="Role"
             options={roles}
             selectedValue={roles.id}
             onChange={(e) => setInterviewer({ ...interviewer, role: e.target.value })}
-          ></Dropdown>
+            errorMessage="*"
+          />
+          {error.role && <span className="txt-danger txt-ss">{error.role}</span>}
 
           <div className="button-group--user">
             <Button type="submit" text="Create" className="txt-light btn-primary" />
-            <Button type="button" text="Cancel" className="txt-light btn-default" />
+            <ButtonLink type="button" className="btn-default" route={"/interviewer"} text="Cancel" linkText="txt-light txt-sm" />
           </div>
         </div>
       </form>
