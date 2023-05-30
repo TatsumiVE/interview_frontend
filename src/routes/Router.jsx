@@ -8,8 +8,7 @@ import {
   NotFound,
   Login,
   CandidateCreate,
-  CandidateDetails,
-  
+  CandidateDetails,  
   InterviewerCreate,
   InterviewResult,
   InterviewAssessment,
@@ -65,6 +64,8 @@ export const Router = () => {
 
           <Route path="interviewer" element={<Employee />} />
           <Route path="interview" element={<CandidateList />} />
+          <Route path="user" element={<UserList />} />
+          {/* <Route path="position" element={<PositionList />} /> */}
           <Route path="setting" element={<Setting />} />
           <Route
             path="interview/candidate/create"
@@ -75,6 +76,10 @@ export const Router = () => {
           <Route
             path="candidate/interview/:id/:stageId"
             element={<InterviewCreate />}
+          />
+           <Route
+            path="user/update/:id"
+            element={<UserUpdate />}
           />
 
           <Route

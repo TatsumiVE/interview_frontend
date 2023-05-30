@@ -31,6 +31,7 @@ export const InterviewerUpdate = () => {
       setError(error.response.data);
     }
   });
+  console.log(interviewer);
 
   const handleUpdate = (event) => {
     event.preventDefault();
