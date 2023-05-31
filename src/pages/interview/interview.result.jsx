@@ -1,13 +1,17 @@
 import { useState } from "react";
-import { Input, Button, TextArea, InputCheckbox, ButtonLink } from "../../components/utilites";
+import {
+  Input,
+  Button,
+  TextArea,
+  InputCheckbox,
+  ButtonLink,
+} from "../../components/utilites";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { useMutation } from "react-query";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export const InterviewResult = () => {
-  const location = useLocation();
-  const candidateName = location.state?.candidateName || "";
   const [interview_result_date, setInterviewResultDate] = useState(
     new Date().toISOString().slice(0, 10)
   );
@@ -15,7 +19,8 @@ export const InterviewResult = () => {
   const [interview_result, setResult] = useState("1");
   const [interview_summarize, setInterviewSummarize] = useState("");
   const { token } = useAuth();
-  const { candidateId, stageId } = useParams();
+  const { state } = useLocation();
+  const { candidateId, stageId, candidateName } = state;
   const createInterviewResult = async () => {
     const response = await axios.post(
       `http://127.0.0.1:8000/api/interview-process/result/${candidateId}/${stageId}`,
@@ -50,7 +55,10 @@ export const InterviewResult = () => {
       </div>
       <div className="form-container">
         <form onSubmit={handleSubmit} className="card-min__form">
-          <p><span className="txt-default">Candidate Name: </span>{candidateName}</p>
+          <p>
+            <span className="txt-default">Candidate Name: </span>
+            {candidateName}
+          </p>
           <Input
             labelName="Interview Result Date"
             type="date"
@@ -84,11 +92,10 @@ export const InterviewResult = () => {
                 name="result"
                 placeholder=""
                 value="0"
-                checked={interview_result === "0"}
+                checked={interview_result === "2"}
                 onChange={(e) => setResult(e.target.value)}
               />
             </div>
-            <span className="txt-danger star"> &nbsp;&nbsp;&nbsp;* </span>
           </div>
 
           <Input
@@ -100,12 +107,21 @@ export const InterviewResult = () => {
           />
 
           <div className="button-group--user">
-            <Button type="submit" text="Create" className="txt-light btn-primary" />
-            <ButtonLink type="button" className="btn-default" route={"/interview"} text="Cancel" linkText="txt-light txt-sm"/>
+            <Button
+              type="submit"
+              text="Create"
+              className="txt-light btn-primary"
+            />
+            <ButtonLink
+              type="button"
+              className="btn-default"
+              route={"/interview"}
+              text="Cancel"
+              linkText="txt-light txt-sm"
+            />
           </div>
         </form>
       </div>
-
     </div>
   );
 };

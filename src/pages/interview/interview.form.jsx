@@ -1,14 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
 import { Dropdown, Button,Input, ButtonLink } from "../../components";
 import { useAuth } from "../../store/AuthContext";
 
 export const InterviewCreate = () => {
-  const { id, stageId } = useParams();
-  const [data, setData] = useState([{ interviewer_id: "" }]);
-  const navigate = useNavigate();
+  const { state } = useLocation();
+  const { id, stageId } = state;
+  const [data, setData] = useState([{}]);
+  // const navigate = useNavigate();
   const [interviewer_id, setInterviewers] = useState([]);
   const { token } = useAuth();
   const interviewStages = [
@@ -28,7 +29,10 @@ export const InterviewCreate = () => {
   const createInterview = async (formData) => {
     const response = await axios.post(
       "http://localhost:8000/api/interview-process",
-      formData,
+      {
+        ...formData,
+        interviewer_id: formData.interviewer_id.map((id) => parseInt(id, 10)),
+      },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -46,23 +50,21 @@ export const InterviewCreate = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const requestData = data.map((row) => ({
-      interviewer_id: row,
-    }));
+    const requestData = data.map((row) => row.interviewer_id);
 
     const updatedFormData = {
       ...formData,
       interviewer_id: requestData,
     };
+    console.log(updatedFormData);
     interviewProcess(updatedFormData);
 
-    navigate("/interview?message=interview");
+    // navigate("/interview?message=interview");
   };
 
   const handleAdd = () => {
-    setData([...data, { interviewer_id: "" }]);
+    setData([...data, { interviewer_id: "" }]); // Replace "" with a valid interviewer_id
   };
-
   const handleRemove = (index) => {
     const updatedData = [...data];
     updatedData.splice(index, 1);
@@ -172,22 +174,21 @@ export const InterviewCreate = () => {
         </div>
 
         {data.map((interviewerId, index) => (
-          <div key={index} >
-            <div className="interviewer-group">
-              <Dropdown
-                labelName="Interviewers"
-                options={interviewer_id}
-                selectedValue={formData.interviewerId}
-                onChange={(e) => {
-                  const updatedData = [...data];
-
-                  updatedData[index] = e.target.value;
-                  setData(updatedData);
-                }}
-                errorMessage="*"
-              />
-
-              <div className="btn-minus">
+          <div key={index} className="card-input--box">
+            <div className="card-input--first">
+              <div className="card-input--language">
+                <Dropdown
+                  labelName="Interviewers"
+                  options={interviewer_id}
+                  selectedValue={formData.interviewerId}
+                  onChange={(e) => {
+                    const updatedData = [...data];
+                    updatedData[index].interviewer_id = e.target.value;
+                    setData(updatedData);
+                  }}
+                />
+              </div>
+              <div className="card-input--btnMinus">
                 {data.length > 1 && (
                   <Button
                     type="button"

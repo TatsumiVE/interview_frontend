@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { Input, Dropdown, Button, ButtonLink } from '../../components';
 
 export const InterviewerUpdate = () => {
-  const { id } = useParams();
+  const { state: id } = useLocation();
+  console.log(id);
   const { token } = useAuth();
   const [error,setError] = useState([]);
   const [interviewer, setInterviewer] = useState({

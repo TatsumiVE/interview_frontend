@@ -1,6 +1,4 @@
-import React from 'react';
-
-const Radio = ({ checked, labelName, value, name, onChange }) => {
+export const Radio = ({ checked, labelName, value, name, onChange }) => {
   return (
     <div>
       <label>
@@ -16,5 +14,3 @@ const Radio = ({ checked, labelName, value, name, onChange }) => {
     </div>
   );
 };
-
-export default Radio;

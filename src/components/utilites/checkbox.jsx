@@ -1,8 +1,15 @@
-import React from 'react';
+import React from "react";
 
-export const InputCheckbox = ({ labelName, type, name, value, checked, onChange }) => {
+export const InputCheckbox = ({
+  labelName,
+  type,
+  name,
+  value,
+  checked,
+  onChange,
+}) => {
   return (
-    <div className='checkbox-input'>
+    <div className="checkbox-input">
       <input
         type={type}
         name={name}

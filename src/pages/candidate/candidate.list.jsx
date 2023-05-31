@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
+import Loader from "../../components/loader";
 import { ButtonLink } from "../../components";
 
 export const Candidate = () => {
@@ -83,8 +84,7 @@ export const Candidate = () => {
   );
 
   const { globalFilter, pageIndex } = state;
-  if (candidateData.length === 0) return "Loading...";
-
+  if (candidateData.length === 0) return <Loader />;
   return (
     <div className="table-wrap">
       <div className="table-wrap__head">

@@ -9,12 +9,11 @@ export const TextArea = ({ labelName, name, onChange, placeholder,className,text
       </label>
       <textarea
         name={name}
-        onChange={onChange}  
+        onChange={onChange}
         placeholder={placeholder}
         className={className}
-      >{text}</textarea>
+        value={text}
+      ></textarea>
     </div>
   );
 };
-
-
