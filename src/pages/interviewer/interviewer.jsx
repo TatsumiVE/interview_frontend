@@ -55,11 +55,11 @@ export const Employee = () => {
               />
             </Can>
             &nbsp;
-            <Can permission={"userUpdate"}>
+            <Can permission={"interviewerUpdate"}>
               <ButtonLink
                 type="button"
                 className="btn-success"
-                route={`/user/update/${row.original.id}`}
+                route={`/interviewer/update/${row.original.id}`}
                 text="Update"
                 linkText="txt-light txt-sm"
               />
