@@ -3,8 +3,13 @@ import { Link, useLocation } from "react-router-dom";
 import { useTable, usePagination, useGlobalFilter } from "react-table";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
-import { ButtonLink, Input } from "../../components";
+import { ButtonLink, Input,} from "../../components";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "../../components/loader";
+import Can from "../../components/utilites/can";
+
+
+
 
 export const Employee = () => {
   const [interviewers, setInterviewers] = useState([]);
@@ -39,7 +44,12 @@ export const Employee = () => {
 
   const columns = useMemo(
     () => [
-      { Header: "No.", accessor: "id" },
+      {
+        Header: "No.",
+        Cell: ({ row }) => {
+          return <div>{row.index + 1}.</div>;
+        },
+      },
       { Header: "Name", accessor: "name" },
       { Header: "Email", accessor: "email" },
       { Header: "Department", accessor: "department_id.name" },
@@ -48,9 +58,25 @@ export const Employee = () => {
         Header: "Action",
         Cell: ({ row }) => (
           <div>
-            <ButtonLink type="button" className="btn-info" route={`user/create/${row.original.id}`} text="Create Role" linkText="txt-light txt-sm" />
+            <Can permission={"userCreate"}>
+              <ButtonLink
+                type="button"
+                className="btn-info"
+                route={`user/create/${row.original.id}`}
+                text="Create Role"
+                linkText="txt-light txt-sm"
+              />
+            </Can>
             &nbsp;
-            <ButtonLink type="button" className="btn-success" route={`update/${row.original.id}`} text="Update" linkText="txt-light txt-sm" />
+            <Can permission={"interviewerUpdate"}>
+              <ButtonLink
+                type="button"
+                className="btn-success"
+                route={`/interviewer/update/${row.original.id}`}
+                text="Update"
+                linkText="txt-light txt-sm"
+              />
+            </Can>
 
           </div>
         ),
@@ -81,6 +107,7 @@ export const Employee = () => {
     useGlobalFilter,
     usePagination
   );
+  if (interviewers.length === 0) return <Loader/>;
 
   const { globalFilter, pageIndex } = state;
 

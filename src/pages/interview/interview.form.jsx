@@ -2,14 +2,14 @@ import { useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
-import { Dropdown, Button,Input, ButtonLink } from "../../components";
+import { Dropdown, Button, Input, ButtonLink } from "../../components";
 import { useAuth } from "../../store/AuthContext";
 
 export const InterviewCreate = () => {
   const { state } = useLocation();
   const { id, stageId } = state;
   const [data, setData] = useState([{}]);
-  // const navigate = useNavigate();
+
   const [interviewer_id, setInterviewers] = useState([]);
   const { token } = useAuth();
   const interviewStages = [
@@ -58,12 +58,10 @@ export const InterviewCreate = () => {
     };
     console.log(updatedFormData);
     interviewProcess(updatedFormData);
-
-    // navigate("/interview?message=interview");
   };
 
   const handleAdd = () => {
-    setData([...data, { interviewer_id: "" }]); // Replace "" with a valid interviewer_id
+    setData([...data, { interviewer_id: "" }]);
   };
   const handleRemove = (index) => {
     const updatedData = [...data];
@@ -121,7 +119,6 @@ export const InterviewCreate = () => {
           value={formData.interview_date}
           onChange={(e) =>
             setFormData({ ...formData, interview_date: e.target.value })
-          
           }
           errorMessage="*"
         />
@@ -149,7 +146,6 @@ export const InterviewCreate = () => {
           errorMessage="*"
         />
 
-
         <Dropdown
           labelName="Location"
           options={location}
@@ -159,7 +155,6 @@ export const InterviewCreate = () => {
           }
           errorMessage="*"
         />
-
 
         <div className="btn-plus">
           {data.length < 4 && (
@@ -198,13 +193,22 @@ export const InterviewCreate = () => {
                   />
                 )}
               </div>
-
             </div>
           </div>
         ))}
-        <div className='button-group--user'>
-          <Button type="submit" text="Create" className="txt-light btn-primary"></Button>
-          <ButtonLink type="button" className="btn-default" route={"/interview"} text="Cancel" linkText="txt-light txt-sm"/>
+        <div className="button-group--user">
+          <Button
+            type="submit"
+            text="Create"
+            className="txt-light btn-primary"
+          ></Button>
+          <ButtonLink
+            type="button"
+            className="btn-default"
+            route={"/interview"}
+            text="Cancel"
+            linkText="txt-light txt-sm"
+          />
         </div>
       </form>
     </div>

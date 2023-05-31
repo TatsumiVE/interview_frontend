@@ -125,7 +125,7 @@ export const AuthContextProvider = ({ children }) => {
       );
       setToken(response.data.data.token);
       setUser(response.data.data);
-      const { permission, role } = response.data.data;
+      const { permission } = response.data.data;
       console.log(permission);
       localStorage.setItem("token", response.data.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.data));

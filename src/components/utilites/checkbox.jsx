@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 export const InputCheckbox = ({
   labelName,
@@ -21,4 +21,13 @@ export const InputCheckbox = ({
       <label>{labelName}</label>
     </div>
   );
+};
+
+InputCheckbox.propTypes = {
+  labelName: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  checked: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
