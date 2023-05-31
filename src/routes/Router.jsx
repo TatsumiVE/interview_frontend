@@ -4,7 +4,6 @@ import {
   Dashboard,
   Candidate,
   Employee,
-  Setting,
   NotFound,
   Login,
   CandidateCreate,
@@ -22,8 +21,6 @@ import {
   CStages,
   CInterviews,
   UserList,
-
-  CandidateList,
   UserUpdate,
   AgencyList,
   AgencyCreate,
@@ -36,12 +33,10 @@ import {
   PositionUpdate,
   DevLanguageList,
   DevLanguageCreate,
-  DevLanguageUpdate
-
+  DevLanguageUpdate,
 } from "../pages";
 
 import { Layout } from "../components";
-
 
 export const Router = () => {
   const { isLogin } = useAuth();
@@ -56,6 +51,7 @@ export const Router = () => {
           <Route path="candidates">
             <Route index element={<Candidate />} />
             <Route path="create" element={<CandidateCreate />} />
+            <Route path="update/:id" element={<CandidateUpdate />} />
             <Route path=":id" element={<CandidateDetails />}>
               <Route index element={<Navigate to="details" replace />} />
               <Route path="details" element={<CDetails />} />
@@ -68,6 +64,7 @@ export const Router = () => {
             <Route index element={<Employee />} />
             <Route path="create" element={<InterviewerCreate />} />
             <Route path="update" element={<InterviewerUpdate />} />
+            <Route path="user/create/:id" element={<UserCreate />} />
           </Route>
           <Route path="interview">
             <Route index element={<InterviewList />} />
@@ -75,19 +72,34 @@ export const Router = () => {
             <Route path="assessment" element={<InterviewAssessment />} />
             <Route path="result" element={<InterviewResult />} />
           </Route>
-          <Route path="*" element={<NotFound />} />
 
-          <Route path="candidate/create" element={<CandidateCreate />} />
+          <Route path="user">
+            <Route index element={<UserList />} />
+            <Route path="update/:id" element={<UserUpdate />} />
+          </Route>
 
-          <Route path="candidate/update/:id" element={<CandidateUpdate />} />
+          <Route path="agency">
+            <Route index element={<AgencyList />} />
+            <Route path="create" element={<AgencyCreate />} />
+            <Route path="update/:id" element={<AgencyUpdate />} />
+          </Route>
 
-          <Route
-            path="interview/assessment"
-            element={<InterviewAssessment />}
-          />
-          <Route path="interviewer/user/create/:id" element={<UserCreate />} />
+          <Route path="department">
+            <Route index element={<DepartmentList />} />
+            <Route path="create" element={<DepartmentCreate />} />
+            <Route path="update/:id" element={<DepartmentUpdate />} />
+          </Route>
+          <Route path="position">
+            <Route index element={<PositionList />} />
+            <Route path="create" element={<PositionCreate />} />
+            <Route path="update/:id" element={<PositionUpdate />} />
+          </Route>
 
-          <Route path="interviewer/user/create/:id" element={<UserCreate />} />
+          <Route path="devlanguage">
+            <Route index element={<DevLanguageList />} />
+            <Route path="create" element={<DevLanguageCreate />} />
+            <Route path="update/:id" element={<DevLanguageUpdate />} />
+          </Route>
         </Route>
       ) : (
         <Route path="/">
@@ -95,6 +107,7 @@ export const Router = () => {
           <Route path="*" element={<Navigate to="login" replace />} />
         </Route>
       )}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

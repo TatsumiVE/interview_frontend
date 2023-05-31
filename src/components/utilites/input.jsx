@@ -1,17 +1,26 @@
 import PropTypes from "prop-types";
 
-export const Input = ({ labelName, type, name, placeholder, value, onChange, errorMessage }) => {
+export const Input = ({
+  labelName,
+  type,
+  name,
+  placeholder,
+  value,
+  onChange,
+  errorMessage,
+}) => {
   return (
     <div className="input-form">
       <label>
-        {labelName}  <span className="txt-danger">{errorMessage}</span>
-      </label>     
+        {labelName} <span className="txt-danger">{errorMessage}</span>
+      </label>
       <input
         type={type}
         name={name}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        autoComplete="off"
       />
     </div>
   );

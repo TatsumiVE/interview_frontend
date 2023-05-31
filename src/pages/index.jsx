@@ -14,3 +14,4 @@ export * from "./agency";
 export * from "./department";
 export * from "./position";
 export * from "./devlanguage";
+export * from "./notfound";

@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
-import { Link } from "react-router-dom";
 import { useTable, useGlobalFilter, usePagination } from "react-table";
 import { ButtonLink } from "../../components";
 

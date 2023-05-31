@@ -102,7 +102,7 @@ export const AuthContextProvider = ({ children }) => {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false); // Update loading state after token validation
+        setIsLoading(false);
       }
     };
 
@@ -110,7 +110,7 @@ export const AuthContextProvider = ({ children }) => {
       checkTokenValidity();
       console.log("here check");
     } else {
-      setIsLoading(false); // Update loading state if there is no token
+      setIsLoading(false);
     }
   }, [token, isLogin]);
 

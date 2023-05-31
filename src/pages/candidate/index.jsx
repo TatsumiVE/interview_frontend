@@ -6,4 +6,3 @@ export * from "./candidate.cv";
 export * from "./candidate.stage";
 export * from "./candidate.interview";
 export * from "./candidate.update";
-export * from "./candidate.search";
