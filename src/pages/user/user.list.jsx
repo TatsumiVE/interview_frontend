@@ -6,10 +6,13 @@ import { useAuth } from "../../store/AuthContext";
 import { ButtonLink } from "../../components";
 import Can from "../../components/utilites/can";
 import Loader from "../../components/loader";
+import { ToastContainer, toast } from "react-toastify";
 export const UserList = () => {
   const { id } = useParams();
   const [users, setUsers] = useState([]);
   const { token } = useAuth();
+  const location = useLocation();
+  const { successMessage } = location.state || {};
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,

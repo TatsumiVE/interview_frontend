@@ -108,14 +108,14 @@
 
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useQuery, useMutation, QueryClient } from "react-query";
 import Can from "../../components/utilites/can";
 
 import Loader from "../../components/loader";
 
 export const InterviewList = () => {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const queryClient = new QueryClient();
 
   const getCandidates = async () => {
@@ -192,10 +192,10 @@ export const InterviewList = () => {
   if (isError) return "Something went wrong";
   if (error) return "An error has occurred: " + error.message;
 
-  const interview = (candidate) => {
+  const check = (candidate) => {
     const interviews = candidate.interviews || [];
     const lastInterview = interviews[interviews.length - 1] || {};
-    const lastStage = lastInterview.interview_stage.stage_name || 0;
+    const lastStage = lastInterview.interview_stage?.stage_name || 0;
 
     const canCreate = !(lastStage && !lastInterview.interview_result);
 
@@ -263,36 +263,38 @@ export const InterviewList = () => {
                         stageId: candidate.interviews.length,
                       }}
                       style={{
-                        pointerEvents: interview(candidate).canCreate
+                        pointerEvents: check(candidate).canCreate
                           ? "all"
                           : "none",
-                        background: interview(candidate).canCreate
+                        background: check(candidate).canCreate
                           ? "green"
                           : "red",
                       }}
-                    ></Link>
+                    >
+                      Interview
+                    </Link>
                   </Can>
                   <Can permission={"remarkAssessmentCreate"}>
-                    {/* <Link
-                    to={`assessment`}
-                    state={{
-                      candidateId: candidate.id,
-                      interviewerId: user.id,
-                    }}
-                    style={{
-                      pointerEvents: canCreateAssessment(candidate)
-                        ? "all"
-                        : "none",
-                      background: canCreateAssessment(candidate)
-                        ? "green"
-                        : "red",
-                    }}
-                  >
-                    Interview
-                  </Link> */}
+                    <Link
+                      to={`assessment`}
+                      state={{
+                        candidateId: candidate.id,
+                        interviewerId: user.id,
+                      }}
+                      style={{
+                        pointerEvents: check(candidate).canAssessment
+                          ? "all"
+                          : "none",
+                        background: check(candidate).canAssessment
+                          ? "green"
+                          : "red",
+                      }}
+                    >
+                      Assessment
+                    </Link>
                   </Can>
                   <Can permission={"interviewSummarize"}>
-                    {/* <Link
+                    <Link
                       to={`result`}
                       state={{
                         candidateId: candidate.id,
@@ -300,16 +302,16 @@ export const InterviewList = () => {
                         candidateName: candidate.name,
                       }}
                       style={{
-                        pointerEvents: canCreateResult(candidate)
+                        pointerEvents: check(candidate).canResult
                           ? "all"
                           : "none",
-                        background: canCreateResult(candidate)
+                        background: check(candidate).canResult
                           ? "green"
                           : "red",
                       }}
                     >
                       Result
-                    </Link> */}
+                    </Link>
                   </Can>
                   <Can permission={"interviewProcessTerminate"}>
                     <button
