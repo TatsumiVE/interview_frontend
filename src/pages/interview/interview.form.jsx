@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
 import { Dropdown, Button } from "../../components";
 import { useAuth } from "../../store/AuthContext";

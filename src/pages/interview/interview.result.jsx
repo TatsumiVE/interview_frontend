@@ -3,7 +3,7 @@ import { Input, Button } from "../../components/utilites";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { useMutation } from "react-query";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 export const InterviewResult = () => {
   const [interview_result_date, setInterviewResultDate] = useState(
     new Date().toISOString().slice(0, 10)
