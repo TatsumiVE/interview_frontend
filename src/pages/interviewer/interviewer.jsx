@@ -40,15 +40,10 @@ export const Employee = () => {
         Header: "Action",
         Cell: ({ row }) => (
           <div>
-            <button type="button">
-              <Link to={`user/create/${row.original.id}`}>Create Role</Link>
-            </button>
-            <button type="button">
-              <Link to={`update`} state={row.original.id}>
-                {" "}
-                Update Interviewer
-              </Link>
-            </button>
+            <ButtonLink type="button" className="btn-info" route={`user/create/${row.original.id}`} text="Create Role" linkText="txt-light txt-sm" />
+            &nbsp;
+            <ButtonLink type="button" className="btn-success" route={`/user/update/${row.original.id}`} text="Update" linkText="txt-light txt-sm" />
+
           </div>
         ),
       },
