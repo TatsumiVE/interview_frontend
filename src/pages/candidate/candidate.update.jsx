@@ -99,7 +99,6 @@ export const CandidateUpdate = () => {
     candidateData && setCandidate(candidateData.candidate);
   }, [candidateData]);
 
-  console.log("render .....");
   const {
     data: positions,
     isLoading: isPositionLoading,

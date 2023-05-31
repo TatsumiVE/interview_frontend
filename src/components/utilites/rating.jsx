@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const Rating = ({ value, children }) => {
   let stars = [];
   for (let i = 1; i <= 5; i++) {
@@ -12,6 +14,11 @@ const Rating = ({ value, children }) => {
       {stars} <span>{children}</span>
     </span>
   );
+};
+
+Rating.propTypes = {
+  value: PropTypes.number.isRequired,
+  children: PropTypes.node,
 };
 
 export default Rating;

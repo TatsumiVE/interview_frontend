@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
 import { useTable, usePagination, useGlobalFilter } from "react-table";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
-import { ButtonLink, Input } from "../../components";
-
+import { ButtonLink } from "../../components";
+import Loader from "../../components/loader";
+import Can from "../../components/utilites/can";
 export const Employee = () => {
   const [interviewers, setInterviewers] = useState([]);
   const { token } = useAuth();
@@ -31,7 +31,12 @@ export const Employee = () => {
 
   const columns = useMemo(
     () => [
-      { Header: "No.", accessor: "id" },
+      {
+        Header: "No.",
+        Cell: ({ row }) => {
+          return <div>{row.index + 1}.</div>;
+        },
+      },
       { Header: "Name", accessor: "name" },
       { Header: "Email", accessor: "email" },
       { Header: "Department", accessor: "department_id.name" },
@@ -40,10 +45,25 @@ export const Employee = () => {
         Header: "Action",
         Cell: ({ row }) => (
           <div>
-            <ButtonLink type="button" className="btn-info" route={`user/create/${row.original.id}`} text="Create Role" linkText="txt-light txt-sm" />
+            <Can permission={"userCreate"}>
+              <ButtonLink
+                type="button"
+                className="btn-info"
+                route={`user/create/${row.original.id}`}
+                text="Create Role"
+                linkText="txt-light txt-sm"
+              />
+            </Can>
             &nbsp;
-            <ButtonLink type="button" className="btn-success" route={`/user/update/${row.original.id}`} text="Update" linkText="txt-light txt-sm" />
-
+            <Can permission={"userUpdate"}>
+              <ButtonLink
+                type="button"
+                className="btn-success"
+                route={`/user/update/${row.original.id}`}
+                text="Update"
+                linkText="txt-light txt-sm"
+              />
+            </Can>
           </div>
         ),
       },
@@ -73,6 +93,7 @@ export const Employee = () => {
     useGlobalFilter,
     usePagination
   );
+  if (interviewers.length === 0) return <Loader />;
 
   const { globalFilter, pageIndex } = state;
 
@@ -88,7 +109,15 @@ export const Employee = () => {
           />
         </div>
         <div className="create-content">
-          <ButtonLink type="button" className="btn-primary" route="create" linkText="txt-light txt-sm" text="Create Interviewer" />
+          <Can permission={"interviewerCreate"}>
+            <ButtonLink
+              type="button"
+              className="btn-primary"
+              route="create"
+              linkText="txt-light txt-sm"
+              text="Create Interviewer"
+            />
+          </Can>
         </div>
       </div>
 
@@ -120,7 +149,12 @@ export const Employee = () => {
         </table>
       </div>
       <div className="table-wrap__pagination">
-        <button type="button" onClick={() => previousPage()} disabled={!canPreviousPage} className="txt-primary">
+        <button
+          type="button"
+          onClick={() => previousPage()}
+          disabled={!canPreviousPage}
+          className="txt-primary"
+        >
           &lt;&lt;
         </button>
         <span className="page-content">
@@ -129,7 +163,11 @@ export const Employee = () => {
             {pageIndex + 1} of {pageOptions.length}
           </strong>
         </span>
-        <button onClick={() => nextPage()} disabled={!canNextPage} className="txt-primary">
+        <button
+          onClick={() => nextPage()}
+          disabled={!canNextPage}
+          className="txt-primary"
+        >
           &gt;&gt;
         </button>
       </div>

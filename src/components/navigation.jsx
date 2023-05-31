@@ -1,61 +1,64 @@
-import { useAuth } from "../store/AuthContext";
 import { NavigationLink } from "./navigation.link";
-
+import Can from "../components/utilites/can";
 export const MainNavigation = () => {
-  const { can } = useAuth();
-
   return (
     <nav className="navbar">
-      {can("dashboardView") && (
+      <Can permission={"dashboardView"}>
         <NavigationLink to="/dashboard" icon="fa-table-columns">
           Dashboard
         </NavigationLink>
-      )}
-      {can("candidateList") && (
+      </Can>
+
+      <Can permission={"candidateList"}>
         <NavigationLink to="/candidates" icon="fa-user-group">
           Candidates
         </NavigationLink>
-      )}
-      {can("interviewerList") && (
+      </Can>
+      <Can permission={"interviewerList"}>
         <NavigationLink to="/interviewer" icon="fa-user-tie">
           Interviewer
         </NavigationLink>
-      )}
-      {can("interviewProcessCreate") && (
+      </Can>
+
+      <Can permission={"interviewList"}>
         <NavigationLink to="/interview" icon="fa-calendar-days">
           Interview
         </NavigationLink>
-      )}
-      {can("interviewProcessCreate") && (
+      </Can>
+
+      <Can permission={"userList"}>
         <NavigationLink to="/user" icon=" fa-user-plus">
           User
         </NavigationLink>
-      )}
-      {can("interviewProcessCreate") && (
+      </Can>
+
+      <Can permission={"agencyList"}>
         <NavigationLink to="/agency" icon="fa-solid fa-circle-nodes">
           Agency
         </NavigationLink>
-      )}
-      {can("interviewProcessCreate") && (
+      </Can>
+
+      <Can permission={"departmentList"}>
         <NavigationLink to="/department" icon="fa-building">
           Department
         </NavigationLink>
-      )}
-      {can("interviewProcessCreate") && (
+      </Can>
+
+      <Can permission={"positionList"}>
         <NavigationLink to="/position" icon="fa-layer-group">
           Position
         </NavigationLink>
-      )}
-      {can("interviewProcessCreate") && (
+      </Can>
+
+      <Can permission={"languageList"}>
         <NavigationLink to="/devlanguage" icon="fa-language">
           Language
         </NavigationLink>
-      )}
-      {can("settingView") && (
-        <NavigationLink to="/setting" icon="fa-gear">
-          Setting
-        </NavigationLink>
-      )}
+      </Can>
+
+      <NavigationLink to="/setting" icon="fa-gear">
+        Setting
+      </NavigationLink>
     </nav>
   );
 };

@@ -1,7 +1,13 @@
-import React, { useState } from "react";
-
-export const TextArea = ({ labelName, name, onChange, placeholder,className,text,errorMessage }) => {
-
+import PropTypes from "prop-types";
+export const TextArea = ({
+  labelName,
+  name,
+  onChange,
+  placeholder,
+  className,
+  text,
+  errorMessage,
+}) => {
   return (
     <div className="textarea-input">
       <label>
@@ -16,4 +22,13 @@ export const TextArea = ({ labelName, name, onChange, placeholder,className,text
       ></textarea>
     </div>
   );
+};
+TextArea.propTypes = {
+  labelName: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  className: PropTypes.string,
+  text: PropTypes.string,
+  errorMessage: PropTypes.string,
 };
