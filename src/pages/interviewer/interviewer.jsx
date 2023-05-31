@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useTable, usePagination, useGlobalFilter } from "react-table";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
+import { ButtonLink, Input } from "../../components";
+
 export const Employee = () => {
   const [interviewers, setInterviewers] = useState([]);
   const { token } = useAuth();
@@ -87,17 +89,11 @@ export const Employee = () => {
             type="text"
             value={globalFilter || ""}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="  Search..."
+            placeholder="Search..."
           />
         </div>
         <div className="create-content">
-          <button
-            type="button"
-            className="txt-light btn-primary"
-            text="Create Interviewer"
-          >
-            <Link to="create">Create Interviewer</Link>
-          </button>
+          <ButtonLink type="button" className="btn-primary" route="create" linkText="txt-light txt-sm" text="Create Interviewer" />
         </div>
       </div>
 
@@ -129,11 +125,7 @@ export const Employee = () => {
         </table>
       </div>
       <div className="table-wrap__pagination">
-        <button
-          type="button"
-          onClick={() => previousPage()}
-          disabled={!canPreviousPage}
-        >
+        <button type="button" onClick={() => previousPage()} disabled={!canPreviousPage} className="txt-primary">
           &lt;&lt;
         </button>
         <span className="page-content">
@@ -142,7 +134,7 @@ export const Employee = () => {
             {pageIndex + 1} of {pageOptions.length}
           </strong>
         </span>
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
+        <button onClick={() => nextPage()} disabled={!canNextPage} className="txt-primary">
           &gt;&gt;
         </button>
       </div>

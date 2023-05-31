@@ -10,3 +10,7 @@ export * from "./interview";
 export * from "./barchart";
 export * from "./detailInfo";
 export * from "./user";
+export * from "./agency";
+export * from "./department";
+export * from "./position";
+export * from "./devlanguage";

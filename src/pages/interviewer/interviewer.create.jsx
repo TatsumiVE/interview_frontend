@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { Button, Dropdown, Input } from "../../components/utilites";
+import { Button, ButtonLink, Dropdown, Input } from "../../components/utilites";
 import { useAuth } from "../../store/AuthContext";
+
 export const InterviewerCreate = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -68,60 +69,51 @@ export const InterviewerCreate = () => {
   if (isError) return "error";
 
   return (
-    <div className="card">
-      <form
+    <div className="card-min">
+      <div className="card-min__header">
+        <h2>Create Interviewer</h2>
+      </div>
+      <form className="card-min__form"
         onSubmit={(e) => {
           e.preventDefault();
           createInterviewer();
         }}
       >
-        <div className="card-wrap">
-          <div className="card-input__group">
-            <Input
-              labelName="Name"
-              type="text"
-              name="name"
-              onChange={(e) => setName(e.target.value)}
-              placeholder=" Enter Name"
-            ></Input>
-          </div>
-          <div className="card-input__group">
-            <Input
-              labelName="Email"
-              type="email"
-              name="email"
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder=" Enter Email"
-            ></Input>
-          </div>
-          <div className="card-input__group">
-            <Dropdown
-              labelName="Department"
-              options={departments}
-              selectedValue={department_id}
-              onChange={(e) => setDepartment(e.target.value)}
-            />
-          </div>
-          <div className="card-input__group">
-            <Dropdown
-              labelName="Position"
-              options={positions}
-              selectedValue={position_id}
-              onChange={(e) => setPosition(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className="btn-group">
-          <Button
-            type="submit"
-            text="Create"
-            className="txt-light btn-primary"
-          />
-          <Button
-            type="button"
-            text="Cancel"
-            className="txt-light btn-default"
-          />
+        <Input
+          labelName="Name"
+          type="text"
+          name="name"
+          onChange={(e) => setName(e.target.value)}
+          placeholder=" Enter Name..."
+          errorMessage="*"
+        />
+        <Input
+          labelName="Email"
+          type="email"
+          name="email"
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder=" Enter Email..."
+          errorMessage="*"
+        />
+
+        <Dropdown
+          labelName="Department"
+          options={departments}
+          selectedValue={department_id}
+          onChange={(e) => setDepartment(e.target.value)}
+          errorMessage="*"
+        />
+        <Dropdown
+          labelName="Position"
+          options={positions}
+          selectedValue={position_id}
+          onChange={(e) => setPosition(e.target.value)}
+          errorMessage="*"
+        />
+
+        <div className="button-group--user">
+          <Button type="submit" text="Create" className="txt-light btn-primary" />
+          <ButtonLink type="button" className="btn-default" route={"/user"} text="Cancel" linkText="txt-light txt-sm"/>
         </div>
       </form>
     </div>

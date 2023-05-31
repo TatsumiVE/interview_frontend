@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import Loader from "../../components/loader";
+import { ButtonLink } from "../../components";
+
 export const Candidate = () => {
   const [candidateData, setCandidateData] = useState([]);
   const { token } = useAuth();
@@ -47,7 +49,11 @@ export const Candidate = () => {
       {
         Header: "Action",
         Cell: ({ row }) => (
-          <Link to={`/candidates/${row.original.id}`}>View Details</Link>
+          <>
+            <ButtonLink type="button" className="btn-info" route={`/candidates/${row.original.id}`} text="View" linkText="txt-light txt-sm" />
+            &nbsp;
+            <ButtonLink type="button" className="btn-success" route={`/candidates/update/${row.original.id}`} text="Update" linkText="txt-light txt-sm" />
+          </>
         ),
       },
     ],
@@ -90,6 +96,7 @@ export const Candidate = () => {
             placeholder="  Search..."
           />
         </div>
+
       </div>
       <div className="table-wrap__main">
         <table {...getTableProps()} className="custom-table">
@@ -122,8 +129,8 @@ export const Candidate = () => {
         </table>
       </div>
       <div className="table-wrap__pagination">
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          Previous
+        <button onClick={() => previousPage()} disabled={!canPreviousPage} className="txt-primary">
+          &lt;&lt;
         </button>
         <span className="page-content">
           Page
@@ -131,8 +138,8 @@ export const Candidate = () => {
             {pageIndex + 1} of {pageOptions.length}
           </strong>
         </span>
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          Next
+        <button onClick={() => nextPage()} disabled={!canNextPage} className="txt-primary">
+          &gt;&gt;
         </button>
       </div>
     </div>

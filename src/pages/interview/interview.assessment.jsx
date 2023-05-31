@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "react-query";
-import { Button, Dropdown } from "../../components";
+import { Button, ButtonLink, Dropdown,InputCheckbox } from "../../components";
 import axios from "axios";
 import { useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
@@ -128,10 +128,16 @@ export const InterviewAssessment = () => {
 
   const renderRateOptions = (topicId) => {
     return rates.map((rate) => (
-      <label key={rate.id}>
-        {rate.name}
-        <input type="radio" name={`rate-${topicId}`} value={rate.id} />
-      </label>
+      <>
+        <InputCheckbox
+          type="radio"
+          name={`rate-${topicId}`}
+          value={rate.id}
+          placeholder=""
+          onChange={(e) => setTravel(e.target.checked)}
+          labelName={rate.name}
+        />
+      </>
     ));
   };
 
@@ -140,110 +146,103 @@ export const InterviewAssessment = () => {
       <div className="card__header">
         <h2>Interview Assessment Form</h2>
       </div>
-      <form onSubmit={createInterviewAssessment}>
-        <div className="card__body">
-          <div className="card__txt">
-            <div>
-              <h3 className="txt-default">Candidate Name</h3>
-              <h3>{data.candidate.name}</h3>
-            </div>
-            <div>
-              <h3 className="txt-default">Applied Position</h3>
-              <h3>{data.candidate.position.name}</h3>
-            </div>
-            <div>
-              <h3 className="txt-default">Date</h3>
-              <div>
-                <input
-                  type="date"
-                  value={data.interview_stage.interview_date}
-                  disabled
-                />
-              </div>
-              <div>
-                <input
-                  type="time"
-                  value={data.interview_stage.interview_time}
-                  disabled
-                />
-              </div>
-            </div>
-          </div>
-          <div className="card__txt">
-            <div>
-              {interviewStage === 1
-                ? "First Interview"
-                : interviewStage === 2
-                ? "Technical Interview"
-                : "Final Interview"}
-            </div>
-            <div>
-              <h3>
-                {data.interview_stage.location === 1 ? "Online" : "In Person"}
-              </h3>
-            </div>
-          </div>
-          <div className="card__card-question">
-            <div className="question-title">
-              <h3 className="topic">Questions</h3>
-              <h3 className="rate">Rates</h3>
-            </div>
-            <div className="question-body">
-              <div className="question-topic">
-                {topics.map((topic) => (
-                  <React.Fragment key={topic.id}>
-                    <span>{topic.name}</span>
-                    <span className="question-rate">
-                      {renderRateOptions(topic.id)}
-                    </span>
-                    <br />
-                    <br />
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="card__txt">
-            <div>
-              <h3 className="txt-default">Interviewer Name</h3>
-              <h3>{assessment.interviewer.name}</h3>
-            </div>
-            <div>
-              <h3 className="txt-default">Department</h3>
-              <h3>{assessment.interviewer.department.name}</h3>
-            </div>
-            <div>
-              <h3 className="txt-default">Position</h3>
-              <h3>{assessment.interviewer.position.name}</h3>
-            </div>
-          </div>
-          <div className="box">
-            <textarea
-              name="comment"
-              className="commentBox"
-              placeholder="Comment"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            ></textarea>
+      <form onSubmit={createInterviewAssessment} className="card__form">
+     
+        <div className="card__txt">
+          <div>
+            <h3 className="txt-default">Candidate Name</h3>
+            <h3>{data.candidate.name}</h3>
           </div>
           <div>
-            <Dropdown
-              labelName="Grades"
-              options={grades}
-              selectedValue={grade}
-              onChange={(e) => setGrade(e.target.value)}
-            />
-
-            <br />
+            <h3 className="txt-default">Applied Position</h3>
+            <h3>{data.candidate.position.name}</h3>
           </div>
-          <div className="btn-group">
-            <Button
-              type="submit"
-              className="txt-light btn-primary"
-              text="Create"
-            />
+          <div>
+            <h3 className="txt-default">Date</h3>
+            <h3>{data.interview_stage.interview_date}</h3>
+
+          </div>
+          <div>
+            <h3 className="txt-default">Time</h3>
+            <h3>{data.interview_stage.interview_time}</h3>
+           
           </div>
         </div>
+        <div className="card__txt">
+          <div>
+            <h3 className="txt-default">Interview Stage</h3>
+            <h3>
+              {interviewStage === 1
+                ? "First Interview" :
+                interviewStage === 2
+                  ? "Technical Interview"
+                  : "Final Interview"}
+            </h3>
+          </div>
+          <div>
+            <h3 className="txt-default">Interview Place</h3>
+            <h3>
+              {data.interview_stage.location === 1 ? "Online" : "In Person"}
+            </h3>
+          </div>
+         
+        </div>
+        <div className="card__question">
+          <div className="question__title">
+            <h3 className="question__topic txt-default">Questions</h3>
+            <h3 className="question__rate txt-default">Rates <span className="txt-danger">*</span></h3>
+          </div>
+          <div className="question__body">
+           
+            {topics.map((topic) => (
+              <React.Fragment key={topic.id}>
+                <div className="question-card">
+                  <div className="topic">{topic.name}</div>
+                  <div className="rate radio-group">{renderRateOptions(topic.id)}</div>
+                </div>
+              </React.Fragment>
+            ))}
+           
+          </div>
+        </div>
+        <div className="card__txt">
+          <div>
+            <h3 className="txt-default">Interviewer Name</h3>
+            <h3>{assessment.interviewer.name}</h3>
+          </div>
+          <div>
+            <h3 className="txt-default">Department</h3>
+            <h3>{assessment.interviewer.department.name}</h3>
+          </div>
+          <div>
+            <h3 className="txt-default">Position</h3>
+            <h3>{assessment.interviewer.position.name}</h3>
+          </div>
+        </div>
+
+        <label className="comment-label">Comment <span className="txt-danger">*</span></label>
+        <textarea
+          name="comment"
+          className="comment-box"
+          placeholder=" Enter Your Comment..."
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        ></textarea>
+
+
+        <Dropdown
+          labelName="Grade"
+          options={grades}
+          selectedValue={grade}
+          onChange={(e) => setGrade(e.target.value)}
+          errorMessage="*"
+        />
+
+        <div className="button-group--user">
+          <Button type="submit" className="txt-light btn-primary" text="Create" />
+          <ButtonLink type="button" className="btn-default" route={"/interview"} text="Cancel" linkText="txt-light txt-sm"/>
+        </div>
+      
       </form>
     </div>
   );

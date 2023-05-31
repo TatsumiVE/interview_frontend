@@ -1,22 +1,25 @@
 import PropTypes from "prop-types";
 
-export const Dropdown = ({ options, selectedValue, onChange, labelName }) => {
+export const Dropdown = ({ options, selectedValue, onChange, labelName,errorMessage}) => {
   if (!options) {
     return null;
   }
 
   return (
-    <label>
-      {labelName}
+    <div className="input-form">
+      <label>
+        {labelName} <span className="txt-danger">{errorMessage}</span>
+      </label>
       <select value={selectedValue} onChange={onChange} className="select">
         <option value="">Select {labelName}</option>
         {options.map((option) => (
-          <option key={option.id} value={option.id}>
+          <option key={option.id} value={option.id} selected={selectedValue === option.name}>
             {option.name}
           </option>
         ))}
       </select>
-    </label>
+    </div>
+
   );
 };
 

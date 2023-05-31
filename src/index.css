@@ -1,10 +1,10 @@
 :root {
   --color-1: #177afe;
-  --color-2: #ffffff;
-  --color-3: #f5f7fb;
-  --color-4: #1d2433;
-  --font-primary: #000000;
-  --font-secondary: #3d3d3d;
+  --color-2: #0e0e11;
+  --color-3: #f2f2f2;
+  --color-4: #1f1f23;
+  --font-primary: #ffffff;
+  --font-secondary: #808080;
 }
 
 * {
@@ -16,5 +16,5 @@
 
 html {
   font-size: 16px;
-  color: var(--font-primary);
+  color: #111;
 }

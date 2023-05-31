@@ -1,0 +1,79 @@
+.card {
+    &__header h2 {
+        padding: 10px 0;
+        text-align: center;
+        font-size: map-get($font-size, lg);
+        font-weight: map-get($weight, medium);
+        color: map-get($colors, primary);
+
+    }
+
+    &__form {
+        padding: 20px 20px;
+    }
+
+    &__txt {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        h3 {
+            margin-bottom: 5px;
+        }
+    }
+
+    .input-record {
+        width: 218px;
+        margin-right:5px;
+    }
+
+    &__question {
+        .question {
+            &__title {
+                display: flex;
+                flex-direction: row;
+            }
+
+            &__topic {
+                margin: 5px 0;
+            }
+
+            &__rate {
+                margin-top: 5px;
+                margin-left: 130px;
+            }
+
+            &__body {
+                margin-bottom: 30px;
+
+                .question-card {
+                    display: flex;
+                    flex-direction: row;
+                }
+
+                .topic {
+                    width: 32%;
+                    padding:13px 0;
+                    
+                }
+
+                .rate {
+                    width: 68%;  
+                    padding:5px;                                                
+                  
+                }
+            }
+
+        }
+
+
+    }
+
+    .comment-box {
+        width: 100%;
+        height: 90px;
+        margin-top:5px;
+    }
+
+}

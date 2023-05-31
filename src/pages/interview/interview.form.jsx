@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
-import { Dropdown, Button } from "../../components";
+import { Dropdown, Button,Input, ButtonLink } from "../../components";
 import { useAuth } from "../../store/AuthContext";
 
 export const InterviewCreate = () => {
@@ -109,27 +109,32 @@ export const InterviewCreate = () => {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div>
-      Interview Create
-      <br />
-      <form onSubmit={handleSubmit} className="card-form">
-        <label>Date and Time:</label>
-        <input
+    <div className="card-min">
+      <div className="card-min__header">
+        <h2>Interview Create</h2>
+      </div>
+      <form onSubmit={handleSubmit} className="card-min__form">
+        <Input
+          labelName="Date"
           type="date"
           name="interview_date"
           value={formData.interview_date}
           onChange={(e) =>
             setFormData({ ...formData, interview_date: e.target.value })
+          
           }
+          errorMessage="*"
         />
 
-        <input
+        <Input
+          labelName="Time"
           type="time"
           name="time"
           value={formData.interview_time}
           onChange={(e) =>
             setFormData({ ...formData, interview_time: e.target.value })
           }
+          errorMessage="*"
         />
         <Dropdown
           labelName="Interview Stages"
@@ -141,9 +146,10 @@ export const InterviewCreate = () => {
           }))}
           selectedValue={selectedStageId.toString()}
           className="custom-dropdown"
+          errorMessage="*"
         />
 
-        <br />
+
         <Dropdown
           labelName="Location"
           options={location}
@@ -151,17 +157,18 @@ export const InterviewCreate = () => {
           onChange={(e) =>
             setFormData({ ...formData, location: e.target.value })
           }
-        ></Dropdown>
-        <br />
+          errorMessage="*"
+        />
 
-        <div className="card-input--btnPlus">
+
+        <div className="btn-plus">
           {data.length < 4 && (
             <Button
               type="button"
               onClick={handleAdd}
               text="+"
               btnColor=""
-              className="txt-light btn-primary btnRight"
+              className="txt-light btn-primary"
             />
           )}
         </div>
@@ -187,15 +194,18 @@ export const InterviewCreate = () => {
                     type="button"
                     onClick={() => handleRemove(index)}
                     text="-"
-                    className="txt-light btn-default btnRight"
+                    className="txt-light btn-default"
                   />
                 )}
               </div>
+
             </div>
           </div>
         ))}
-
-        <Button type="submit" text="Create" className="txt-light btn-default" />
+        <div className='button-group--user'>
+          <Button type="submit" text="Create" className="txt-light btn-primary"></Button>
+          <ButtonLink type="button" className="btn-default" route={"/interview"} text="Cancel" linkText="txt-light txt-sm"/>
+        </div>
       </form>
     </div>
   );

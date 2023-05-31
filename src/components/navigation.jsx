@@ -26,11 +26,38 @@ export const MainNavigation = () => {
           Interview
         </NavigationLink>
       )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/user" icon="fa-user-tie">
+          User
+        </NavigationLink>
+      )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/agency" icon="fa-user-tie">
+          Agency
+        </NavigationLink>
+      )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/department" icon="fa-user-tie">
+          Department
+        </NavigationLink>
+      )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/position" icon="fa-user-tie">
+          Position
+        </NavigationLink>
+      )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/devlanguage" icon="fa-user-tie">
+          Language
+        </NavigationLink>
+      )}
       {can("settingView") && (
         <NavigationLink to="/setting" icon="fa-gear">
           Setting
         </NavigationLink>
       )}
+
+
     </nav>
   );
 };

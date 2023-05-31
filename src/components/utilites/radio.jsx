@@ -1,5 +1,3 @@
-
-
 export const Radio = ({ checked, labelName, value, name, onChange }) => {
   return (
     <div>

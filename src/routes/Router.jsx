@@ -21,9 +21,27 @@ import {
   CCv,
   CStages,
   CInterviews,
+  UserList,
+
+  CandidateList,
+  UserUpdate,
+  AgencyList,
+  AgencyCreate,
+  AgencyUpdate,
+  DepartmentList,
+  DepartmentCreate,
+  DepartmentUpdate,
+  PositionList,
+  PositionCreate,
+  PositionUpdate,
+  DevLanguageList,
+  DevLanguageCreate,
+  DevLanguageUpdate
+
 } from "../pages";
 
 import { Layout } from "../components";
+
 
 export const Router = () => {
   const { isLogin } = useAuth();
@@ -34,6 +52,7 @@ export const Router = () => {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
+
           <Route path="candidates">
             <Route index element={<Candidate />} />
             <Route path="create" element={<CandidateCreate />} />

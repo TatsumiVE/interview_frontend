@@ -3,10 +3,13 @@ import { useMutation, useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
+import { Input, Dropdown, Button, ButtonLink } from '../../components';
+
 export const InterviewerUpdate = () => {
   const { state: id } = useLocation();
   console.log(id);
   const { token } = useAuth();
+  const [error,setError] = useState([]);
   const [interviewer, setInterviewer] = useState({
     name: "",
     email: "",
@@ -26,9 +29,10 @@ export const InterviewerUpdate = () => {
         config
       );
     } catch (error) {
-      console.error(error);
+      setError(error.response.data);
     }
   });
+  console.log(interviewer);
 
   const handleUpdate = (event) => {
     event.preventDefault();
@@ -108,69 +112,59 @@ export const InterviewerUpdate = () => {
   if (positionError) return `An error has occurred: ${positionError.message}`;
 
   return (
-    <>
-      <form onSubmit={handleUpdate}>
-        <div>
-          <input
-            type="text"
-            name="name"
-            placeholder=" Enter Name"
-            value={interviewer.name}
-            onChange={(e) =>
-              setInterviewer({ ...interviewer, name: e.target.value })
-            }
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder=" Enter Email"
-            value={interviewer.email}
-            onChange={(e) =>
-              setInterviewer({ ...interviewer, email: e.target.value })
-            }
-          />
-          <select
-            name="department"
-            value={interviewer.department_id}
-            onChange={(e) =>
-              setInterviewer({ ...interviewer, department_id: e.target.value })
-            }
-          >
-            <option value="">Select Department</option>
-            {departments.map((department) => (
-              <option
-                key={department.id}
-                value={department.id}
-                selected={department.id === interviewer.department_id}
-              >
-                {department.name}
-              </option>
-            ))}
-          </select>
-          <select
-            name="position"
-            value={interviewer.position_id}
-            onChange={(e) =>
-              setInterviewer({ ...interviewer, position_id: e.target.value })
-            }
-          >
-            <option value="">Select Position</option>
-            {positions.map((position) => (
-              <option
-                key={position.id}
-                value={position.id}
-                selected={position.id === interviewer.position_id}
-              >
-                {position.name}
-              </option>
-            ))}
-          </select>
-          <div>
-            <button type="submit">Update</button>
-            <button type="button">Cancel</button>
-          </div>
+    <div className='card-min'>
+      <div className="card-min__header">
+        <h2>Update Interviewer</h2>
+      </div>
+      <form onSubmit={handleUpdate} className='card-min__form'>
+
+        <Input
+          labelName="Name"
+          type="text"
+          name="name"
+          placeholder="Enter Name..."
+          value={interviewer.name}
+          onChange={(e) => setInterviewer({ ...interviewer, name: e.target.value })}
+          errorMessage="*"
+        />
+        {error.data && <span className="txt-danger txt-ss">{error.data}</span>}
+
+        <Input
+          labelName="Email"
+          type="email"
+          name="email"
+          placeholder="Enter Email..."
+          value={interviewer.email}
+          onChange={(e) => setInterviewer({ ...interviewer, email: e.target.value })}
+          errorMessage="*"
+        />
+        {error.data && <span className="txt-danger txt-ss">{error.data}</span>}
+
+        <Dropdown
+          labelName="Department"
+          options={departments}
+          selectedValue={interviewer.department_id}
+          onChange={(e) => setInterviewer({ ...interviewer, department_id: e.target.value })}
+          errorMessage="*"
+        />
+        {error.department && <span className="txt-danger txt-ss">{error.department}</span>}
+
+
+        <Dropdown
+          labelName="Position"
+          options={positions}
+          selectedValue={interviewer.position_id}
+          onChange={(e) => setInterviewer({ ...interviewer, position_id: e.target.value })}
+          errorMessage="*"
+        />
+         {error.position && <span className="txt-danger txt-ss">{error.position}</span>}
+
+        <div className='button-group--user'>
+          <Button type="submit" className='txt-light btn-primary' text="Update" />
+          <ButtonLink type="button" className="btn-default" route={"/interviewer"} text="Cancel" linkText="txt-light txt-sm"/>
         </div>
-      </form>
-    </>
+
+      </form >
+    </div >
   );
 };
