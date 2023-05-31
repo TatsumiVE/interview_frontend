@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Dropdown, Input,Button } from '../../components';
+import { Dropdown, Input,Button, ButtonLink } from '../../components';
 import { useAuth } from "../../store/AuthContext";
 
 export const UserUpdate = () => {
     const { token } = useAuth();
     const { id } = useParams();
+    const [error,setError] =useState([]);
     const [user, setUser] = useState([]);
 
     const config = {
@@ -21,7 +22,7 @@ export const UserUpdate = () => {
             axios.put(`http://localhost:8000/api/users/${id}`, user, config);
 
         } catch (error) {
-            console.error(error)
+           setError(error.response.data.err_msg.errors)
         }
     })
 
@@ -83,30 +84,30 @@ export const UserUpdate = () => {
                         name="name"
                         placeholder="Enter Name"
                         value={user.interviewer_id.name}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}                     
 
-                    //onChange={(e) => setUser({...user, interviewer_id: {...user.interviewer_id, name: e.target.value}})}
                     />
-                    <Input
+                    <Input 
                         labelName="Email"
                         type="email"
                         name="email"
                         placeholder=" Enter Email"
                         value={user.interviewer_id.email}
-                        //onChange={(e) => setUser({...user, interviewer_id: {...user.interviewer_id, email: e.target.value}})}
                         onChange={(e) => setEmail(e.target.value)}
-
+                     
                     />
                     <Dropdown
                         labelName="Role"
                         options={roles}
                         selectedValue={user.role[0].id}
                         onChange={(e) => setUser({ ...user, role: e.target.value })}
-                    ></Dropdown>
+                        errorMessage="*"
+                    />
+                   {error.role && <span className="txt-danger txt-ss">{error.role}</span>}
 
                     <div className='button-group--user'>
                         <Button type="submit" className='txt-light btn-primary' text="Update" />
-                        <Button type="button" className='txt-light btn-default' text="Cancel" />
+                        <ButtonLink type="button" className="btn-default" route={"/user"} text="Cancel" linkText="txt-light txt-sm"/>
                     </div>
             
                 </form >

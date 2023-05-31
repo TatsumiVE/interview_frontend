@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
-import { Input, Dropdown, Button } from '../../components';
+import { Input, Dropdown, Button, ButtonLink } from '../../components';
 
 export const InterviewerUpdate = () => {
+  
   const { id } = useParams();
   const { token } = useAuth();
+  const navigate= useNavigate();
+  const [error,setError] = useState([]);
   const [interviewer, setInterviewer] = useState({
     name: "",
     email: "",
@@ -21,21 +24,38 @@ export const InterviewerUpdate = () => {
   };
   const updateInterviewer = useMutation(async () => {
     try {
-      axios.put(
+     axios.put(
         `http://localhost:8000/api/interviewers/${id}`,
         interviewer,
         config
       );
+
+  //console.log(response);
+      let successMessage = response.data.message;
+
+      toast.success(successMessage);
+     
+      setTimeout(() => {
+        navigate('/interviewer');
+      }, 1000);  
+
     } catch (error) {
-      console.error(error);
+      setError(error.response.data.err_msg.errors);
+      //setError(error.response.data);
     }
   });
-  console.log(interviewer);
+  //console.log(interviewer);
 
   const handleUpdate = (event) => {
-    event.preventDefault();
-    updateInterviewer.mutate();
-  };
+  event.preventDefault();
+  setError({
+    name: "",
+    email: "",
+    department_id: "",
+    position_id: "",
+  });
+  updateInterviewer.mutate();
+};
 
   const getInterviewer = async () => {
     try {
@@ -123,7 +143,9 @@ export const InterviewerUpdate = () => {
           placeholder="Enter Name..."
           value={interviewer.name}
           onChange={(e) => setInterviewer({ ...interviewer, name: e.target.value })}
+          errorMessage="*"
         />
+        {error.name && <span className="txt-danger txt-ss">{error.name}</span>}
 
         <Input
           labelName="Email"
@@ -132,15 +154,18 @@ export const InterviewerUpdate = () => {
           placeholder="Enter Email..."
           value={interviewer.email}
           onChange={(e) => setInterviewer({ ...interviewer, email: e.target.value })}
-
+          errorMessage="*"
         />
+        {error.email && <span className="txt-danger txt-ss">{error.email}</span>}
 
         <Dropdown
           labelName="Department"
           options={departments}
           selectedValue={interviewer.department_id}
           onChange={(e) => setInterviewer({ ...interviewer, department_id: e.target.value })}
-        ></Dropdown>
+          errorMessage="*"
+        />
+        {error.department && <span className="txt-danger txt-ss">{error.department}</span>}
 
 
         <Dropdown
@@ -148,11 +173,13 @@ export const InterviewerUpdate = () => {
           options={positions}
           selectedValue={interviewer.position_id}
           onChange={(e) => setInterviewer({ ...interviewer, position_id: e.target.value })}
-        ></Dropdown>
+          errorMessage="*"
+        />
+         {error.position && <span className="txt-danger txt-ss">{error.position}</span>}
 
         <div className='button-group--user'>
           <Button type="submit" className='txt-light btn-primary' text="Update" />
-          <Button type="button" className='txt-light btn-default' text="Cancel" />
+          <ButtonLink type="button" className="btn-default" route={"/interviewer"} text="Cancel" linkText="txt-light txt-sm"/>
         </div>
 
       </form >

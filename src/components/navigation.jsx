@@ -27,28 +27,28 @@ export const MainNavigation = () => {
         </NavigationLink>
       )}
       {can("interviewProcessCreate") && (
-        <NavigationLink to="/user" icon="fa-user-tie">
+        <NavigationLink to="/user" icon=" fa-user-plus">
           User
         </NavigationLink>
       )}
       {can("interviewProcessCreate") && (
-        <NavigationLink to="/agency" icon="fa-layer-group">
+        <NavigationLink to="/agency" icon="fa-user-tie">
           Agency
         </NavigationLink>
       )}
       {can("interviewProcessCreate") && (
-        <NavigationLink to="/department" icon="fa-screen-users">
+        <NavigationLink to="/department" icon="fa-building">
           Department
-        </NavigationLink>
-      )}
-      {can("interviewProcessCreate") && (
-        <NavigationLink to="/devlanguage" icon="fa-user-plus">
-          DevLanguage
         </NavigationLink>
       )}
       {can("interviewProcessCreate") && (
         <NavigationLink to="/position" icon="fa-layer-group">
           Position
+        </NavigationLink>
+      )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/devlanguage" icon="fa-language">
+          Language
         </NavigationLink>
       )}
       {can("settingView") && (

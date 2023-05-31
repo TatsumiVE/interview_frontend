@@ -1,31 +1,36 @@
 
 import React, { useMemo, useEffect, useState } from 'react';
 import { useTable, useGlobalFilter, usePagination } from 'react-table';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from "../../store/AuthContext";
+import { ButtonLink } from '../../components';
+import { toast } from 'react-toastify';
 
 export const UserList = () => {
     const { id } = useParams();
     const [users, setUsers] = useState([]);
     const { token } = useAuth();
+    const location = useLocation();
+    const { successMessage } = location.state || {};
 
     const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
         },
-      };
+    };
 
-    console.log(users);
+
+
     useEffect(() => {
         const fetchData = async () => {
 
             try {
-              
-                const usersResponse = await axios.get('http://localhost:8000/api/users',config);
+
+                const usersResponse = await axios.get('http://localhost:8000/api/users', config);
                 const users = usersResponse.data.data;
 
-                const interviewerResponse = await axios.get('http://localhost:8000/api/interviewers',config);
+                const interviewerResponse = await axios.get('http://localhost:8000/api/interviewers', config);
                 const interviewers = interviewerResponse.data.data;
 
                 const filteredUsers = users.filter(user => user.interviewer === id);
@@ -53,17 +58,14 @@ export const UserList = () => {
         () => [
             { Header: 'Name', accessor: 'interviewer_id.name' },
             { Header: 'Email', accessor: 'interviewer_id.email' },
-            { Header: 'Role', accessor:   'role[0].name'  },
+            { Header: 'Role', accessor: 'role[0].name' },
             {
                 Header: "Action",
                 Cell: ({ row }) => (
-                    <div>
-                        <button type="button">
-                            <Link to={`update/${row.original.id}`}>Update User</Link>
-                        </button>
-                    </div>
+                    <>
+                        <ButtonLink type="button" className="btn-success" route={`update/${row.original.id}`} text="Update" linkText="txt-light txt-sm" />
 
-
+                    </>
                 ),
             },
         ],
@@ -87,7 +89,7 @@ export const UserList = () => {
     } = useTable(
         {
             columns,
-            data:users,
+            data: users,
             initialState: { pageIndex: 0 },
         },
         useGlobalFilter,
@@ -97,7 +99,8 @@ export const UserList = () => {
     const { globalFilter, pageIndex } = state;
 
     return (
-        <div className='table-wrap'>
+        <div className='table-wrap'>           
+            {successMessage && <span className='txt-success'>{successMessage}</span>}
             <div className="table-wrap__head">
                 <div className="search-content">
                     <input
@@ -135,8 +138,8 @@ export const UserList = () => {
             </div>
 
             <div className='table-wrap__pagination'>
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                    Previous
+                <button onClick={() => previousPage()} disabled={!canPreviousPage} className='txt-primary'>
+                    &lt;&lt;
                 </button>
                 <span className='page-content'>
                     Page {' '}
@@ -144,8 +147,8 @@ export const UserList = () => {
                         {pageIndex + 1} of {pageOptions.length}
                     </strong>
                 </span>
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
-                    Next
+                <button onClick={() => nextPage()} disabled={!canNextPage} className='txt-primary'>
+                    &gt;&gt;
                 </button>
             </div>
         </div>

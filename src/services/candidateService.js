@@ -11,17 +11,24 @@ const candidateService = () => {
 
   const getAll = async (token) => {
     const response = await axios.get(baseUrl, config(token));
-    return response.data;
+    return response.data.data;
   };
 
   const get = async (id, token) => {
     const response = await axios.get(`${baseUrl}/${id}`, config(token));
-    return response.data;
+    console.log("candidateeeeee", response.data.data);
+    return response.data.data;
+  };
+
+  const searchAll = async (token) => {
+    const response = await axios.get(baseUrl, config(token));
+    return response.data.data;
   };
 
   return {
     getAll,
     get,
+    searchAll,
   };
 };
 

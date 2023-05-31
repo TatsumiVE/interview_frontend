@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export const Dropdown = ({ options, selectedValue, onChange, labelName}) => {
+export const Dropdown = ({ options, selectedValue, onChange, labelName,errorMessage}) => {
   if (!options) {
     return null;
   }
@@ -8,7 +8,7 @@ export const Dropdown = ({ options, selectedValue, onChange, labelName}) => {
   return (
     <div className="input-form">
       <label>
-        {labelName}
+        {labelName} <span className="txt-danger">{errorMessage}</span>
       </label>
       <select value={selectedValue} onChange={onChange} className="select">
         <option value="">Select {labelName}</option>

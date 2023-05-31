@@ -25,3 +25,18 @@
         }
     }
 }
+
+.alert {
+    position: fixed;
+    z-index: 1;
+    width:400px;
+    height:60px;   
+    top: 50px;
+    left: 480px;
+    padding: 20px 10px;
+    background-color: rgb(247, 170, 38);
+    color: white;
+    font-weight: map-get($weight,light);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(61, 60, 60, 0.2);
+  }

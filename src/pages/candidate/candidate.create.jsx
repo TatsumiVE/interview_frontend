@@ -1,10 +1,14 @@
+
+
+
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Dropdown, Input, Button, TextArea, InputCheckbox } from "../../components/utilites";
+import { Dropdown, Input, Button, TextArea, InputCheckbox, ButtonLink } from "../../components/utilites";
 import { useMutation } from "react-query";
 import { useAuth } from "../../store/AuthContext";
 
 export const CandidateCreate = () => {
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone_number, setPhone] = useState("");
@@ -20,11 +24,13 @@ export const CandidateCreate = () => {
   const [agency, setAgency] = useState("");
   const [languageList, setLanguageList] = useState([]);
   const { token } = useAuth();
+  
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
+
   const [data, setData] = useState([
     { devlanguage_id: "", year: "", month: "" },
   ]);
@@ -125,6 +131,7 @@ export const CandidateCreate = () => {
                 placeholder=" Enter Candidate Name..."
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                errorMessage="*"
               />
               <Input
                 labelName="Email"
@@ -133,6 +140,7 @@ export const CandidateCreate = () => {
                 placeholder=" Enter Email..."
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                errorMessage="*"
               />
 
               <Input
@@ -142,6 +150,7 @@ export const CandidateCreate = () => {
                 placeholder=" Enter Phone Number..."
                 value={phone_number}
                 onChange={(e) => setPhone(e.target.value)}
+                errorMessage="*"
               />
 
               <Input
@@ -151,6 +160,7 @@ export const CandidateCreate = () => {
                 placeholder=" Enter Date of Birth..."
                 value={date_of_birth}
                 onChange={(e) => setBirth(e.target.value)}
+                errorMessage="*"
               />
 
               <TextArea
@@ -159,6 +169,7 @@ export const CandidateCreate = () => {
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder=" Enter Residential Address..."
                 className=""
+                errorMessage="*"
               />
 
               <InputCheckbox
@@ -170,7 +181,7 @@ export const CandidateCreate = () => {
                 labelName="Willingness To Travel"
               />
 
-              <div className="radio-group">
+              <div className="radio-group">                
                 <InputCheckbox
                   labelName="Male"
                   type="radio"
@@ -198,6 +209,7 @@ export const CandidateCreate = () => {
                   checked={gender === "3"}
                   onChange={(e) => setGender(e.target.value)}
                 />
+                 <span className="txt-danger star">*</span>              
               </div>
 
             </div>
@@ -207,13 +219,17 @@ export const CandidateCreate = () => {
                 options={position.data}
                 selectedValue={position}
                 onChange={(e) => setPosition(e.target.value)}
-              ></Dropdown>
+                errorMessage="*"
+              />
+
               <Dropdown
                 labelName="Agency"
                 options={agency.data}
                 selectedValue={agency}
                 onChange={(e) => setAgency(e.target.value)}
+                errorMessage="*"
               />
+
               <Input
                 labelName="Expected Salary"
                 type="number"
@@ -238,6 +254,7 @@ export const CandidateCreate = () => {
                 placeholder=" Enter Cv Path..."
                 value={cv_path}
                 onChange={(e) => setCv(e.target.value)}
+                errorMessage="*"
               />
 
               <Input
@@ -274,6 +291,7 @@ export const CandidateCreate = () => {
                       updatedData[index].devlanguage_id = e.target.value;
                       setData(updatedData);
                     }}
+                    errorMessage="*"
                   />
                   <div className="card-btnMinus">
                     {data.length > 1 && (
@@ -288,7 +306,7 @@ export const CandidateCreate = () => {
                 </div>
                 <div className="card-experience">
                   <label className="experience-label">
-                    Experience
+                    Experience <span className="txt-danger">*</span>
                   </label>
                   <div className="experience-group">
                     <Input
@@ -325,14 +343,8 @@ export const CandidateCreate = () => {
               type="submit"
               text="Submit"
               className="txt-light btn-primary"
-
             />
-            <Button
-              type="button"
-              text="Cancel"
-              className="txt-light btn-default"
-
-            />
+            <ButtonLink type="button" className="btn-default" route={"/interview"} text="Cancel" linkText="txt-light txt-sm"/>
           </div>
         </form >
 
