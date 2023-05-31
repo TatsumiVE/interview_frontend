@@ -27,7 +27,7 @@ export const MainNavigation = () => {
         </NavigationLink>
       )}
       {can("interviewProcessCreate") && (
-        <NavigationLink to="/user" icon="fa-user-tie">
+        <NavigationLink to="/user" icon=" fa-user-plus">
           User
         </NavigationLink>
       )}
@@ -37,17 +37,17 @@ export const MainNavigation = () => {
         </NavigationLink>
       )}
       {can("interviewProcessCreate") && (
-        <NavigationLink to="/department" icon="fa-user-tie">
+        <NavigationLink to="/department" icon="fa-building">
           Department
         </NavigationLink>
       )}
       {can("interviewProcessCreate") && (
-        <NavigationLink to="/position" icon="fa-user-tie">
+        <NavigationLink to="/position" icon="fa-layer-group">
           Position
         </NavigationLink>
       )}
       {can("interviewProcessCreate") && (
-        <NavigationLink to="/devlanguage" icon="fa-user-tie">
+        <NavigationLink to="/devlanguage" icon="fa-language">
           Language
         </NavigationLink>
       )}

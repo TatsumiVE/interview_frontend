@@ -131,6 +131,7 @@ export const CandidateCreate = () => {
                 placeholder=" Enter Candidate Name..."
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                errorMessage="*"
               />
               <Input
                 labelName="Email"
@@ -139,6 +140,7 @@ export const CandidateCreate = () => {
                 placeholder=" Enter Email..."
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                errorMessage="*"
               />
 
               <Input
@@ -148,6 +150,7 @@ export const CandidateCreate = () => {
                 placeholder=" Enter Phone Number..."
                 value={phone_number}
                 onChange={(e) => setPhone(e.target.value)}
+                errorMessage="*"
               />
 
               <Input
@@ -157,6 +160,7 @@ export const CandidateCreate = () => {
                 placeholder=" Enter Date of Birth..."
                 value={date_of_birth}
                 onChange={(e) => setBirth(e.target.value)}
+                errorMessage="*"
               />
 
               <TextArea
@@ -165,6 +169,7 @@ export const CandidateCreate = () => {
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder=" Enter Residential Address..."
                 className=""
+                errorMessage="*"
               />
 
               <InputCheckbox
@@ -176,7 +181,7 @@ export const CandidateCreate = () => {
                 labelName="Willingness To Travel"
               />
 
-              <div className="radio-group">
+              <div className="radio-group">                
                 <InputCheckbox
                   labelName="Male"
                   type="radio"
@@ -204,6 +209,7 @@ export const CandidateCreate = () => {
                   checked={gender === "3"}
                   onChange={(e) => setGender(e.target.value)}
                 />
+                 <span className="txt-danger star">*</span>              
               </div>
 
             </div>
@@ -213,6 +219,7 @@ export const CandidateCreate = () => {
                 options={position.data}
                 selectedValue={position}
                 onChange={(e) => setPosition(e.target.value)}
+                errorMessage="*"
               />
 
               <Dropdown
@@ -220,6 +227,7 @@ export const CandidateCreate = () => {
                 options={agency.data}
                 selectedValue={agency}
                 onChange={(e) => setAgency(e.target.value)}
+                errorMessage="*"
               />
 
               <Input
@@ -246,6 +254,7 @@ export const CandidateCreate = () => {
                 placeholder=" Enter Cv Path..."
                 value={cv_path}
                 onChange={(e) => setCv(e.target.value)}
+                errorMessage="*"
               />
 
               <Input
@@ -282,6 +291,7 @@ export const CandidateCreate = () => {
                       updatedData[index].devlanguage_id = e.target.value;
                       setData(updatedData);
                     }}
+                    errorMessage="*"
                   />
                   <div className="card-btnMinus">
                     {data.length > 1 && (
@@ -296,7 +306,7 @@ export const CandidateCreate = () => {
                 </div>
                 <div className="card-experience">
                   <label className="experience-label">
-                    Experience
+                    Experience <span className="txt-danger">*</span>
                   </label>
                   <div className="experience-group">
                     <Input

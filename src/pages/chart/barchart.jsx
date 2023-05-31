@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
 import Chart from "chart.js/auto";
-import { useAuth } from "../store/AuthContext";
+import { useAuth } from "../../store/AuthContext";
 export const BarChart = () => {
   const [labels, setLabels] = useState([]);
   const [languages, setLanguages] = useState([]);
@@ -86,9 +86,7 @@ export const BarChart = () => {
     },
   };
 
-  return (
-    <div className="bar-chart">
-      <Bar data={data} options={options} />
-    </div>
+  return (   
+      <Bar data={data} options={options} />   
   );
 };

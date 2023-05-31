@@ -1,14 +1,12 @@
-export const TextArea = ({
-  labelName,
-  name,
-  onChange,
-  placeholder,
-  className,
-  text,
-}) => {
+import React, { useState } from "react";
+
+export const TextArea = ({ labelName, name, onChange, placeholder,className,text,errorMessage }) => {
+
   return (
     <div className="textarea-input">
-      <label>{labelName}</label>
+      <label>
+        {labelName} <span className="txt-danger">{errorMessage}</span>
+      </label>
       <textarea
         name={name}
         onChange={onChange}

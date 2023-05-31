@@ -9,7 +9,7 @@ export const NavigationLink = ({ to, icon, children }) => {
     <NavLink style={handleLinkActive} to={to}>
       <span>
         <i className={"fa-solid " + icon}></i>
-        {children}
+       {children}
       </span>
     </NavLink>
   );
