@@ -28,6 +28,16 @@ export const InterviewerUpdate = () => {
         interviewer,
         config
       );
+      let successMessage = response.data.message;
+
+      toast.success(successMessage);
+     
+      setTimeout(() => {
+        navigate('/interviewer');
+      }, 1000);  
+
+      return response;
+      
     } catch (error) {
       setError(error.response.data);
     }

@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { Button, ButtonLink, Dropdown, Input } from "../../components/utilites";
 import { useAuth } from "../../store/AuthContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const InterviewerCreate = () => {
   const [name, setName] = useState("");
@@ -10,6 +12,8 @@ export const InterviewerCreate = () => {
   const [position_id, setPosition] = useState("");
   const [department_id, setDepartment] = useState("");
   const { token } = useAuth();
+  const [error,setError] = useState("");
+  const navigate= useNavigate();
 
   const config = {
     headers: {
@@ -54,9 +58,19 @@ export const InterviewerCreate = () => {
         { name, email, department_id, position_id },
         config
       );
-      console.log(response.data);
+    
+      let successMessage = response.data.message;
+
+      toast.success(successMessage);
+     
+      setTimeout(() => {
+        navigate('/interviewer');
+      }, 1000);  
+
+      return response;
+    
     } catch (error) {
-      console.error(error);
+       setError(error.response.data.err_msg.errors);
     }
   };
 
@@ -87,6 +101,7 @@ export const InterviewerCreate = () => {
           placeholder=" Enter Name..."
           errorMessage="*"
         />
+        {error.name && <span className="txt-danger txt-ss">{error.name}</span>}
         <Input
           labelName="Email"
           type="email"
@@ -95,6 +110,7 @@ export const InterviewerCreate = () => {
           placeholder=" Enter Email..."
           errorMessage="*"
         />
+        {error.email && <span className="txt-danger txt-ss">{error.email}</span>}
 
         <Dropdown
           labelName="Department"
@@ -103,6 +119,8 @@ export const InterviewerCreate = () => {
           onChange={(e) => setDepartment(e.target.value)}
           errorMessage="*"
         />
+        {error.department_id && <span className="txt-danger txt-ss">{error.department_id}</span>}
+
         <Dropdown
           labelName="Position"
           options={positions}
@@ -110,10 +128,11 @@ export const InterviewerCreate = () => {
           onChange={(e) => setPosition(e.target.value)}
           errorMessage="*"
         />
+        {error.position_id && <span className="txt-danger txt-ss">{error.position_id}</span>}
 
         <div className="button-group--user">
           <Button type="submit" text="Create" className="txt-light btn-primary" />
-          <ButtonLink type="button" className="btn-default" route={"/user"} text="Cancel" linkText="txt-light txt-sm"/>
+          <ButtonLink type="button" className="btn-default" route={"/interviewer"} text="Cancel" linkText="txt-light txt-sm"/>
         </div>
       </form>
     </div>

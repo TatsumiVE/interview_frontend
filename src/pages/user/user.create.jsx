@@ -4,13 +4,14 @@ import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../../store/AuthContext";
 import { Button, Input, Dropdown, ButtonLink } from "../../components";
+import { toast } from "react-toastify";
 
 export const UserCreate = () => {
   const { id } = useParams();
   const { token } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState([]);
-  const [message, setMessage] = useState("");
+
 
   const config = {
     headers: {
@@ -33,16 +34,21 @@ export const UserCreate = () => {
         config
       );
 
-      navigate("/user", { state: { successMessage: "User Created successfully!" } });
+      let successMessage = response.data.message;
 
+      toast.success(successMessage);
+
+      setTimeout(() => {
+        navigate('/user');
+      }, 1000);
 
       return response;
-    } catch (error) {     
-      setError({ errorMessage: error.response.data.err_msg });
+
+    } catch (error) {
+      setError(error.response.data.err_msg.errors);
 
     }
   };
-
 
   const getInterviewer = async () => {
     try {
@@ -97,27 +103,27 @@ export const UserCreate = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!interviewer.password) {
-      setError({ password: "The password field is required." });
-      return;
-    }
+    // if (!interviewer.password) {
+    //   setError({ password: "The password field is required." });
+    //   return;
+    // }
 
-    if (!interviewer.password_confirmation) {
-      setError({ password_confirmation: "The password confirmation field is required." });
-      return;
-    }
+    // if (!interviewer.password_confirmation) {
+    //   setError({ password_confirmation: "The password confirmation field is required." });
+    //   return;
+    // }
 
-    if (!interviewer.role) {
-      setError({ role: "The role field is required." });
-      return;
-    }
+    // if (!interviewer.role) {
+    //   setError({ role: "The role field is required." });
+    //   return;
+    // }
 
-    if (interviewer.password !== interviewer.password_confirmation) {
-      setError({ errorMessage: "The password confirmation does not match." });
-      return;
-    }
-    
-   
+    // if (interviewer.password !== interviewer.password_confirmation) {
+    //   setError({ errorMessage: "The password confirmation does not match." });
+    //   return;
+    // }
+
+
     createUser();
   };
 
@@ -127,8 +133,6 @@ export const UserCreate = () => {
         <h2>Create User Role</h2>
       </div>
 
-      {error.errorMessage && <span className="txt-danger txt-sm">{error.errorMessage}</span>}
-     
       <form onSubmit={handleSubmit} className="card-min__form">
         <div>
           <Input
@@ -138,6 +142,7 @@ export const UserCreate = () => {
             placeholder=" Enter Name..."
             value={interviewers.name}
           />
+
           <Input
             labelName="Email"
             type="email"
