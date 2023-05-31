@@ -1,3 +1,10 @@
+import Loader from "../components/loader";
+
 export const NotFound = () => {
-  <>hello</>;
+  return (
+    <>
+      <Loader />
+      Page Not Found.
+    </>
+  );
 };

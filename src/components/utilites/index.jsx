@@ -5,3 +5,5 @@ export * from "./dropdown";
 export * from "./textarea";
 export * from "./rating";
 export * from "./can";
+export * from "./radio";
+export * from "./checkbox";

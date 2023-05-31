@@ -3,42 +3,42 @@
   height: 80px;
   position: relative;
   border-radius: 50%;
-  border: 2px solid var(--color-1);
-  border-bottom-color: transparent;
-  animation: spin 4s ease-out infinite;
+  border: 6px solid var(--color-1);
+  border-color: var(--color-1) transparent;
+  animation: spin 2s ease-out infinite;
 }
 
 .loader::before {
   content: "";
   display: block;
   position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 68px;
-  height: 68px;
+  top: 8px;
+  left: 8px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  border: 2px solid var(--color-1);
-  border-top-color: transparent;
-  animation: spin 3s ease-out infinite;
+  border: 6px solid var(--color-1);
+  border-color: transparent var(--color-1);
+  animation: spin 2s ease-out infinite;
   transform-origin: center;
   box-sizing: border-box;
 }
 
-.loader::after {
-  box-sizing: border-box;
-  content: "";
-  display: block;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 2px solid var(--color-1);
-  border-bottom-color: transparent;
-  animation: spin 2s ease-out infinite;
-  transform-origin: center;
-}
+// .loader::after {
+//   box-sizing: border-box;
+//   content: "";
+//   display: block;
+//   position: absolute;
+//   top: 8px;
+//   left: 8px;
+//   width: 60px;
+//   height: 60px;
+//   border-radius: 50%;
+//   border: 2px solid var(--color-1);
+//   border-bottom-color: transparent;
+//   animation: spin 2s ease-out infinite;
+//   transform-origin: center;
+// }
 
 @keyframes spin {
   0% {

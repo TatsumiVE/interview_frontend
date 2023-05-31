@@ -5,8 +5,6 @@ import { useAuth } from "../../store/AuthContext";
 import { useMutation } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
 export const InterviewResult = () => {
-  const location = useLocation();
-  const candidateName = location.state?.candidateName || "";
   const [interview_result_date, setInterviewResultDate] = useState(
     new Date().toISOString().slice(0, 10)
   );
@@ -14,7 +12,8 @@ export const InterviewResult = () => {
   const [interview_result, setResult] = useState("1");
   const [interview_summarize, setInterviewSummarize] = useState("");
   const { token } = useAuth();
-  const { candidateId, stageId } = useParams();
+  const { state } = useLocation();
+  const { candidateId, stageId, candidateName } = state;
   const createInterviewResult = async () => {
     const response = await axios.post(
       `http://127.0.0.1:8000/api/interview-process/result/${candidateId}/${stageId}`,
@@ -76,7 +75,7 @@ export const InterviewResult = () => {
           name="result"
           placeholder=""
           value="0"
-          checked={interview_result === "0"}
+          checked={interview_result === "2"}
           onChange={(e) => setResult(e.target.value)}
         />
         <Input

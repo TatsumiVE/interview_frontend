@@ -1,12 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
 import { Dropdown, Button } from "../../components";
 import { useAuth } from "../../store/AuthContext";
 
 export const InterviewCreate = () => {
-  const { id, stageId } = useParams();
+  const { state } = useLocation();
+  const { id, stageId } = state;
   const [data, setData] = useState([{}]);
   // const navigate = useNavigate();
   const [interviewer_id, setInterviewers] = useState([]);

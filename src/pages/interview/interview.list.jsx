@@ -1,17 +1,13 @@
-import { useAuth } from "../../store/AuthContext";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
-import {
-  useQuery,
-  useMutation,
-  QueryClient,
-  QueryClientProvider,
-} from "react-query";
-import { Link } from "react-router-dom";
+import { useAuth } from "../../store/AuthContext";
+import { useLocation, Link } from "react-router-dom";
+import { useQuery, useMutation, QueryClient } from "react-query";
 import Can from "../../components/utilites/can";
-const queryClient = new QueryClient();
-export const CandidateList = () => {
+
+export const InterviewList = () => {
   const { token, user, can } = useAuth();
+  const queryClient = new QueryClient();
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const message = searchParams.get("message");
@@ -22,23 +18,17 @@ export const CandidateList = () => {
         Authorization: `Bearer ${token}`,
       },
     };
-
     const response = await axios.get(
       "http://127.0.0.1:8000/api/candidates",
       config
     );
-
     return response.data.data;
   };
 
   const handleTerminate = (candidateId) => {
     interviewTerminate(candidateId);
   };
-  // state = [];
-  // terminate(){}; if(isSuccess) setState(state.map(c=> c.id===id ? {...c, status:1}))
-  // cTOShow = state.filter(c=> c.status===0)
-  // cToShow
-  // button
+
   const terminateProcess = async (id) => {
     const response = await axios.post(
       `http://127.0.0.1:8000/api/interview-process/terminate/${id}`,
@@ -92,6 +82,28 @@ export const CandidateList = () => {
     }
   };
 
+  
+
+  const interview = (candidate) => {
+    const interviews = candidate.interviews || [];
+    const lastInterview = interviews[interviews.length - 1] || {};
+    const lastStage = lastInterview.interview_stage.stage_name || 0;
+    
+    const canCreate = !(lastStage && !lastInterview.interview_result)
+  
+    const canAssessment = lastStage && !lastInterview.interview_result;
+ 
+    const canResult = lastStage && !lastInterview.interview_result;
+    
+
+    return {
+      canCreate,
+      canAssessment,
+      canResult,
+      lastStage
+    }
+  }
+
   if (isLoading) return "Loading...";
   if (isError) return "Something went wrong";
   if (error) return "An error has occurred: " + error.message;
@@ -100,7 +112,7 @@ export const CandidateList = () => {
     <div>
       {can("candidateCreate") && (
         <button type="button">
-          <Link to="candidate/create">Create Candidate</Link>
+          <Link to="/candidate/create">Create Candidate</Link>
         </button>
       )}
       {message && <div>{message}</div>}
@@ -114,6 +126,7 @@ export const CandidateList = () => {
             <th>Phone Number</th>
             <th>Applied Position</th>
             <th>Language</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -140,38 +153,75 @@ export const CandidateList = () => {
                 <td>
                   <Can permission={"interviewProcessCreate"}>
                     <Link
-                      to={`/candidate/interview/${candidate.id}/${candidate.interviews.length}`}
+                      to={`create`}
+                      state={{
+                        id: candidate.id,
+                        stageId: candidate.interviews.length,
+                      }}
+                      style={{
+                        pointerEvents: interview(candidate).canCreate
+                          ? "all"
+                          : "none",
+                        background: interview(candidate).canCreate
+                          ? "green"
+                          : "red",
+                      }}
                     >
-                      Interview
+                      {candidate.}
                     </Link>
                   </Can>
-                  /
                   <Link
-                    to={`/candidate/interview-assessment/${candidate.id}/${user.id}`}
+                    to={`assessment`}
+                    state={{
+                      candidateId: candidate.id,
+                      interviewerId: user.id,
+                    }}
+                    style={{
+                      pointerEvents: canCreateAssessment(candidate)
+                        ? "all"
+                        : "none",
+                      background: canCreateAssessment(candidate)
+                        ? "green"
+                        : "red",
+                    }}
                   >
-                    Assessment
+                    Interview
                   </Link>
-                  {can("interviewProcessUpdate") && (
+                  <Can permission={"interviewProcessUpdate"}>
                     <Link
-                      to={`/candidate/interview-result/${
-                        candidate.id
-                      }/${findStageId(candidate.id)}`}
-                      state={{ candidateName: candidate.name }}
+                      to={`result`}
+                      state={{
+                        candidateId: candidate.id,
+                        stageId: findStageId(candidate.id),
+                        candidateName: candidate.name,
+                      }}
+                      style={{
+                        pointerEvents: canCreateResult(candidate)
+                          ? "all"
+                          : "none",
+                        background: canCreateResult(candidate)
+                          ? "green"
+                          : "red",
+                      }}
                     >
                       Result
                     </Link>
-                  )}
-                  {can("interviewProcessTerminate") && (
+                  </Can>
+                  <Can permission={"interviewProcessTerminate"}>
                     <button
                       type="button"
                       onClick={() => {
                         handleTerminate(candidate.id);
                       }}
                     >
-                      {" "}
                       Terminate
                     </button>
-                  )}
+                  </Can>
+                </td>
+                <td>
+                  <button type="button">
+                    <Link to={`/candidate/update/${candidate.id}`}>Edit</Link>
+                  </button>
                 </td>
               </tr>
             ))
@@ -187,12 +237,3 @@ export const CandidateList = () => {
     </div>
   );
 };
-const CandidateListWrapper = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <CandidateList />
-    </QueryClientProvider>
-  );
-};
-
-export default CandidateListWrapper;

@@ -21,10 +21,8 @@ export const CandidateDetails = () => {
   );
 
   useEffect(() => {
-    if (isSuccess) {
-      setData(candidateData.data);
-    }
-  }, [candidateData, isSuccess]);
+    candidateData && setData(candidateData);
+  }, [candidateData]);
 
   const activeClassName = ({ isActive }) => (isActive ? "active" : "");
 

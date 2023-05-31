@@ -98,7 +98,6 @@ export const AuthContextProvider = ({ children }) => {
           setIsLogin(true);
           setToken(token);
           localStorage.setItem("token", token);
-          navigate("/");
         }
       } catch (error) {
         console.error(error);

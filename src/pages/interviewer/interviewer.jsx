@@ -42,7 +42,10 @@ export const Employee = () => {
               <Link to={`user/create/${row.original.id}`}>Create Role</Link>
             </button>
             <button type="button">
-              <Link to={`update/${row.original.id}`}>Update Interviewer</Link>
+              <Link to={`update`} state={row.original.id}>
+                {" "}
+                Update Interviewer
+              </Link>
             </button>
           </div>
         ),

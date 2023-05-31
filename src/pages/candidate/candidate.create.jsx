@@ -3,7 +3,10 @@ import axios from "axios";
 import { Dropdown, Input, Button } from "../../components/utilites";
 import { useMutation } from "react-query";
 import { useAuth } from "../../store/AuthContext";
+
+
 export const CandidateCreate = () => {
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone_number, setPhone] = useState("");
@@ -19,11 +22,13 @@ export const CandidateCreate = () => {
   const [agency, setAgency] = useState("");
   const [languageList, setLanguageList] = useState([]);
   const { token } = useAuth();
+  
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
+
   const [data, setData] = useState([
     { devlanguage_id: "", year: "", month: "" },
   ]);

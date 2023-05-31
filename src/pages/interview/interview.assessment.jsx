@@ -1,13 +1,14 @@
 import { useQuery, useMutation } from "react-query";
 import { Button, Dropdown } from "../../components";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import React from "react";
 import { useAuth } from "../../store/AuthContext";
 
 export const InterviewAssessment = () => {
-  const { candidateId, interviewerId } = useParams();
+  const { state } = useLocation();
+  const { candidateId, interviewerId } = state;
   const [comment, setComment] = useState("");
   const [grade, setGrade] = useState("");
   const { token } = useAuth();
@@ -19,7 +20,7 @@ export const InterviewAssessment = () => {
 
   const getAssessmentInfo = async () => {
     const response = await axios.get(
-      `http://127.0.0.1:8000/api/interview-process/${candidateId},${interviewerId}`,
+      `http://127.0.0.1:8000/api/interview-process/${candidateId}/${interviewerId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

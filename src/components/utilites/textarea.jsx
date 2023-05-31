@@ -1,20 +1,21 @@
-import React, { useState } from "react";
-
-export const Textarea = ({labelName,name,onChange,placeholder}) => {
-
+export const TextArea = ({
+  labelName,
+  name,
+  onChange,
+  placeholder,
+  className,
+  text,
+}) => {
   return (
-    <>
-    <label>
-      {labelName}
-    <textarea
+    <div className="textarea-input">
+      <label>{labelName}</label>
+      <textarea
         name={name}
         onChange={onChange}
         placeholder={placeholder}
-     > </textarea>
-    </label>
-     
-    </>
+        className={className}
+        value={text}
+      ></textarea>
+    </div>
   );
 };
-
-

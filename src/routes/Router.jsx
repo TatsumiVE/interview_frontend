@@ -9,7 +9,8 @@ import {
   Login,
   CandidateCreate,
   CandidateDetails,
-  CandidateList,
+  InterviewList,
+  CandidateUpdate,
   InterviewerCreate,
   InterviewResult,
   InterviewAssessment,
@@ -35,6 +36,7 @@ export const Router = () => {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="candidates">
             <Route index element={<Candidate />} />
+            <Route path="create" element={<CandidateCreate />} />
             <Route path=":id" element={<CandidateDetails />}>
               <Route index element={<Navigate to="details" replace />} />
               <Route path="details" element={<CDetails />} />
@@ -43,42 +45,30 @@ export const Router = () => {
               <Route path="interviews" element={<CInterviews />} />
             </Route>
           </Route>
-          <Route path="interviewer" element={<Employee />} />
-          <Route path="interview" element={<CandidateList />} />
-          <Route path="setting" element={<Setting />} />
-          <Route
-            path="interview/candidate/create"
-            element={<CandidateCreate />}
-          />
-          <Route path="interviewer/create" element={<InterviewerCreate />} />
+          <Route path="interviewer">
+            <Route index element={<Employee />} />
+            <Route path="create" element={<InterviewerCreate />} />
+            <Route path="update" element={<InterviewerUpdate />} />
+          </Route>
+          <Route path="interview">
+            <Route index element={<InterviewList />} />
+            <Route path="create" element={<InterviewCreate />} />
+            <Route path="assessment" element={<InterviewAssessment />} />
+            <Route path="result" element={<InterviewResult />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+
           <Route path="candidate/create" element={<CandidateCreate />} />
-          <Route
-            path="candidate/interview/:id/:stageId"
-            element={<InterviewCreate />}
-          />
+
+          <Route path="candidate/update/:id" element={<CandidateUpdate />} />
 
           <Route
             path="interview/assessment"
             element={<InterviewAssessment />}
           />
           <Route path="interviewer/user/create/:id" element={<UserCreate />} />
-          <Route
-            path="interviewer/update/:id"
-            element={<InterviewerUpdate />}
-          />
-
-          <Route
-            path="/candidate/interview-assessment/:candidateId/:interviewerId"
-            element={<InterviewAssessment />}
-          />
-          <Route
-            path="/candidate/interview-result/:candidateId/:stageId"
-            element={<InterviewResult />}
-          />
 
           <Route path="interviewer/user/create/:id" element={<UserCreate />} />
-
-          <Route path="*" element={<NotFound />} />
         </Route>
       ) : (
         <Route path="/">

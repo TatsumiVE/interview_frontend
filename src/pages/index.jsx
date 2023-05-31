@@ -1,7 +1,6 @@
 export * from "./candidate";
 export * from "./dashboard";
 export * from "./interviewer";
-export * from "./interview/interview";
 export * from "./login/login";
 export * from "./login/login.form";
 export * from "./login/login.slider";
