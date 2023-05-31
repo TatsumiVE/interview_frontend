@@ -11,3 +11,6 @@ export * from "./interview";
 export * from "./barchart";
 export * from "./detailInfo";
 export * from "./user";
+export * from "./agency";
+export * from "./devlanguage";
+export * from "./positon";

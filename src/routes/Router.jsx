@@ -23,10 +23,20 @@ import {
   CandidateUpdate,
   CandidateList,
   UserUpdate,
+  AgencyList,
+  AgencyCreate,
+  AgencyUpdate,
+  DevlanguageList,
+  DevlanguageCreate,
+  DevLanguageUpdate,
+  PositionList,
+  PositionCreate,
+  PositionUpdate,
 
 } from "../pages";
 
 import { Layout } from "../components";
+import {  DepartmentCreate, DepartmentList, DepartmentUpdate } from "../pages/department";
 
 
 export const Router = () => {
@@ -55,6 +65,22 @@ export const Router = () => {
           <Route path="user" element={<UserList />} />
           {/* <Route path="position" element={<PositionList />} /> */}
           <Route path="setting" element={<Setting />} />
+          <Route path="agency" element={<AgencyList />} />
+          <Route path="agency/create" element={<AgencyCreate />} />
+          <Route path="agency/update/:id" element={<AgencyUpdate />} />
+          <Route path="department" element={<DepartmentList />} />
+          <Route path="department/create" element={<DepartmentCreate />} />
+          <Route path="department/update/:id" element={<DepartmentUpdate />} />
+          <Route path="devlanguage" element={<DevlanguageList />} />
+          <Route path="devlanguage/create" element={<DevlanguageCreate/>} />
+          <Route path="devlanguage/update/:id" element={<DevLanguageUpdate/>} />
+          <Route path="position" element={<PositionList />} />
+          <Route path="position/create" element={<PositionCreate/>} />
+          <Route path="position/update/:id" element={<PositionUpdate/>} />
+
+
+
+
           <Route
             path="interview/candidate/create"
             element={<CandidateCreate />}

@@ -31,6 +31,26 @@ export const MainNavigation = () => {
           User
         </NavigationLink>
       )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/agency" icon="fa-layer-group">
+          Agency
+        </NavigationLink>
+      )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/department" icon="fa-screen-users">
+          Department
+        </NavigationLink>
+      )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/devlanguage" icon="fa-user-plus">
+          DevLanguage
+        </NavigationLink>
+      )}
+      {can("interviewProcessCreate") && (
+        <NavigationLink to="/position" icon="fa-layer-group">
+          Position
+        </NavigationLink>
+      )}
       {can("settingView") && (
         <NavigationLink to="/setting" icon="fa-gear">
           Setting
