@@ -43,8 +43,9 @@ export const DevLanguageList = () => {
               type="button"
               className="btn-success"
               route={`update/${row.original.id}`}
-              text="Update"
+              text="Edit"
               linkText="txt-light txt-sm"
+              icon="fa-solid fa-pen-to-square"
             />
           </Can>
         ),
@@ -103,6 +104,7 @@ export const DevLanguageList = () => {
               route="create"
               linkText="txt-light txt-sm"
               text="Create Language"
+              icon="fa-solid fa-plus"
             />
           </Can>
         </div>

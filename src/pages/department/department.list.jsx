@@ -43,8 +43,9 @@ export const DepartmentList = () => {
               type="button"
               className="btn-success"
               route={`update/${row.original.id}`}
-              text="Update"
+              text="Edit"
               linkText="txt-light txt-sm"
+              icon="fa-solid fa-pen-to-square"
             />
           </Can>
         ),
@@ -104,6 +105,7 @@ export const DepartmentList = () => {
               route="create"
               linkText="txt-light txt-sm"
               text="Create Department"
+              icon="fa-solid fa-plus"
             />
           </Can>
         </div>

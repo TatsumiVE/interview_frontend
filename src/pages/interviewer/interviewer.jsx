@@ -50,8 +50,9 @@ export const Employee = () => {
                 type="button"
                 className="btn-info"
                 route={`user/create/${row.original.id}`}
-                text="Create Role"
                 linkText="txt-light txt-sm"
+                text="Create Role"
+                icon="fa-solid fa-plus"
               />
             </Can>
             &nbsp;
@@ -60,8 +61,9 @@ export const Employee = () => {
                 type="button"
                 className="btn-success"
                 route={`/user/update/${row.original.id}`}
-                text="Update"
+                text="Edit"
                 linkText="txt-light txt-sm"
+                icon="fa-solid fa-pen-to-square"
               />
             </Can>
           </div>
@@ -116,6 +118,7 @@ export const Employee = () => {
               route="create"
               linkText="txt-light txt-sm"
               text="Create Interviewer"
+              icon="fa-solid fa-plus"
             />
           </Can>
         </div>

@@ -42,8 +42,9 @@ export const AgencyList = () => {
               type="button"
               className="btn-success"
               route={`update/${row.original.id}`}
-              text="Update"
               linkText="txt-light txt-sm"
+              text="Edit"
+              icon="fa-solid fa-pen-to-square"
             />
           </Can>
         ),
@@ -102,7 +103,7 @@ export const AgencyList = () => {
             route="create"
             linkText="txt-light txt-sm"
             text="Create Agency"
-            icon="fa-solid fa-user-plus"
+            icon="fa-solid fa-plus"
           />
         </div>
       </div>

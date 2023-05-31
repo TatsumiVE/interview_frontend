@@ -63,6 +63,7 @@ export const Candidate = () => {
                 route={`/candidates/${row.original.id}`}
                 text="View"
                 linkText="txt-light txt-sm"
+                icon="fa-solid fa-magnifying-glass"
               />
             </Can>
             &nbsp;
@@ -71,8 +72,9 @@ export const Candidate = () => {
                 type="button"
                 className="btn-success"
                 route={`/candidates/update/${row.original.id}`}
-                text="Update"
+                text="Edit"
                 linkText="txt-light txt-sm"
+                icon="fa-solid fa-pen-to-square"
               />
             </Can>
           </>

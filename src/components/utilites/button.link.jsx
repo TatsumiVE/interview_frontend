@@ -12,7 +12,7 @@ export const ButtonLink = ({
     <>
       <button type={type ? type : "button"} className={`btn ${className}`}>
         <Link to={route} className={linkText}>
-          {icon && <i className={icon}></i>}
+          <span className="icon">{icon && <i className={icon}></i>}</span>
           {text}
         </Link>
       </button>
