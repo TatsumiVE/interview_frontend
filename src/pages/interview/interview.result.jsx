@@ -77,7 +77,7 @@ export const InterviewResult = () => {
               checked={interview_result === "1"}
               onChange={(e) => setResult(e.target.value)}
             />
-            <span className="radio-fail">
+            <div className="radio-fail">
               <InputCheckbox
                 labelName="Fail"
                 type="radio"
@@ -87,8 +87,8 @@ export const InterviewResult = () => {
                 checked={interview_result === "0"}
                 onChange={(e) => setResult(e.target.value)}
               />
-            </span>
-
+            </div>
+            <span className="txt-danger star"> &nbsp;&nbsp;&nbsp;* </span>
           </div>
 
           <Input
