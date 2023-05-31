@@ -32,7 +32,7 @@ export const MainNavigation = () => {
         </NavigationLink>
       )}
       {can("interviewProcessCreate") && (
-        <NavigationLink to="/agency" icon="fa-user-tie">
+        <NavigationLink to="/agency" icon="fa-solid fa-circle-nodes">
           Agency
         </NavigationLink>
       )}
@@ -56,8 +56,6 @@ export const MainNavigation = () => {
           Setting
         </NavigationLink>
       )}
-
-
     </nav>
   );
 };
