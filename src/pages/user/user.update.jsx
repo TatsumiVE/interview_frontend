@@ -84,7 +84,7 @@ export const UserUpdate = () => {
                         name="name"
                         placeholder="Enter Name"
                         value={user.interviewer_id.name}
-                        onChange={(e) => setName(e.target.value)}                     
+                        onChange={(e) => setName(e.target.value)}                    
 
                     />
                     <Input 

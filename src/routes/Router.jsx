@@ -65,7 +65,7 @@ export const Router = () => {
                     <Route path="interviewer">
                         <Route index element={<Employee />} />
                         <Route path="create" element={<InterviewerCreate />} />
-                        <Route path="update" element={<InterviewerUpdate />} />
+                        <Route path="update/:id" element={<InterviewerUpdate />} />
                         <Route path="user/create/:id" element={<UserCreate />} />
                     </Route>
                     <Route path="interview">

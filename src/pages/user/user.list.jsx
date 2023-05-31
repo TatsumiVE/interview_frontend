@@ -1,11 +1,12 @@
 
 import React, { useMemo, useEffect, useState } from 'react';
 import { useTable, useGlobalFilter, usePagination } from 'react-table';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from "../../store/AuthContext";
 import { ButtonLink } from '../../components';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const UserList = () => {
     const { id } = useParams();
@@ -19,7 +20,6 @@ export const UserList = () => {
             Authorization: `Bearer ${token}`,
         },
     };
-
 
 
     useEffect(() => {
@@ -44,13 +44,17 @@ export const UserList = () => {
                 });
                 setUsers(usersWithInterviewers);
 
+                if (successMessage) {
+                    toast.success(successMessage);
+                }
+
             } catch (error) {
                 console.error(error);
             }
         };
 
         fetchData();
-    }, [id]);
+    }, [id, successMessage]);
 
     const data = useMemo(() => users, [users]);
 
@@ -99,59 +103,66 @@ export const UserList = () => {
     const { globalFilter, pageIndex } = state;
 
     return (
-        <div className='table-wrap'>           
-            {successMessage && <span className='txt-success'>{successMessage}</span>}
-            <div className="table-wrap__head">
-                <div className="search-content">
-                    <input
-                        type="text"
-                        value={globalFilter || ''}
-                        onChange={e => setGlobalFilter(e.target.value)}
-                        placeholder="Search..."
-                    />
+        <>
+            <ToastContainer position="top-right" autoClose={5000} />
+            <div className='table-wrap'>
+
+
+
+                {successMessage && <span className='txt-success'>{successMessage}</span>}
+
+                <div className="table-wrap__head">
+                    <div className="search-content">
+                        <input
+                            type="text"
+                            value={globalFilter || ''}
+                            onChange={e => setGlobalFilter(e.target.value)}
+                            placeholder="Search..."
+                        />
+                    </div>
                 </div>
-            </div>
-            <div className='table-wrap__main'>
-                <table {...getTableProps()} className='custom-table'>
-                    <thead>
-                        {headerGroups.map(headerGroup => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map(column => (
-                                    <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                                ))}
-                            </tr>
-                        ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                        {page.map((row, i) => {
-                            prepareRow(row);
-                            return (
-                                <tr {...row.getRowProps()}>
-                                    {row.cells.map(cell => (
-                                        <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                <div className='table-wrap__main'>
+                    <table {...getTableProps()} className='custom-table'>
+                        <thead>
+                            {headerGroups.map(headerGroup => (
+                                <tr {...headerGroup.getHeaderGroupProps()}>
+                                    {headerGroup.headers.map(column => (
+                                        <th {...column.getHeaderProps()}>{column.render('Header')}</th>
                                     ))}
                                 </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-            </div>
+                            ))}
+                        </thead>
+                        <tbody {...getTableBodyProps()}>
+                            {page.map((row, i) => {
+                                prepareRow(row);
+                                return (
+                                    <tr {...row.getRowProps()}>
+                                        {row.cells.map(cell => (
+                                            <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                        ))}
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
 
-            <div className='table-wrap__pagination'>
-                <button onClick={() => previousPage()} disabled={!canPreviousPage} className='txt-primary'>
-                    &lt;&lt;
-                </button>
-                <span className='page-content'>
-                    Page {' '}
-                    <strong>
-                        {pageIndex + 1} of {pageOptions.length}
-                    </strong>
-                </span>
-                <button onClick={() => nextPage()} disabled={!canNextPage} className='txt-primary'>
-                    &gt;&gt;
-                </button>
+                <div className='table-wrap__pagination'>
+                    <button onClick={() => previousPage()} disabled={!canPreviousPage} className='txt-primary'>
+                        &lt;&lt;
+                    </button>
+                    <span className='page-content'>
+                        Page {' '}
+                        <strong>
+                            {pageIndex + 1} of {pageOptions.length}
+                        </strong>
+                    </span>
+                    <button onClick={() => nextPage()} disabled={!canNextPage} className='txt-primary'>
+                        &gt;&gt;
+                    </button>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
