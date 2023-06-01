@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import { Input,Button,ButtonLink } from "../../components";
 
 export const TopicUpdate = () => {
   const { id } = useParams();
@@ -53,21 +54,26 @@ export const TopicUpdate = () => {
   const { data: topicData } = useQuery(["topicData", id], getTopic);
 
   return (
-    <>
-      <form onSubmit={handleUpdate}>
-        <input
+    <div className="card-min">
+      <div className="card-min__header">
+        <h2>Update Topic</h2>
+      </div>
+      <form onSubmit={handleUpdate} className="card-min__form">
+        <Input
+          labelName="Name"
           type="text"
           name="name"
           value={topic.name}
           onChange={(e) => setTopic({ ...topic, name: e.target.value })}
-          placeholder="Enter name"
+          placeholder="Enter Name..."
+          errorMessage="*"
         />
-        <div>
-          <button type="submit">Update</button>
-          <button type="button">Cancel</button>
+        <div className="button-group--user">
+          <Button type="submit" text="Update" className="txt-light btn-primary" />
+          <ButtonLink type="button" className="btn-default" route={"/topic"} text="Cancel" linkText="txt-light txt-sm" />
         </div>
       </form>
-    </>
+    </div>
   );
 };
 

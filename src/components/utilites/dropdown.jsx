@@ -6,6 +6,7 @@ export const Dropdown = ({
   onChange,
   labelName,
   errorMessage,
+  hide,
 }) => {
   if (!options) {
     return null;
@@ -16,13 +17,17 @@ export const Dropdown = ({
       <label>
         {labelName} <span className="txt-danger">{errorMessage}</span>
       </label>
-      <select value={selectedValue} onChange={onChange} className="select">
-        <option value="">Select {labelName}</option>
+      <select onChange={onChange} className="select">
+        {!hide && (
+          <option key="0" value="">
+            Select {labelName}
+          </option>
+        )}
         {options.map((option) => (
           <option
             key={option.id}
             value={option.id}
-            selected={selectedValue === option.name}
+            // selected={selectedValue === option.name}
           >
             {option.name}
           </option>

@@ -98,13 +98,13 @@ export const RateList = () => {
           />
         </div>
         <div className="create-content">
-          <Can permission={"positionCreate"}>
+          <Can permission={"rateCreate"}>
             <ButtonLink
               type="button"
               className="btn-primary"
               route="create"
               linkText="txt-light txt-sm"
-              text="Create Position"
+              text="Create Rate"
             />
           </Can>
         </div>

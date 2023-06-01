@@ -1,12 +1,16 @@
 import { useState, useEffect, useMemo } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useTable, usePagination, useGlobalFilter } from "react-table";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
-import { ButtonLink } from "../../components";
+import { ButtonLink, Input,} from "../../components";
+import { ToastContainer, toast } from "react-toastify";
 import Loader from "../../components/loader";
 import Can from "../../components/utilites/can";
-import { useLocation } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+
+
+
+
 export const Employee = () => {
   const [interviewers, setInterviewers] = useState([]);
   const { token } = useAuth();
@@ -73,6 +77,7 @@ export const Employee = () => {
                 linkText="txt-light txt-sm"
               />
             </Can>
+
           </div>
         ),
       },
@@ -102,7 +107,7 @@ export const Employee = () => {
     useGlobalFilter,
     usePagination
   );
-  if (interviewers.length === 0) return <Loader />;
+  if (interviewers.length === 0) return <Loader/>;
 
   const { globalFilter, pageIndex } = state;
 
@@ -123,18 +128,6 @@ export const Employee = () => {
             <ButtonLink type="button" className="btn-primary" route="create" linkText="txt-light txt-sm" text="Create Interviewer" />
           </div>
         </div>
-        <div className="create-content">
-          <Can permission={"interviewerCreate"}>
-            <ButtonLink
-              type="button"
-              className="btn-primary"
-              route="create"
-              linkText="txt-light txt-sm"
-              text="Create Interviewer"
-            />
-          </Can>
-        </div>
-      </div>
 
         <div className="table-wrap__main">
           <table {...getTableProps()} className="custom-table">
@@ -177,9 +170,8 @@ export const Employee = () => {
             &gt;&gt;
           </button>
         </div>
-      
+      </div>
     </>
-
   );
 };
 

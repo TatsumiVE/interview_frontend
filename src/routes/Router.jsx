@@ -72,6 +72,12 @@ export const Router = () => {
             <Route path="update/:id" element={<InterviewerUpdate />} />
             <Route path="user/create/:id" element={<UserCreate />} />
           </Route>
+          <Route path="interview">
+            <Route index element={<InterviewList />} />
+            <Route path="create" element={<InterviewCreate />} />
+            <Route path="assessment" element={<InterviewAssessment />} />
+            <Route path="result" element={<InterviewResult />} />
+          </Route>
 
           <Route path="interview">
             <Route index element={<InterviewList />} />

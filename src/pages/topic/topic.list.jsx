@@ -98,13 +98,13 @@ export const TopicList = () => {
           />
         </div>
         <div className="create-content">
-          <Can permission={"positionCreate"}>
+          <Can permission={"topicCreate"}>
             <ButtonLink
               type="button"
               className="btn-primary"
               route="create"
               linkText="txt-light txt-sm"
-              text="Create Position"
+              text="Create Topic"
             />
           </Can>
         </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useMutation } from "react-query";
 import { useAuth } from "../../store/AuthContext";
+import { Input,Button,ButtonLink } from "../../components";
 
 export const RateCreate = () => {
   const [name, setName] = useState("");
@@ -26,31 +27,36 @@ export const RateCreate = () => {
     }
   };
 
-  const { mutate: createRate} = useMutation({
+  const { mutate: createRate } = useMutation({
     mutationKey: ["post", "rates"],
     mutationFn: addRate,
   });
 
   return (
-    <>
-      <form
+    <div className="card-min">
+      <div className="card-min__header">
+        <h2>Create Rate</h2>
+      </div>
+      <form className="card-min__form"
         onSubmit={(e) => {
           e.preventDefault();
           createRate();
         }}
       >
-        <input
+        <Input
+          labelName="Name"
           type="text"
           name="name"
           onChange={(e) => setName(e.target.value)}
-          placeholder="Enter name"
+          placeholder="Enter Name..."
+          errorMessage="*"
         />
-        <div>
-          <button type="submit">Submit</button>
-          <button type="button">Cancel</button>
+        <div className="button-group--user">
+          <Button type="submit" text="Create" className="txt-light btn-primary" />
+          <ButtonLink type="button" className="btn-default" route={"/rate"} text="Cancel" linkText="txt-light txt-sm" />
         </div>
       </form>
-    </>
+    </div>
   );
 };
 

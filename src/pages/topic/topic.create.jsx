@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useMutation } from "react-query";
 import { useAuth } from "../../store/AuthContext";
+import { Input, ButtonLink, Button } from "../../components";
 
 export const TopicCreate = () => {
   const [name, setName] = useState("");
@@ -26,31 +27,36 @@ export const TopicCreate = () => {
     }
   };
 
-  const { mutate: createTopic} = useMutation({
+  const { mutate: createTopic } = useMutation({
     mutationKey: ["post", "topics"],
     mutationFn: addTopic,
   });
 
   return (
-    <>
-      <form
+    <div className="card-min">
+      <div className="card-min__header">
+        <h2>Create Topic</h2>
+      </div>
+      <form className="card-min__form"
         onSubmit={(e) => {
           e.preventDefault();
           createTopic();
         }}
       >
-        <input
+        <Input
+          labelName="Name"
           type="text"
           name="name"
           onChange={(e) => setName(e.target.value)}
-          placeholder="Enter name"
+          placeholder="Enter name..."
+          errorMessage="*"
         />
-        <div>
-          <button type="submit">Submit</button>
-          <button type="button">Cancel</button>
+        <div className="button-group--user">
+          <Button type="submit" text="Create" className="txt-light btn-primary" />
+          <ButtonLink type="button" className="btn-default" route={"/topic"} text="Cancel" linkText="txt-light txt-sm" />
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
