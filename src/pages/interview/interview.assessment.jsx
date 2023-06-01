@@ -1,17 +1,18 @@
 import { useQuery, useMutation } from "react-query";
 import { Button, ButtonLink, Dropdown, InputCheckbox } from "../../components";
 import axios from "axios";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import React from "react";
 import { useAuth } from "../../store/AuthContext";
-
+import { useNavigate } from "react-router-dom";
 export const InterviewAssessment = () => {
   const { state } = useLocation();
   const { candidateId, interviewerId } = state;
   const [comment, setComment] = useState("");
   const [grade, setGrade] = useState("");
   const { token } = useAuth();
+  const navigate = useNavigate();
   const grades = [
     { id: 1, name: "A" },
     { id: 2, name: "B" },
@@ -51,25 +52,19 @@ export const InterviewAssessment = () => {
   const {
     data: assessment,
     isLoading: assessmentIsLoading,
-    isSuccess: assessmentIsSuccess,
     isError: assessmentIsError,
-    error: assessmentError,
   } = useQuery(["get", "interview-process"], getAssessmentInfo);
 
   const {
     data: topics,
     isLoading: topicsIsLoading,
-    isSuccess: topicsIsSuccess,
     isError: topicsIsError,
-    error: topicsError,
   } = useQuery(["get", "topics"], getTopics);
 
   const {
     data: rates,
     isLoading: ratesIsLoading,
-    isSuccess: ratesIsSuccess,
     isError: ratesIsError,
-    error: ratesError,
   } = useQuery(["get", "rates"], getRates);
 
   const postAssessment = async (e) => {
@@ -97,7 +92,7 @@ export const InterviewAssessment = () => {
 
   const { mutate: createInterviewAssessment } = useMutation(postAssessment, {
     onSuccess: () => {
-      console.log("Assessment submitted successfully");
+      navigate("/interview");
     },
   });
 
@@ -134,7 +129,6 @@ export const InterviewAssessment = () => {
           name={`rate-${topicId}`}
           value={rate.id}
           placeholder=""
-          onChange={(e) => setTravel(e.target.checked)}
           labelName={rate.name}
         />
       </>
