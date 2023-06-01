@@ -6,7 +6,7 @@ import { ButtonLink } from "../../components";
 import Loader from "../../components/loader";
 import Can from "../../components/utilites/can";
 import departmentService from "../../services/departmentService";
-import { toast,ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useLocation } from "react-router-dom";
 
 export const DepartmentList = () => {
@@ -29,7 +29,6 @@ export const DepartmentList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
-
   }, [departments]);
 
   const columns = useMemo(
@@ -53,8 +52,9 @@ export const DepartmentList = () => {
               type="button"
               className="btn-success"
               route={`update/${row.original.id}`}
-              text="Update"
+              text="Edit"
               linkText="txt-light txt-sm"
+              icon="fa-solid fa-pen-to-square"
             />
           </Can>
         ),
@@ -116,6 +116,7 @@ export const DepartmentList = () => {
                 route="create"
                 linkText="txt-light txt-sm"
                 text="Create Department"
+                icon="fa-solid fa-plus"
               />
             </Can>
           </div>
@@ -172,6 +173,5 @@ export const DepartmentList = () => {
         </div>
       </div>
     </>
-
   );
 };

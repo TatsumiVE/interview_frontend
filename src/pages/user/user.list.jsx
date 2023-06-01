@@ -128,8 +128,9 @@ export const UserList = () => {
                 type="button"
                 className="btn-success"
                 route={`update/${row.original.id}`}
-                text="Update"
+                text="Edit"
                 linkText="txt-light txt-sm"
+                icon="fa-solid fa-pen-to-square"
               />
             </Can>
           </>

@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../../store/AuthContext";
 import { toast } from "react-toastify";
+import { useAuth } from "../../store/AuthContext";
 import { Input, Dropdown, Button, ButtonLink } from "../../components";
 import departmentService from "../../services/departmentService";
 import positionService from "../../services/positionService";
@@ -19,6 +19,7 @@ export const InterviewerUpdate = () => {
     department_id: "",
     position_id: "",
   });
+
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -26,39 +27,36 @@ export const InterviewerUpdate = () => {
   };
   const updateInterviewer = useMutation(async () => {
     try {
-    
       const response = axios.put(
         `http://localhost:8000/api/interviewers/${id}`,
         interviewer,
         config
       );
- 
-      let successMessage = response.data.message;
-   
-      toast.success(successMessage);
-     
-      setTimeout(() => {
-        navigate('/interviewer');
-      }, 1000);  
 
+      let successMessage = response.data.message;
+
+      toast.success(successMessage);
+
+      setTimeout(() => {
+        navigate("/interviewer");
+      }, 1000);
     } catch (error) {
       // setError(error.response.data.err_msg.errors);
       setError(error.response.data.data);
       // console.log(error.response.data.data)
-     
     }
   });
 
   const handleUpdate = (event) => {
-  event.preventDefault();
-  setError({
-    name: "",
-    email: "",
-    department_id: "",
-    position_id: "",
-  });
-  updateInterviewer.mutate();
-};
+    event.preventDefault();
+    setError({
+      name: "",
+      email: "",
+      department_id: "",
+      position_id: "",
+    });
+    updateInterviewer.mutate();
+  };
 
   const getInterviewer = async () => {
     try {
@@ -129,9 +127,7 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error && (
-          <span className="txt-danger txt-ss">{error[0]}</span>
-        )}
+        {error && <span className="txt-danger txt-ss">{error[0]}</span>}
 
         <Input
           labelName="Email"

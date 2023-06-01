@@ -15,7 +15,6 @@ export const PositionList = () => {
   const location = useLocation();
   const { successMessage } = location.state || {};
 
-
   // const {
   //   data: positions,
   //   isLoading: isPositionLoading,
@@ -52,7 +51,7 @@ export const PositionList = () => {
     () => [
       {
         Header: "No.",
-        accessor:'id',
+        accessor: "id",
         // Cell: ({ row }) => {
         //   return <div>{row.index + 1}.</div>;
         // },
@@ -70,8 +69,9 @@ export const PositionList = () => {
               type="button"
               className="btn-success"
               route={`update/${row.original.id}`}
-              text="Update"
+              text="Edit"
               linkText="txt-light txt-sm"
+              icon="fa-solid fa-pen-to-square"
             />
           </Can>
         ),
@@ -133,6 +133,7 @@ export const PositionList = () => {
                 route="create"
                 linkText="txt-light txt-sm"
                 text="Create Position"
+                icon="fa-solid fa-plus"
               />
             </Can>
           </div>
