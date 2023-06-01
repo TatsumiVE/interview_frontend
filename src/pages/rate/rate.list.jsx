@@ -1,34 +1,34 @@
 import { useState, useEffect, useMemo } from "react";
-import axios from "axios";
+import rateService from "../../services/rateService";
 import { useAuth } from "../../store/AuthContext";
 import { useTable, useGlobalFilter, usePagination } from "react-table";
 import { ButtonLink } from "../../components";
-import Can from "../../components/utilites/can";
 import Loader from "../../components/loader";
 import { useQuery } from "react-query";
-import languageService from "../../services/languageService";
+import Can from "../../components/utilites/can";
 import { toast,ToastContainer } from "react-toastify";
 import { useLocation } from "react-router-dom";
 
-export const DevLanguageList = () => {
+export const RateList = () => {
   const { token } = useAuth();
-  const [devlanguageList, setDevlanguageList] = useState([]);
+  const [RateList, setRateList] = useState([]);
   const location = useLocation();
   const { successMessage } = location.state || {};
+
   const {
-    data: languages,
-    isLoading: isLanguageLoading,
-    isError: isLanguageError,
-    isSuccess: isLanguageSuccess,
-    error: languageError,
-  } = useQuery(["get", "languages"], () => languageService.getAll(token));
+    data: rates,
+    isLoading: isRateLoading,
+    isError: isRateError,
+    isSuccess: isRateSuccess,
+    error: rateError,
+  } = useQuery(["get", "rates"], () => rateService.getAll(token));
 
   useEffect(() => {
-    languages && setDevlanguageList(languages);
+    rates && setRateList(rates);
     if (successMessage) {
       toast.success(successMessage);
     }
-  }, [languages]);
+  }, [rates]);
 
   const columns = useMemo(
     () => [
@@ -46,7 +46,7 @@ export const DevLanguageList = () => {
         Header: "Action",
         accessor: "action",
         Cell: ({ row }) => (
-          <Can permission={"languageUpdate"}>
+          <Can permission={"rateUpdate"}>
             <ButtonLink
               type="button"
               className="btn-success"
@@ -61,7 +61,7 @@ export const DevLanguageList = () => {
     []
   );
 
-  const data = useMemo(() => devlanguageList || [], [devlanguageList]);
+  const data = useMemo(() => RateList || [], [RateList]);
 
   const {
     getTableProps,
@@ -89,9 +89,10 @@ export const DevLanguageList = () => {
   );
 
   const { globalFilter, pageIndex } = state;
-  if (isLanguageLoading) return <Loader />;
-  if (isLanguageError) return "Something went wrong...";
-  if (languageError) return `An error has occurred: ${languageError.message}`;
+  if (isRateLoading) return <Loader />;
+  if (isRateError) return "Something went wrong...";
+  if (rateError) return `An error has occurred: ${rateError.message}`;
+
   return (
     <>
     <ToastContainer position="top-right" autoClose={5000} />
@@ -106,13 +107,13 @@ export const DevLanguageList = () => {
           />
         </div>
         <div className="create-content">
-          <Can permission={"languageCreate"}>
+          <Can permission={"rateCreate"}>
             <ButtonLink
               type="button"
               className="btn-primary"
               route="create"
               linkText="txt-light txt-sm"
-              text="Create Language"
+              text="Create Rate"
             />
           </Can>
         </div>
@@ -144,7 +145,6 @@ export const DevLanguageList = () => {
           </tbody>
         </table>
       </div>
-
       <div className="table-wrap__pagination">
         <button
           onClick={() => previousPage()}

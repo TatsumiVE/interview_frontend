@@ -9,7 +9,7 @@ input[type='number'],
 .select{
   width: 300px;
   height: 40px;
-  padding-left:5px;
+  // padding-left:5px;
   border-radius: 4px;
   border:1px solid;
   border-color: map-get($colors,primary); 
@@ -25,3 +25,9 @@ label{
   margin: 0 0 5px 0px;
   font-size:map-get($font-size,sm);
 }
+
+.input-form {
+  input{ 
+    padding-left: 5px;  
+ 
+}}

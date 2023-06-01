@@ -34,6 +34,12 @@ import {
   DevLanguageList,
   DevLanguageCreate,
   DevLanguageUpdate,
+  RateList,
+  RateCreate,
+  RateUpdate,
+  TopicList,
+  TopicCreate,
+  TopicUpdate,
 } from "../pages";
 
 import { Layout } from "../components";
@@ -102,6 +108,17 @@ export const Router = () => {
             <Route index element={<PositionList />} />
             <Route path="create" element={<PositionCreate />} />
             <Route path="update/:id" element={<PositionUpdate />} />
+          </Route>
+
+          <Route path="rate">
+            <Route index element={<RateList />} />
+            <Route path="create" element={<RateCreate />} />
+            <Route path="update/:id" element={<RateUpdate/>} />
+          </Route>
+          <Route path="topic">
+            <Route index element={<TopicList />} />
+            <Route path="create" element={<TopicCreate />} />
+            <Route path="update/:id" element={<TopicUpdate/>} />
           </Route>
 
           <Route path="devlanguage">

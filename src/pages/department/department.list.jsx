@@ -6,9 +6,14 @@ import { ButtonLink } from "../../components";
 import Loader from "../../components/loader";
 import Can from "../../components/utilites/can";
 import departmentService from "../../services/departmentService";
+import { toast,ToastContainer } from "react-toastify";
+import { useLocation } from "react-router-dom";
+
 export const DepartmentList = () => {
   const { token } = useAuth();
   const [departmentList, setDepartmentList] = useState([]);
+  const location = useLocation();
+  const { successMessage } = location.state || {};
 
   const {
     data: departments,
@@ -20,6 +25,11 @@ export const DepartmentList = () => {
 
   useEffect(() => {
     departments && isDepartmentSuccess && setDepartmentList(departments);
+
+    if (successMessage) {
+      toast.success(successMessage);
+    }
+
   }, [departments]);
 
   const columns = useMemo(
@@ -86,78 +96,82 @@ export const DepartmentList = () => {
   if (departmentError)
     return `An error has occurred: ${departmentError.message}`;
   return (
-    <div className="table-wrap">
-      <div className="table-wrap__head">
-        <div className="search-content">
-          <input
-            type="text"
-            value={globalFilter || ""}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="Search..."
-          />
-        </div>
-        <div className="create-content">
-          <Can permission={"departmentCreate"}>
-            <ButtonLink
-              type="button"
-              className="btn-primary"
-              route="create"
-              linkText="txt-light txt-sm"
-              text="Create Department"
+    <>
+      <ToastContainer position="top-right" autoClose={5000} />
+      <div className="table-wrap">
+        <div className="table-wrap__head">
+          <div className="search-content">
+            <input
+              type="text"
+              value={globalFilter || ""}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              placeholder="Search..."
             />
-          </Can>
+          </div>
+          <div className="create-content">
+            <Can permission={"departmentCreate"}>
+              <ButtonLink
+                type="button"
+                className="btn-primary"
+                route="create"
+                linkText="txt-light txt-sm"
+                text="Create Department"
+              />
+            </Can>
+          </div>
         </div>
-      </div>
 
-      <div className="table-wrap__main">
-        <table {...getTableProps()} className="custom-table">
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+        <div className="table-wrap__main">
+          <table {...getTableProps()} className="custom-table">
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </th>
                   ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className="table-wrap__pagination">
+          <button
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+            className="txt-primary"
+          >
+            &lt;&lt;
+          </button>
+          <span className="page-content">
+            Page {""}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>
+          </span>
+          <button
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+            className="txt-primary"
+          >
+            &gt;&gt;
+          </button>
+        </div>
       </div>
-      <div className="table-wrap__pagination">
-        <button
-          onClick={() => previousPage()}
-          disabled={!canPreviousPage}
-          className="txt-primary"
-        >
-          &lt;&lt;
-        </button>
-        <span className="page-content">
-          Page {""}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>
-        </span>
-        <button
-          onClick={() => nextPage()}
-          disabled={!canNextPage}
-          className="txt-primary"
-        >
-          &gt;&gt;
-        </button>
-      </div>
-    </div>
+    </>
+
   );
 };

@@ -1,13 +1,16 @@
-import React, { useMemo, useEffect, useState } from "react";
-import { useTable, useGlobalFilter, usePagination } from "react-table";
-import { useLocation, useParams } from "react-router-dom";
-import axios from "axios";
+import React, { useMemo, useEffect, useState } from 'react';
+import { useTable, useGlobalFilter, usePagination } from 'react-table';
+import { useLocation, useParams } from 'react-router-dom';
+import axios from 'axios';
 import { useAuth } from "../../store/AuthContext";
-import { ButtonLink } from "../../components";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Loader from "../../components/loader";
-import Can from "../../components/utilites/can";
+import { ButtonLink } from '../../components';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Loader from '../../components/loader';
+import Can from '../../components/utilites/can';
+import Switch from '@mui/material/Switch';
+import { FormControlLabel } from '@mui/material';
+import { useMutation } from 'react-query';
 
 export const UserList = () => {
   const { id } = useParams();
@@ -21,6 +24,32 @@ export const UserList = () => {
       Authorization: `Bearer ${token}`,
     },
   };
+
+  const handleChange = async (userId) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/user/${userId}`,
+        { status: 0 }, 
+        config
+      );
+  
+      const updatedUsers = users.map((user) => {
+        if (user.id === userId) {
+          return {
+            ...user,
+            status: 0,
+          };
+        }
+        return user;
+      });
+      setUsers(updatedUsers);
+  
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +103,22 @@ export const UserList = () => {
       { Header: "Name", accessor: "interviewer_id.name" },
       { Header: "Email", accessor: "interviewer_id.email" },
       { Header: "Role", accessor: "role[0].name" },
+      {
+        Header: "Status",
+        accessor: "status",
+        Cell: ({ row }) => (
+          <FormControlLabel
+            control={
+              <Switch               
+                defaultChecked={row.original.status === 1}
+                onChange={() => handleChange(row.original.id)}
+                
+              />
+            }
+            label=""
+          />
+        ),
+      },
       {
         Header: "Action",
         Cell: ({ row }) => (

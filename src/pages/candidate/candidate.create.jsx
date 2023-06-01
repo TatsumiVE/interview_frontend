@@ -147,6 +147,7 @@ export const CandidateCreate = () => {
                 onChange={(e) => setName(e.target.value)}
                 errorMessage="*"
               />
+              
               <Input
                 labelName="Email"
                 type="email"

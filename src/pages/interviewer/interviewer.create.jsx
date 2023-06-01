@@ -12,8 +12,8 @@ export const InterviewerCreate = () => {
   const [position_id, setPosition] = useState("");
   const [department_id, setDepartment] = useState("");
   const { token } = useAuth();
-  const [error,setError] = useState("");
-  const navigate= useNavigate();
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const config = {
     headers: {
@@ -58,19 +58,21 @@ export const InterviewerCreate = () => {
         { name, email, department_id, position_id },
         config
       );
-    
+
+      console.log(response.data.message);
+
       let successMessage = response.data.message;
 
       toast.success(successMessage);
-     
+
       setTimeout(() => {
         navigate('/interviewer');
-      }, 1000);  
+      }, 1000);
 
-      return response;
-    
+
+
     } catch (error) {
-       setError(error.response.data.err_msg.errors);
+      setError(error.response.data.err_msg.errors);
     }
   };
 
@@ -132,9 +134,14 @@ export const InterviewerCreate = () => {
 
         <div className="button-group--user">
           <Button type="submit" text="Create" className="txt-light btn-primary" />
-          <ButtonLink type="button" className="btn-default" route={"/interviewer"} text="Cancel" linkText="txt-light txt-sm"/>
+          <ButtonLink type="button" className="btn-default" route={"/interviewer"} text="Cancel" linkText="txt-light txt-sm" />
         </div>
       </form>
     </div>
   );
 };
+
+
+
+
+

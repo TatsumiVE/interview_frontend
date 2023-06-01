@@ -3,9 +3,13 @@ import axios from "axios";
 import { useMutation } from "react-query";
 import { useAuth } from "../../store/AuthContext";
 import { Button, ButtonLink, Input } from "../../components";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const PositionCreate = () => {
+    const navigate = useNavigate();
     const [name, setName] = useState("");
+    const [error,setError]= useState([]);
     const { token } = useAuth();
 
     const config = {
@@ -21,9 +25,17 @@ export const PositionCreate = () => {
                 { name },
                 config
             );
-            console.log(response.data);
+            
+            let successMessage = response.data.message;
+
+            toast.success(successMessage);
+
+            setTimeout(() => {
+                navigate('/position');
+            }, 1000);
+           
         } catch (error) {
-            console.error(error);
+            setError(error.response.data.err_msg.errors)
         }
     };
 
@@ -50,7 +62,9 @@ export const PositionCreate = () => {
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Enter Name..."
                     errorMessage="*"
-                />
+                /> 
+                {error && <span className="txt-danger txt-ss">{error.name}</span>}
+
                 <div className="button-group--user">
                     <Button type="submit" text="Create" className="txt-light btn-primary" />
                     <ButtonLink type="button" className="btn-default" route={"/position"} text="Cancel" linkText="txt-light txt-sm" />
