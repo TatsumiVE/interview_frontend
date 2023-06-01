@@ -1,204 +1,163 @@
 import { useState, useEffect, useMemo } from "react";
-import axios from "axios";
+import { useQuery } from "react-query";
 import { useAuth } from "../../store/AuthContext";
-import { Link } from "react-router-dom";
 import { useTable, useGlobalFilter, usePagination } from "react-table";
 import { ButtonLink } from "../../components";
-
+import Loader from "../../components/loader";
+import Can from "../../components/utilites/can";
+import departmentService from "../../services/departmentService";
 export const DepartmentList = () => {
-    const { token } = useAuth();
-    const [departmentList, setDepartmentList] = useState([]);
+  const { token } = useAuth();
+  const [departmentList, setDepartmentList] = useState([]);
 
-    useEffect(() => {
-        const getDepartment = async () => {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            };
+  const {
+    data: departments,
+    isLoading: isDepartmentLoading,
+    isError: isDepartmentError,
+    isSuccess: isDepartmentSuccess,
+    error: departmentError,
+  } = useQuery(["get", "positions"], () => departmentService.getAll(token));
 
-            try {
-                const response = await axios.get(
-                    "http://127.0.0.1:8000/api/departments",
-                    config
-                );
-                setDepartmentList(response.data.data);
-            } catch (error) {
-                // Handle error
-            }
-        };
+  useEffect(() => {
+    departments && isDepartmentSuccess && setDepartmentList(departments);
+  }, [departments]);
 
-        getDepartment();
-    }, [token]);
-
-    const columns = useMemo(
-        () => [
-            {
-                Header: "Department Id",
-                accessor: "id",
-            },
-            {
-                Header: "Name",
-                accessor: "name",
-            },
-            {
-                Header: "Action",
-                accessor: "action",
-                Cell: ({ row }) => (
-                    <ButtonLink type="button" className="btn-success" route={`update/${row.original.id}`} text="Update" linkText="txt-light txt-sm" />
-                ),
-            },
-        ],
-        []
-    );
-
-    const data = useMemo(() => departmentList || [], [departmentList]);
-
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-        state,
-        setGlobalFilter,
-        nextPage,
-        previousPage,
-        canNextPage,
-        canPreviousPage,
-        pageOptions,
-        gotoPage,
-        pageCount,
-    } = useTable(
-        {
-            columns,
-            data,
-            initialState: { pageIndex: 0 },
+  const columns = useMemo(
+    () => [
+      {
+        Header: "No.",
+        Cell: ({ row }) => {
+          return <div>{row.index + 1}.</div>;
         },
-        useGlobalFilter,
-        usePagination
-    );
+      },
+      {
+        Header: "Name",
+        accessor: "name",
+      },
+      {
+        Header: "Action",
+        accessor: "action",
+        Cell: ({ row }) => (
+          <Can permission={"departmentUpdate"}>
+            <ButtonLink
+              type="button"
+              className="btn-success"
+              route={`update/${row.original.id}`}
+              text="Update"
+              linkText="txt-light txt-sm"
+            />
+          </Can>
+        ),
+      },
+    ],
+    []
+  );
 
-    const { globalFilter, pageIndex } = state;
+  const data = useMemo(() => departmentList || [], [departmentList]);
 
-    return (
-        <div className="table-wrap">
-            <div className="table-wrap__head">
-                <div className="search-content">
-                    <input
-                        type="text"
-                        value={globalFilter || ""}
-                        onChange={(e) => setGlobalFilter(e.target.value)}
-                        placeholder="Search..."
-                    />
-                </div>
-                <div className="create-content">
-                    <ButtonLink type="button" className="btn-primary" route="create" linkText="txt-light txt-sm" text="Create Department" />
-                </div>
-            </div>
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state,
+    setGlobalFilter,
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage,
+    pageOptions,
+    gotoPage,
+    pageCount,
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0 },
+    },
+    useGlobalFilter,
+    usePagination
+  );
 
-            <div className="table-wrap__main">
-                <table {...getTableProps()} className="custom-table">
-                    <thead>
-                        {headerGroups.map((headerGroup) => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map((column) => (
-                                    <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-                                ))}
-                            </tr>
-                        ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                        {rows.map((row) => {
-                            prepareRow(row);
-                            return (
-                                <tr {...row.getRowProps()}>
-                                    {row.cells.map((cell) => (
-                                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                                    ))}
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-            </div>
-            <div className="table-wrap__pagination">
-                <button onClick={() => previousPage()} disabled={!canPreviousPage} className="txt-primary">
-                   &lt;&lt;
-                </button>
-                <span className="page-content">
-                    Page {""}
-                    <strong>
-                        {pageIndex + 1} of {pageOptions.length}
-                    </strong>
-                </span>
-                <button onClick={() => nextPage()} disabled={!canNextPage} className="txt-primary">
-                    &gt;&gt;
-                </button>
-            </div>
+  const { globalFilter, pageIndex } = state;
+  if (isDepartmentLoading) return <Loader />;
+  if (isDepartmentError) return "Something went wrong...";
+  if (departmentError)
+    return `An error has occurred: ${departmentError.message}`;
+  return (
+    <div className="table-wrap">
+      <div className="table-wrap__head">
+        <div className="search-content">
+          <input
+            type="text"
+            value={globalFilter || ""}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder="Search..."
+          />
         </div>
-    );
+        <div className="create-content">
+          <Can permission={"departmentCreate"}>
+            <ButtonLink
+              type="button"
+              className="btn-primary"
+              route="create"
+              linkText="txt-light txt-sm"
+              text="Create Department"
+            />
+          </Can>
+        </div>
+      </div>
+
+      <div className="table-wrap__main">
+        <table {...getTableProps()} className="custom-table">
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div className="table-wrap__pagination">
+        <button
+          onClick={() => previousPage()}
+          disabled={!canPreviousPage}
+          className="txt-primary"
+        >
+          &lt;&lt;
+        </button>
+        <span className="page-content">
+          Page {""}
+          <strong>
+            {pageIndex + 1} of {pageOptions.length}
+          </strong>
+        </span>
+        <button
+          onClick={() => nextPage()}
+          disabled={!canNextPage}
+          className="txt-primary"
+        >
+          &gt;&gt;
+        </button>
+      </div>
+    </div>
+  );
 };
-
-// import axios from "axios";
-// import { useQuery } from "react-query";
-// import { Link } from "react-router-dom";
-// import { useAuth } from "../../store/AuthContext"
-
-// export const DepartmentList = () => {
-
-//   const {token} = useAuth();
-
-//   const getDepartment = async () => {
-//     const config = {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     };
-
-//     const response = await axios.get(
-//       "http://127.0.0.1:8000/api/departments",
-//       config
-//     );
-//     return response.data.data;
-//   };
-
-//   const {
-//     data:departmentList
-//   } = useQuery({
-//     queryKey:["get","departments"],
-//     queryFn:getDepartment,
-//   });
-
-//   return(
-//     <>
-//     <div>
-//     <button type="button">
-//       <Link to="/department/create">Department Create</Link>
-//     </button>     
-//     </div>
-//     <table>
-//       <thead>
-//         <tr>
-//           <th>Id</th>
-//           <th>Name</th>
-//           <th>Action</th>
-//         </tr>
-//       </thead>
-//       <tbody>
-//       {departmentList && departmentList.map((depapartment) => (
-//         <tr key={depapartment.id}>
-//           <td>{depapartment.id}</td>
-//           <td>{depapartment.name}</td>
-//           <td>
-//             <button type="button">
-//               <Link to={`update/${depapartment.id}`}>Department Update</Link>
-//             </button>
-//           </td>
-//         </tr>
-//       ))}
-//       </tbody>
-//     </table>
-//     </>
-//   )
-// }

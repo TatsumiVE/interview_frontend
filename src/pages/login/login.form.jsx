@@ -25,7 +25,7 @@ export const LoginForm = () => {
 
   return (
     <form className="login-form" onSubmit={handleFormSubmit}>
-      <header className="form-header">Welcome back!</header>
+      <header className="form-header">Welcome from AcePlus !</header>
       <p className="form-desc">
         Start managing your business faster and better
       </p>

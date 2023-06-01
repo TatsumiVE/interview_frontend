@@ -1,41 +1,34 @@
 import { useState, useEffect, useMemo } from "react";
-import axios from "axios";
+import positionService from "../../services/positionService";
 import { useAuth } from "../../store/AuthContext";
-import { Link } from "react-router-dom";
 import { useTable, useGlobalFilter, usePagination } from "react-table";
 import { ButtonLink } from "../../components";
-
+import Loader from "../../components/loader";
+import { useQuery } from "react-query";
+import Can from "../../components/utilites/can";
 export const PositionList = () => {
   const { token } = useAuth();
   const [PositionList, setPositionList] = useState([]);
 
+  const {
+    data: positions,
+    isLoading: isPositionLoading,
+    isError: isPositionError,
+    isSuccess: isPositionSuccess,
+    error: positionError,
+  } = useQuery(["get", "positions"], () => positionService.getAll(token));
+
   useEffect(() => {
-    const getPosition = async () => {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/positions",
-          config
-        );
-        setPositionList(response.data.data);
-      } catch (error) {
-        // Handle error
-      }
-    };
-
-    getPosition();
-  }, [token]);
+    positions && setPositionList(positions);
+  }, [positions]);
 
   const columns = useMemo(
     () => [
       {
-        Header: "Position Id",
-        accessor: "id",
+        Header: "No.",
+        Cell: ({ row }) => {
+          return <div>{row.index + 1}.</div>;
+        },
       },
       {
         Header: "Name",
@@ -45,7 +38,15 @@ export const PositionList = () => {
         Header: "Action",
         accessor: "action",
         Cell: ({ row }) => (
-          <ButtonLink type="button" className="btn-success" route={`update/${row.original.id}`} text="Update" linkText="txt-light txt-sm" />
+          <Can permission={"positionUpdate"}>
+            <ButtonLink
+              type="button"
+              className="btn-success"
+              route={`update/${row.original.id}`}
+              text="Update"
+              linkText="txt-light txt-sm"
+            />
+          </Can>
         ),
       },
     ],
@@ -80,6 +81,9 @@ export const PositionList = () => {
   );
 
   const { globalFilter, pageIndex } = state;
+  if (isPositionLoading) return <Loader />;
+  if (isPositionError) return "Something went wrong...";
+  if (positionError) return `An error has occurred: ${positionError.message}`;
 
   return (
     <div className="table-wrap">
@@ -93,36 +97,50 @@ export const PositionList = () => {
           />
         </div>
         <div className="create-content">
-          <ButtonLink type="button" className="btn-primary" route="create" linkText="txt-light txt-sm" text="Create Position" />
+          <Can permission={"positionCreate"}>
+            <ButtonLink
+              type="button"
+              className="btn-primary"
+              route="create"
+              linkText="txt-light txt-sm"
+              text="Create Position"
+            />
+          </Can>
         </div>
       </div>
-     <div className="table-wrap__main">
-     <table {...getTableProps()} className="custom-table">
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+      <div className="table-wrap__main">
+        <table {...getTableProps()} className="custom-table">
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                  </th>
                 ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-     </div>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       <div className="table-wrap__pagination">
-        <button onClick={() => previousPage()} disabled={!canPreviousPage} className="txt-primary">
+        <button
+          onClick={() => previousPage()}
+          disabled={!canPreviousPage}
+          className="txt-primary"
+        >
           &lt;&lt;
         </button>
         <span className="page-content">
@@ -131,7 +149,11 @@ export const PositionList = () => {
             {pageIndex + 1} of {pageOptions.length}
           </strong>
         </span>
-        <button onClick={() => nextPage()} disabled={!canNextPage} className="txt-primary">
+        <button
+          onClick={() => nextPage()}
+          disabled={!canNextPage}
+          className="txt-primary"
+        >
           &gt;&gt;
         </button>
       </div>

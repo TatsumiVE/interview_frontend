@@ -1,2 +1,1 @@
-
-export const Title = () => <h1 className="title">IMS</h1>;
+export const Title = () => <h className="title">Interview Management System</h>;

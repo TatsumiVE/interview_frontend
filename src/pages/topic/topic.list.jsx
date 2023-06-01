@@ -1,59 +1,27 @@
-
-
-import { useMemo, useEffect, useState } from "react";
-import { useTable, useGlobalFilter, usePagination } from "react-table";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useState, useEffect, useMemo } from "react";
+import topicService from "../../services/topicService";
 import { useAuth } from "../../store/AuthContext";
+import { useTable, useGlobalFilter, usePagination } from "react-table";
 import { ButtonLink } from "../../components";
-import Can from "../../components/utilites/can";
 import Loader from "../../components/loader";
-export const UserList = () => {
-  const { id } = useParams();
-  const [users, setUsers] = useState([]);
+import { useQuery } from "react-query";
+import Can from "../../components/utilites/can";
+
+export const TopicList = () => {
   const { token } = useAuth();
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  const [TopicList, setTopicList] = useState([]);
+
+  const {
+    data: topics,
+    isLoading: isTopicLoading,
+    isError: isTopicError,
+    isSuccess: istopicSuccess,
+    error: topicError,
+  } = useQuery(["get", "topics"], () => topicService.getAll(token));
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const usersResponse = await axios.get(
-          "http://localhost:8000/api/users",
-          config
-        );
-        const users = usersResponse.data.data;
-
-        const interviewerResponse = await axios.get(
-          "http://localhost:8000/api/interviewers",
-          config
-        );
-        const interviewers = interviewerResponse.data.data;
-
-        const filteredUsers = users.filter((user) => user.interviewer === id);
-        const usersWithInterviewers = filteredUsers.map((user) => {
-          const interviewer = interviewers.find(
-            (interviewer) => interviewer.id === user.interviewer
-          );
-
-          return {
-            ...user,
-            interviewer: interviewer || {},
-          };
-        });
-        setUsers(usersWithInterviewers);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
-  }, [id]);
-
-  const data = useMemo(() => users, [users]);
+    topics && setTopicList(topics);
+  }, [topics]);
 
   const columns = useMemo(
     () => [
@@ -63,47 +31,50 @@ export const UserList = () => {
           return <div>{row.index + 1}.</div>;
         },
       },
-      { Header: "Name", accessor: "interviewer_id.name" },
-      { Header: "Email", accessor: "interviewer_id.email" },
-      { Header: "Role", accessor: "role[0].name" },
+      {
+        Header: "Name",
+        accessor: "name",
+      },
       {
         Header: "Action",
+        accessor: "action",
         Cell: ({ row }) => (
-          <>
-            <Can permission={"userUpdate"}>
-              <ButtonLink
-                type="button"
-                className="btn-success"
-                route={`update/${row.original.id}`}
-                text="Update"
-                linkText="txt-light txt-sm"
-              />
-            </Can>
-          </>
+          <Can permission={"topicUpdate"}>
+            <ButtonLink
+              type="button"
+              className="btn-success"
+              route={`update/${row.original.id}`}
+              text="Update"
+              linkText="txt-light txt-sm"
+            />
+          </Can>
         ),
       },
     ],
     []
   );
 
+  const data = useMemo(() => TopicList || [], [TopicList]);
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
-    page,
     prepareRow,
     state,
     setGlobalFilter,
-    pageOptions,
     nextPage,
     previousPage,
     canNextPage,
     canPreviousPage,
+    pageOptions,
+    gotoPage,
+    pageCount,
   } = useTable(
     {
       columns,
-      data: users,
+      data,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -111,7 +82,10 @@ export const UserList = () => {
   );
 
   const { globalFilter, pageIndex } = state;
-  if (users.length === 0) return <Loader />;
+  if (isTopicLoading) return <Loader />;
+  if (isTopicError) return "Something went wrong...";
+  if (topicError) return `An error has occurred: ${topicError.message}`;
+
   return (
     <div className="table-wrap">
       <div className="table-wrap__head">
@@ -122,6 +96,17 @@ export const UserList = () => {
             onChange={(e) => setGlobalFilter(e.target.value)}
             placeholder="Search..."
           />
+        </div>
+        <div className="create-content">
+          <Can permission={"positionCreate"}>
+            <ButtonLink
+              type="button"
+              className="btn-primary"
+              route="create"
+              linkText="txt-light txt-sm"
+              text="Create Position"
+            />
+          </Can>
         </div>
       </div>
       <div className="table-wrap__main">
@@ -138,7 +123,7 @@ export const UserList = () => {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {page.map((row, i) => {
+            {rows.map((row) => {
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()}>
@@ -151,7 +136,6 @@ export const UserList = () => {
           </tbody>
         </table>
       </div>
-
       <div className="table-wrap__pagination">
         <button
           onClick={() => previousPage()}
@@ -161,7 +145,7 @@ export const UserList = () => {
           &lt;&lt;
         </button>
         <span className="page-content">
-          Page{" "}
+          Page
           <strong>
             {pageIndex + 1} of {pageOptions.length}
           </strong>
