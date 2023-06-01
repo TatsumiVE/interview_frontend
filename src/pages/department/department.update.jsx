@@ -4,7 +4,7 @@ import { useAuth } from "../../store/AuthContext";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { Button, ButtonLink, Input } from "../../components";
-import { toast } from "react-toastify";
+
 export const DepartmentUpdate = () => {
   const { id } = useParams();
 
