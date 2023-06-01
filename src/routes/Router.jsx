@@ -112,6 +112,7 @@ export const Router = () => {
         </Route>
       ) : (
         <Route path="/">
+          <Route index element={<Login />} />
           <Route path="login" element={<Login />} />
           <Route path="*" element={<Navigate to="login" replace />} />
         </Route>

@@ -19,7 +19,7 @@ export const Dropdown = ({
       </label>
       <select onChange={onChange} className="select">
         {!hide && (
-          <option key="0" value="">
+          <option key="0" value="" disabled>
             Select {labelName}
           </option>
         )}
@@ -27,7 +27,8 @@ export const Dropdown = ({
           <option
             key={option.id}
             value={option.id}
-            // selected={selectedValue === option.name}
+            selected={option.selected}
+            disabled={option.disabled}
           >
             {option.name}
           </option>
