@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "react-query";
-import { Button, ButtonLink, Dropdown,InputCheckbox } from "../../components";
+import { Button, ButtonLink, Dropdown, InputCheckbox } from "../../components";
 import axios from "axios";
 import { useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
@@ -147,7 +147,6 @@ export const InterviewAssessment = () => {
         <h2>Interview Assessment Form</h2>
       </div>
       <form onSubmit={createInterviewAssessment} className="card__form">
-     
         <div className="card__txt">
           <div>
             <h3 className="txt-default">Candidate Name</h3>
@@ -160,12 +159,10 @@ export const InterviewAssessment = () => {
           <div>
             <h3 className="txt-default">Date</h3>
             <h3>{data.interview_stage.interview_date}</h3>
-
           </div>
           <div>
             <h3 className="txt-default">Time</h3>
             <h3>{data.interview_stage.interview_time}</h3>
-           
           </div>
         </div>
         <div className="card__txt">
@@ -173,10 +170,10 @@ export const InterviewAssessment = () => {
             <h3 className="txt-default">Interview Stage</h3>
             <h3>
               {interviewStage === 1
-                ? "First Interview" :
-                interviewStage === 2
-                  ? "Technical Interview"
-                  : "Final Interview"}
+                ? "First Interview"
+                : interviewStage === 2
+                ? "Technical Interview"
+                : "Final Interview"}
             </h3>
           </div>
           <div>
@@ -185,24 +182,25 @@ export const InterviewAssessment = () => {
               {data.interview_stage.location === 1 ? "Online" : "In Person"}
             </h3>
           </div>
-         
         </div>
         <div className="card__question">
           <div className="question__title">
             <h3 className="question__topic txt-default">Questions</h3>
-            <h3 className="question__rate txt-default">Rates <span className="txt-danger">*</span></h3>
+            <h3 className="question__rate txt-default">
+              Rates <span className="txt-danger">*</span>
+            </h3>
           </div>
           <div className="question__body">
-           
             {topics.map((topic) => (
               <React.Fragment key={topic.id}>
                 <div className="question-card">
                   <div className="topic">{topic.name}</div>
-                  <div className="rate radio-group">{renderRateOptions(topic.id)}</div>
+                  <div className="rate radio-group">
+                    {renderRateOptions(topic.id)}
+                  </div>
                 </div>
               </React.Fragment>
             ))}
-           
           </div>
         </div>
         <div className="card__txt">
@@ -220,7 +218,9 @@ export const InterviewAssessment = () => {
           </div>
         </div>
 
-        <label className="comment-label">Comment <span className="txt-danger">*</span></label>
+        <label className="comment-label">
+          Comment <span className="txt-danger">*</span>
+        </label>
         <textarea
           name="comment"
           className="comment-box"
@@ -228,7 +228,6 @@ export const InterviewAssessment = () => {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         ></textarea>
-
 
         <Dropdown
           labelName="Grade"
@@ -239,10 +238,19 @@ export const InterviewAssessment = () => {
         />
 
         <div className="button-group--user">
-          <Button type="submit" className="txt-light btn-primary" text="Create" />
-          <ButtonLink type="button" className="btn-default" route={"/interview"} text="Cancel" linkText="txt-light txt-sm"/>
+          <Button
+            type="submit"
+            className="txt-light btn-primary"
+            text="Create"
+          />
+          <ButtonLink
+            type="button"
+            className="btn-default"
+            route={"/interview"}
+            text="Cancel"
+            linkText="txt-light txt-sm"
+          />
         </div>
-      
       </form>
     </div>
   );

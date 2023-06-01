@@ -86,8 +86,6 @@ export const Router = () => {
             <Route path="result" element={<InterviewResult />} />
           </Route>
 
-          <Route path="*" element={<NotFound />} />
-
           <Route path="user">
             <Route index element={<UserList />} />
             <Route path="update/:id" element={<UserUpdate />} />
@@ -113,12 +111,12 @@ export const Router = () => {
           <Route path="rate">
             <Route index element={<RateList />} />
             <Route path="create" element={<RateCreate />} />
-            <Route path="update/:id" element={<RateUpdate/>} />
+            <Route path="update/:id" element={<RateUpdate />} />
           </Route>
           <Route path="topic">
             <Route index element={<TopicList />} />
             <Route path="create" element={<TopicCreate />} />
-            <Route path="update/:id" element={<TopicUpdate/>} />
+            <Route path="update/:id" element={<TopicUpdate />} />
           </Route>
 
           <Route path="devlanguage">
@@ -134,6 +132,8 @@ export const Router = () => {
           <Route path="*" element={<Navigate to="login" replace />} />
         </Route>
       )}
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
