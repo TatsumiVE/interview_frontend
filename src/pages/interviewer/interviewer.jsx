@@ -1,13 +1,19 @@
 import { useState, useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { useTable, usePagination, useGlobalFilter } from "react-table";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { ButtonLink } from "../../components";
+import { ToastContainer, toast } from "react-toastify";
 import Loader from "../../components/loader";
 import Can from "../../components/utilites/can";
+
 export const Employee = () => {
   const [interviewers, setInterviewers] = useState([]);
   const { token } = useAuth();
+  const location = useLocation();
+  const { successMessage } = location.state || {};
+
   const getInterviewers = async () => {
     const config = {
       headers: {
@@ -25,9 +31,13 @@ export const Employee = () => {
     const fetchInterviewers = async () => {
       const data = await getInterviewers();
       setInterviewers(data);
+
+      if (successMessage) {
+        toast.success(successMessage);
+      }
     };
     fetchInterviewers();
-  }, []);
+  }, [successMessage]);
 
   const columns = useMemo(
     () => [
@@ -56,11 +66,11 @@ export const Employee = () => {
               />
             </Can>
             &nbsp;
-            <Can permission={"userUpdate"}>
+            <Can permission={"interviewerUpdate"}>
               <ButtonLink
                 type="button"
                 className="btn-success"
-                route={`/user/update/${row.original.id}`}
+                route={`/interviewer/update/${row.original.id}`}
                 text="Edit"
                 linkText="txt-light txt-sm"
                 icon="fa-solid fa-pen-to-square"
@@ -100,80 +110,80 @@ export const Employee = () => {
   const { globalFilter, pageIndex } = state;
 
   return (
-    <div className="table-wrap">
-      <div className="table-wrap__head">
-        <div className="search-content">
-          <input
-            type="text"
-            value={globalFilter || ""}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="Search..."
-          />
-        </div>
-        <div className="create-content">
-          <Can permission={"interviewerCreate"}>
+    <>
+      <ToastContainer position="top-right" autoClose={5000} />
+      <div className="table-wrap">
+        <div className="table-wrap__head">
+          <div className="search-content">
+            <input
+              type="text"
+              value={globalFilter || ""}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              placeholder="Search..."
+            />
+          </div>
+          <div className="create-content">
             <ButtonLink
               type="button"
               className="btn-primary"
               route="create"
               linkText="txt-light txt-sm"
               text="Create Interviewer"
-              icon="fa-solid fa-plus"
             />
-          </Can>
+          </div>
         </div>
-      </div>
 
-      <div className="table-wrap__main">
-        <table {...getTableProps()} className="custom-table">
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+        <div className="table-wrap__main">
+          <table {...getTableProps()} className="custom-table">
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </th>
                   ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {page.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className="table-wrap__pagination">
+          <button
+            type="button"
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+            className="txt-primary"
+          >
+            &lt;&lt;
+          </button>
+          <span className="page-content">
+            Page {""}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>
+          </span>
+          <button
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+            className="txt-primary"
+          >
+            &gt;&gt;
+          </button>
+        </div>
       </div>
-      <div className="table-wrap__pagination">
-        <button
-          type="button"
-          onClick={() => previousPage()}
-          disabled={!canPreviousPage}
-          className="txt-primary"
-        >
-          &lt;&lt;
-        </button>
-        <span className="page-content">
-          Page {""}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>
-        </span>
-        <button
-          onClick={() => nextPage()}
-          disabled={!canNextPage}
-          className="txt-primary"
-        >
-          &gt;&gt;
-        </button>
-      </div>
-    </div>
+    </>
   );
 };

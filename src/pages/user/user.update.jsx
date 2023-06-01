@@ -130,4 +130,5 @@ export const UserUpdate = () => {
         </form>
       </div>
     );
-};
+
+}
