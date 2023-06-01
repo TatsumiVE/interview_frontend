@@ -30,7 +30,7 @@ export const DepartmentList = () => {
       toast.success(successMessage);
     }
 
-  }, [departments]);
+  }, [departments,successMessage]);
 
   const columns = useMemo(
     () => [
@@ -97,7 +97,7 @@ export const DepartmentList = () => {
     return `An error has occurred: ${departmentError.message}`;
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} />
+      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
       <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">

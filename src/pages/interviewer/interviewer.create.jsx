@@ -69,8 +69,6 @@ export const InterviewerCreate = () => {
         navigate('/interviewer');
       }, 1000);
 
-
-
     } catch (error) {
       setError(error.response.data.err_msg.errors);
     }

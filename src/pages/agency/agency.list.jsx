@@ -6,7 +6,7 @@ import { useTable, useGlobalFilter, usePagination } from "react-table";
 import { ButtonLink } from "../../components";
 import agencyService from "../../services/agencyService";
 import Loader from "../../components/loader";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer,toast} from "react-toastify";
 import { useLocation } from "react-router-dom";
 
 export const AgencyList = () => {
@@ -14,6 +14,7 @@ export const AgencyList = () => {
   const [agencyList, setAgencyList] = useState([]);
   const location = useLocation();
   const { successMessage } = location.state || {};
+  
 
   const {
     data: agencies,
@@ -30,7 +31,7 @@ export const AgencyList = () => {
       toast.success(successMessage);
     }
     
-  }, [agencies]
+  }, [agencies,successMessage]
   );
 
   const columns = useMemo(
@@ -38,9 +39,9 @@ export const AgencyList = () => {
       {
         Header: "Id",
         accessor:'id',
-        // Cell: ({ row }) => {
-        //   return <div>{row.index + 1}.</div>;
-        // },
+        Cell: ({ row }) => {
+          return <div>{row.index + 1}.</div>;
+        },
       },
       {
         Header: "Name",
@@ -100,10 +101,9 @@ export const AgencyList = () => {
   return (
     <>
      
-        <ToastContainer position="top-right" autoClose={5000} />
+      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
      
-
-      <div className="table-wrap">
+     <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">
             <input

@@ -2,12 +2,16 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
-import { Input,Button,ButtonLink } from "../../components";
+import { useNavigate, useParams } from "react-router-dom";
+import { Input, Button, ButtonLink } from "../../components";
+import { toast } from "react-toastify";
 
 export const RateUpdate = () => {
   const { id } = useParams();
   const { token } = useAuth();
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [rate, setRate] = useState([]);
 
   const config = {
     headers: {
@@ -15,24 +19,47 @@ export const RateUpdate = () => {
     },
   };
 
-  const [rate, setRate] = useState("");
-  
-
-  const updateRate = useMutation(async () => {
+  const addRate = async () => {
     try {
-      await axios.put(
-        `http://localhost:8000/api/rates/${id}`,
-        rate,
-        config
-      );
+        const response = await axios.put(
+            `http://localhost:8000/api/rates/${id}`,
+            rate,
+            config
+        );
+
+        console.log(response.data.message);
+
+        let successMessage = response.data.message;
+
+        toast.success(successMessage);
+
+        setTimeout(() => {
+            navigate('/rate');
+        }, 1000);
+
     } catch (error) {
-      console.error(error);
+        if (error.response && error.response.data && error.response.data.data) {
+            setError(error.response.data.data);
+        } else {
+            setError([]);
+        }
+       
     }
-  });
+};
+
+const { mutate: updateRate} = useMutation({
+    mutationKey: ["put", "rates"],
+    mutationFn: addRate,
+});
+
 
   const handleUpdate = (event) => {
     event.preventDefault();
-    updateRate.mutate();
+    if (rate.name == "") {
+      const response = setError({ name: "The name field is required." });
+      return response;
+    }
+    updateRate();
   };
 
   const getRate = async () => {
@@ -68,20 +95,15 @@ export const RateUpdate = () => {
           placeholder="Enter Name..."
           errorMessage="*"
         />
+        {error.name && (
+          <span className="txt-danger txt-ss">{error.name}</span>
+        )}
+
         <div className="button-group--user">
-          <Button type="submit" text="Create" className="txt-light btn-primary" />
+          <Button type="submit" text="Update" className="txt-light btn-primary" />
           <ButtonLink type="button" className="btn-default" route={"/rate"} text="Cancel" linkText="txt-light txt-sm" />
         </div>
       </form>
     </div>
   );
 };
-
-
-// export const PositionUpdate = () => {
-//   return(
-//     <>
-//     Hello
-//     </>
-//   )
-// }

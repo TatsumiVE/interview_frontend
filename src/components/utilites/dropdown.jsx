@@ -28,7 +28,7 @@ export const Dropdown = ({
             key={option.id}
             value={option.id}
             selected={option.selected}
-            disabled={option.disabled}
+            disabled={option.disabled}          
           >
             {option.name}
           </option>

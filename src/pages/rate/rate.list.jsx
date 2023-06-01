@@ -28,7 +28,7 @@ export const RateList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
-  }, [rates]);
+  }, [rates,successMessage]);
 
   const columns = useMemo(
     () => [
@@ -95,7 +95,7 @@ export const RateList = () => {
 
   return (
     <>
-    <ToastContainer position="top-right" autoClose={5000} />
+    <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
     <div className="table-wrap">
       <div className="table-wrap__head">
         <div className="search-content">

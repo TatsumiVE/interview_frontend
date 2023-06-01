@@ -2,13 +2,17 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, ButtonLink, Input } from "../../components";
+import { toast } from "react-toastify";
 
 export const DepartmentUpdate = () => {
     const { id } = useParams();
-
     const { token } = useAuth();
+    const navigate = useNavigate();
+    const [error, setError] = useState("");
+    const [department, setDepartment] = useState([]);
+ 
 
     const config = {
         headers: {
@@ -16,24 +20,48 @@ export const DepartmentUpdate = () => {
         },
     };
 
-    const [department, setDepartment] = useState("");
-    //console.log(agency);
 
-    const updateDepartment = useMutation(async () => {
+    const addDepartment = async () => {
         try {
-            await axios.put(
+            const response = await axios.put(
                 `http://localhost:8000/api/departments/${id}`,
                 department,
                 config
             );
+
+            console.log(response.data.message);
+
+            let successMessage = response.data.message;
+
+            toast.success(successMessage);
+
+            setTimeout(() => {
+                navigate('/department');
+            }, 1000);
+
         } catch (error) {
-            console.error(error);
+            if (error.response && error.response.data && error.response.data.data) {
+                setError(error.response.data.data);
+            } else {
+                setError([]);
+            }
+           
         }
+    };
+
+    const { mutate: updateDepartment} = useMutation({
+        mutationKey: ["put", "departments"],
+        mutationFn: addDepartment,
     });
 
+   
     const handleUpdate = (event) => {
         event.preventDefault();
-        updateDepartment.mutate();
+        if (department.name == "") {
+            const response = setError({ name: "The name field is required." });
+            return response;
+        }
+        updateDepartment();
     };
 
     const getDepartment = async () => {
@@ -48,13 +76,13 @@ export const DepartmentUpdate = () => {
             }
             return departmentData;
         } catch (error) {
-            //console.error(error);
+            console.error(error);
         }
     };
 
     const { data: departmentData } = useQuery(["departmentData", id], getDepartment);
 
-    return (
+    return (        
         <div className="card-min">
             <div className="card-min__header">
                 <h2>Update Department</h2>
@@ -69,6 +97,9 @@ export const DepartmentUpdate = () => {
                     placeholder="Enter Name..."
                     errorMessage="*"
                 />
+                 {error.name && (
+                    <span className="txt-danger txt-ss">{error.name}</span>
+                )}
                 <div className="button-group--user">
                     <Button type="submit" text="Update" className="txt-light btn-primary" />
                     <ButtonLink type="button" className="btn-default" route={"/department"} text="Cancel" linkText="txt-light txt-sm" />

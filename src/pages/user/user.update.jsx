@@ -13,32 +13,53 @@ export const UserUpdate = () => {
   const [error, setError] = useState("");
   const [user, setUser] = useState([]);
   const navigate = useNavigate();
+
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
 
-  const updateUser = useMutation(async () => {
+  const addUser = async () => {
     try {
-      const response = axios.put(
+      const response = await axios.put(
         `http://localhost:8000/api/users/${id}`,
         user,
         config
       );
-      // let successMessage = response.data.message;
-      // toast.success(successMessage);
-      // setTimeout(() => {
-      //   navigate("/interviewer");
-      // }, 1000);
+
+      console.log(response.data.message);
+
+      let successMessage = response.data.message;
+
+      toast.success(successMessage);
+
+      setTimeout(() => {
+        navigate('/user');
+      }, 1000);
+
     } catch (error) {
-      setError(error.response.data.err_msg.errors);
+      if (error.response && error.response.data && error.response.data.data) {
+        setError(error.response.data.data);
+      } else {
+        setError([]);
+      }
+      // console.log(error.response.data.data);
     }
+  };
+
+  const { mutate: updateUser } = useMutation({
+    mutationKey: ["put", "users"],
+    mutationFn: addUser,
   });
 
   const handleUpdate = (event) => {
     event.preventDefault();
-    updateUser.mutate();
+    if(user.role ==""){
+      const response = setError({role:"The role field is required."});
+      return response;
+    }
+    updateUser();
   };
 
   const getUser = async () => {
@@ -118,9 +139,9 @@ export const UserUpdate = () => {
             onChange={(e) => setUser({ ...user, role: e.target.value })}
             errorMessage="*"
           />
-          {/* {error.role && (
+          {error.role && (
             <span className="txt-danger txt-ss">{error.role}</span>
-          )} */}
+          )}
 
           <div className="button-group--user">
             <Can permission={"userUpdate"}>

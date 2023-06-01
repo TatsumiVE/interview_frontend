@@ -111,7 +111,7 @@ export const Employee = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} />
+      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
 
       <div className="table-wrap">
         <div className="table-wrap__head">

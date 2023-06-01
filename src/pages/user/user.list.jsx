@@ -88,7 +88,7 @@ export const UserList = () => {
     };
 
     fetchData();
-  }, [id]);
+  }, [id,successMessage]);
 
   const data = useMemo(() => users, [users]);
 
@@ -167,7 +167,7 @@ export const UserList = () => {
   if (users.length === 0) return <Loader />;
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} />
+      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
       <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">

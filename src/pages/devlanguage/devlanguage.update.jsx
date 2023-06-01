@@ -2,12 +2,17 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, ButtonLink, Input } from "../../components";
+import { toast } from "react-toastify";
 
 export const DevLanguageUpdate = () => {
   const { id } = useParams();
   const { token } = useAuth();
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [devlanguage, setDevlanguage] = useState([]);
+
 
   const config = {
     headers: {
@@ -15,24 +20,40 @@ export const DevLanguageUpdate = () => {
     },
   };
 
-  const [devlanguage, setDevlanguage] = useState("");
 
-  const updateDevlanguage = useMutation(async () => {
+
+  const addDevlanguage = async () => {
     try {
-      await axios.put(
-        `http://localhost:8000/api/dev-languages/${id}`,
-        devlanguage,
-        config
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  });
+        const response = await axios.put(
+            `http://localhost:8000/api/dev-languages/${id}`,
+            devlanguage,
+            config
+        );
 
-  const handleUpdate = (event) => {
-    event.preventDefault();
-    updateDevlanguage.mutate();
-  };
+        console.log(response.data.message);
+
+        let successMessage = response.data.message;
+
+        toast.success(successMessage);
+
+        setTimeout(() => {
+            navigate('/devlanguage');
+        }, 1000);
+
+    } catch (error) {
+        if (error.response && error.response.data && error.response.data.data) {
+            setError(error.response.data.data);
+        } else {
+            setError([]);
+        }
+       
+    }
+};
+
+const { mutate: updateDevlanguage} = useMutation({
+    mutationKey: ["put", "departments"],
+    mutationFn: addDevlanguage,
+});
 
   const getDevlanguage = async () => {
     try {
@@ -49,6 +70,17 @@ export const DevLanguageUpdate = () => {
       //console.error(error);
     }
   };
+
+   
+  const handleUpdate = (event) => {
+    event.preventDefault();
+    if (devlanguage.name == "") {
+        const response = setError({ name: "The name field is required." });
+        return response;
+    }
+    updateDevlanguage();
+};
+
 
   const { data: devlanguageData } = useQuery(
     ["devlanguageData", id],
@@ -72,6 +104,10 @@ export const DevLanguageUpdate = () => {
           placeholder="Enter Name..."
           errorMessage="*"
         />
+
+        {error.name && (
+          <span className="txt-danger txt-ss">{error.name}</span>
+        )}
         <div className="button-group--user">
           <Button
             type="submit"

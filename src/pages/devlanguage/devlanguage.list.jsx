@@ -28,7 +28,7 @@ export const DevLanguageList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
-  }, [languages]);
+  }, [languages,successMessage]);
 
   const columns = useMemo(
     () => [
@@ -94,7 +94,7 @@ export const DevLanguageList = () => {
   if (languageError) return `An error has occurred: ${languageError.message}`;
   return (
     <>
-    <ToastContainer position="top-right" autoClose={5000} />
+    <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
     <div className="table-wrap">
       <div className="table-wrap__head">
         <div className="search-content">
