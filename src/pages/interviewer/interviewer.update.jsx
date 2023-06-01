@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { Input, Dropdown, Button, ButtonLink } from "../../components";
 import departmentService from "../../services/departmentService";
 import positionService from "../../services/positionService";
+
 export const InterviewerUpdate = () => {
   const { id } = useParams();
   const { token } = useAuth();
@@ -31,10 +32,9 @@ export const InterviewerUpdate = () => {
         interviewer,
         config
       );
-
-  //console.log(response);
+ 
       let successMessage = response.data.message;
-      console.log(successMessage);
+   
       toast.success(successMessage);
      
       setTimeout(() => {
@@ -42,9 +42,10 @@ export const InterviewerUpdate = () => {
       }, 1000);  
 
     } catch (error) {
-      setError(error.response.data.err_msg.errors);
-      //setError(error.response.data);
-      console.log(error);
+      // setError(error.response.data.err_msg.errors);
+      setError(error.response.data.data);
+      // console.log(error.response.data.data)
+     
     }
   });
 
@@ -128,8 +129,8 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error.data && (
-          <span className="txt-danger txt-ss">{error.data[0]}</span>
+        {error && (
+          <span className="txt-danger txt-ss">{error[0]}</span>
         )}
 
         <Input

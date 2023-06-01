@@ -3,9 +3,13 @@ import axios from "axios";
 import { useMutation } from "react-query";
 import { useAuth } from "../../store/AuthContext";
 import { Input,Button,ButtonLink } from "../../components";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const RateCreate = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
+  const [error,setError]= useState([]);
   const { token } = useAuth();
 
   const config = {
@@ -21,9 +25,17 @@ export const RateCreate = () => {
         { name },
         config
       );
-      console.log(response.data);
+
+      let successMessage = response.data.message;
+
+            toast.success(successMessage);
+
+            setTimeout(() => {
+                navigate('/rate');
+            }, 1000);
+     
     } catch (error) {
-      console.error(error);
+      setError(error.response.data.err_msg.errors)
     }
   };
 
@@ -51,6 +63,8 @@ export const RateCreate = () => {
           placeholder="Enter Name..."
           errorMessage="*"
         />
+         {error && <span className="txt-danger txt-ss">{error.name}</span>}
+
         <div className="button-group--user">
           <Button type="submit" text="Create" className="txt-light btn-primary" />
           <ButtonLink type="button" className="btn-default" route={"/rate"} text="Cancel" linkText="txt-light txt-sm" />

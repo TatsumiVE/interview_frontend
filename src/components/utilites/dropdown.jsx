@@ -27,7 +27,7 @@ export const Dropdown = ({
           <option
             key={option.id}
             value={option.id}
-            // selected={selectedValue === option.name}
+            selected={selectedValue === option.id}
           >
             {option.name}
           </option>

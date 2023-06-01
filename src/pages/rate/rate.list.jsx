@@ -6,10 +6,14 @@ import { ButtonLink } from "../../components";
 import Loader from "../../components/loader";
 import { useQuery } from "react-query";
 import Can from "../../components/utilites/can";
+import { toast,ToastContainer } from "react-toastify";
+import { useLocation } from "react-router-dom";
 
 export const RateList = () => {
   const { token } = useAuth();
   const [RateList, setRateList] = useState([]);
+  const location = useLocation();
+  const { successMessage } = location.state || {};
 
   const {
     data: rates,
@@ -21,6 +25,9 @@ export const RateList = () => {
 
   useEffect(() => {
     rates && setRateList(rates);
+    if (successMessage) {
+      toast.success(successMessage);
+    }
   }, [rates]);
 
   const columns = useMemo(
@@ -87,6 +94,8 @@ export const RateList = () => {
   if (rateError) return `An error has occurred: ${rateError.message}`;
 
   return (
+    <>
+    <ToastContainer position="top-right" autoClose={5000} />
     <div className="table-wrap">
       <div className="table-wrap__head">
         <div className="search-content">
@@ -159,5 +168,6 @@ export const RateList = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };

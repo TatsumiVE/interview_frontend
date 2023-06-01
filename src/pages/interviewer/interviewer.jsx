@@ -3,13 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 import { useTable, usePagination, useGlobalFilter } from "react-table";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
-import { ButtonLink, Input,} from "../../components";
+import { ButtonLink, } from "../../components";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../../components/loader";
 import Can from "../../components/utilites/can";
-
-
-
 
 export const Employee = () => {
   const [interviewers, setInterviewers] = useState([]);
@@ -38,6 +35,7 @@ export const Employee = () => {
       if (successMessage) {
         toast.success(successMessage);
       }
+
     };
     fetchInterviewers();
   }, [successMessage]);
@@ -113,7 +111,8 @@ export const Employee = () => {
 
   return (
     <>
-      <ToastContainer position="top-center" autoClose={5000} />
+      <ToastContainer position="top-right" autoClose={5000} />
+
       <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">

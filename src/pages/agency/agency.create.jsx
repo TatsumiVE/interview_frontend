@@ -34,8 +34,6 @@ export const AgencyCreate = () => {
                 navigate('/agency');
             }, 1000);
 
-            return response;
-
         } catch (error) {
             setError(error.response.data.err_msg.errors)
         }
@@ -66,6 +64,7 @@ export const AgencyCreate = () => {
                     errorMessage="*"
                 />
                 {error.name && <span className="txt-danger txt-ss">{error.name}</span>}
+                
                 <div className="button-group--user">
                     <Button type="submit" text="Create" className="txt-light btn-primary" />
                     <ButtonLink type="button" className="btn-default" route={"/agency"} text="Cancel" linkText="txt-light txt-sm" />

@@ -6,10 +6,14 @@ import { ButtonLink } from "../../components";
 import Loader from "../../components/loader";
 import { useQuery } from "react-query";
 import Can from "../../components/utilites/can";
+import { toast,ToastContainer } from "react-toastify";
+import { useLocation } from "react-router-dom";
 
 export const TopicList = () => {
   const { token } = useAuth();
   const [TopicList, setTopicList] = useState([]);
+  const location = useLocation();
+  const { successMessage } = location.state || {};
 
   const {
     data: topics,
@@ -21,6 +25,9 @@ export const TopicList = () => {
 
   useEffect(() => {
     topics && setTopicList(topics);
+    if (successMessage) {
+      toast.success(successMessage);
+    }
   }, [topics]);
 
   const columns = useMemo(
@@ -87,6 +94,8 @@ export const TopicList = () => {
   if (topicError) return `An error has occurred: ${topicError.message}`;
 
   return (
+    <>
+    <ToastContainer position="top-right" autoClose={5000} />
     <div className="table-wrap">
       <div className="table-wrap__head">
         <div className="search-content">
@@ -159,5 +168,6 @@ export const TopicList = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };

@@ -9,13 +9,11 @@ import Loader from "../../components/loader";
 import { ToastContainer } from "react-toastify";
 import { useLocation } from "react-router-dom";
 
-
 export const AgencyList = () => {
   const { token } = useAuth();
   const [agencyList, setAgencyList] = useState([]);
   const location = useLocation();
   const { successMessage } = location.state || {};
-
 
   const {
     data: agencies,
@@ -31,16 +29,18 @@ export const AgencyList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
+    
   }, [agencies]
   );
 
   const columns = useMemo(
     () => [
       {
-        Header: "No.",
-        Cell: ({ row }) => {
-          return <div>{row.index + 1}.</div>;
-        },
+        Header: "Id",
+        accessor:'id',
+        // Cell: ({ row }) => {
+        //   return <div>{row.index + 1}.</div>;
+        // },
       },
       {
         Header: "Name",
@@ -99,9 +99,9 @@ export const AgencyList = () => {
 
   return (
     <>
-      <div className="toast-message">
-        <ToastContainer position="top-right" autoClose={5000}  className="toast-message"/>
-      </div>
+     
+        <ToastContainer position="top-right" autoClose={5000} />
+     
 
       <div className="table-wrap">
         <div className="table-wrap__head">
