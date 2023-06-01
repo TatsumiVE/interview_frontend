@@ -21,6 +21,7 @@ export const Input = ({
         value={value}
         onChange={onChange}
         autoComplete="off"
+        className="input-type"
       />
     </div>
   );

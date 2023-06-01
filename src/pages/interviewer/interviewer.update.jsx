@@ -23,13 +23,13 @@ export const InterviewerUpdate = () => {
   };
   const updateInterviewer = useMutation(async () => {
     try {
-      axios.put(
+     const response = axios.put(
         `http://localhost:8000/api/interviewers/${id}`,
         interviewer,
         config
       );
       let successMessage = response.data.message;
-
+      console.log(successMessage);
       toast.success(successMessage);
      
       setTimeout(() => {
@@ -37,7 +37,7 @@ export const InterviewerUpdate = () => {
       }, 1000);  
 
       return response;
-      
+
     } catch (error) {
       setError(error.response.data);
     }

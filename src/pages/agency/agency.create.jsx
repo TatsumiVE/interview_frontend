@@ -3,10 +3,13 @@ import axios from "axios";
 import { useMutation } from "react-query";
 import { useAuth } from "../../store/AuthContext";
 import { Button, ButtonLink, Input } from "../../components";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const AgencyCreate = () => {
-
+    const navigate = useNavigate();
     const [name, setName] = useState("");
+    const [error, setError] = useState([]);
     const { token } = useAuth();
 
     const config = {
@@ -22,9 +25,19 @@ export const AgencyCreate = () => {
                 { name },
                 config
             );
-            console.log(response.data);
+
+            let successMessage = response.data.message;
+
+            toast.success(successMessage);
+
+            setTimeout(() => {
+                navigate('/agency');
+            }, 1000);
+
+            return response;
+
         } catch (error) {
-            console.error(error);
+            setError(error.response.data.err_msg.errors)
         }
     };
 
@@ -52,6 +65,7 @@ export const AgencyCreate = () => {
                     placeholder=" Enter Name..."
                     errorMessage="*"
                 />
+                {error.name && <span className="txt-danger txt-ss">{error.name}</span>}
                 <div className="button-group--user">
                     <Button type="submit" text="Create" className="txt-light btn-primary" />
                     <ButtonLink type="button" className="btn-default" route={"/agency"} text="Cancel" linkText="txt-light txt-sm" />
