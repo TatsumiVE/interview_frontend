@@ -96,8 +96,10 @@ export const CandidateUpdate = () => {
   );
 
   useEffect(() => {
-    candidateData && setCandidate(candidateData.candidate);
-  }, [candidateData]);
+    isCandidateSuccess &&
+      candidateData &&
+      setCandidate(candidateData.candidate);
+  }, [candidateData, isCandidateSuccess]);
 
   const {
     data: positions,
@@ -205,7 +207,6 @@ export const CandidateUpdate = () => {
                 })
               }
               placeholder=" Enter Residential Address..."
-              className=""
               text={candidate.residential_address}
             />
 

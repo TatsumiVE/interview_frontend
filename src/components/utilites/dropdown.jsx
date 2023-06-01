@@ -19,10 +19,11 @@ export const Dropdown = ({
       </label>
       <select onChange={onChange} className="select">
         {!hide && (
-          <option key="0" value="" disabled>
+          <option key="0" value="">
             Select {labelName}
           </option>
         )}
+
         {options.map((option) => (
           <option
             key={option.id}

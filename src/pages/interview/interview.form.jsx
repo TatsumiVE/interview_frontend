@@ -4,13 +4,13 @@ import { useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
 import { Dropdown, Button, Input, ButtonLink } from "../../components";
 import { useAuth } from "../../store/AuthContext";
-
+import { useNavigate } from "react-router-dom";
 export const InterviewCreate = () => {
   const { state } = useLocation();
   const { id, stageId } = state;
-  console.log(stageId);
-  const [data, setData] = useState([{}]);
 
+  const [data, setData] = useState([{}]);
+  const navigate = useNavigate();
   const [interviewer_id, setInterviewers] = useState([]);
   const { token } = useAuth();
   const interviewStages = [
@@ -43,9 +43,12 @@ export const InterviewCreate = () => {
     return response;
   };
 
-  const { mutate: interviewProcess } = useMutation({
+  const interviewProcess = useMutation({
     mutationKey: ["post", "interview-process"],
     mutationFn: createInterview,
+    onSuccess: () => {
+      navigate("/interview");
+    },
   });
 
   const handleSubmit = (e) => {
@@ -57,8 +60,8 @@ export const InterviewCreate = () => {
       ...formData,
       interviewer_id: requestData,
     };
-    console.log(updatedFormData);
-    interviewProcess(updatedFormData);
+
+    interviewProcess.mutate(updatedFormData);
   };
 
   const handleAdd = () => {
@@ -142,6 +145,7 @@ export const InterviewCreate = () => {
             selected: stage.id == selectedStageId,
             disabled: stage.id != selectedStageId,
           }))}
+          hide={true}
           selectedValue={selectedStageId.toString()}
           className="custom-dropdown"
           errorMessage="*"
