@@ -4,11 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../store/AuthContext";
-import { toast } from "react-toastify";
 import { Input, Dropdown, Button, ButtonLink } from "../../components";
 import departmentService from "../../services/departmentService";
 import positionService from "../../services/positionService";
-import { useNavigate } from "react-router-dom";
 export const InterviewerUpdate = () => {
   const { id } = useParams();
   const { token } = useAuth();
@@ -20,7 +18,6 @@ export const InterviewerUpdate = () => {
     department_id: "",
     position_id: "",
   });
-  const navigate = useNavigate();
 
   const config = {
     headers: {

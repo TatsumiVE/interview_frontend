@@ -56,12 +56,12 @@ export const MainNavigation = () => {
         </NavigationLink>
       </Can>
       <Can permission={"rateList"}>
-        <NavigationLink to="/rate" icon="fa-percent">
+        <NavigationLink to="/rate" icon="fa-square-poll-vertical">
           Rate
         </NavigationLink>
       </Can>
       <Can permission={"topicList"}>
-        <NavigationLink to="/topic" icon="fa-biohazard">
+        <NavigationLink to="/topic" icon="fa-file-lines">
           Topic
         </NavigationLink>
       </Can>
