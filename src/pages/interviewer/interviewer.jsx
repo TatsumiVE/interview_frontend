@@ -111,7 +111,8 @@ export const Employee = () => {
 
   return (
     <>
-      <ToastContainer position="top-center" autoClose={5000} />
+      <ToastContainer position="top-right" autoClose={5000} />
+
       <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">
@@ -187,24 +188,6 @@ export const Employee = () => {
     </>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import { useState, useEffect, useMemo } from "react";
 // import { Link } from "react-router-dom";

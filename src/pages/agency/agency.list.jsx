@@ -34,10 +34,11 @@ export const AgencyList = () => {
   const columns = useMemo(
     () => [
       {
-        Header: "No.",
-        Cell: ({ row }) => {
-          return <div>{row.index + 1}.</div>;
-        },
+        Header: "Id",
+        accessor: "id",
+        // Cell: ({ row }) => {
+        //   return <div>{row.index + 1}.</div>;
+        // },
       },
       {
         Header: "Name",
@@ -97,13 +98,7 @@ export const AgencyList = () => {
 
   return (
     <>
-      <div className="toast-message">
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          className="toast-message"
-        />
-      </div>
+      <ToastContainer position="top-right" autoClose={5000} />
 
       <div className="table-wrap">
         <div className="table-wrap__head">

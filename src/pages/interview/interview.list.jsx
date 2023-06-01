@@ -136,7 +136,7 @@ export const InterviewList = () => {
       },
     };
     const response = await axios.get(
-      "http://127.0.0.1:8000/api/candidates",
+      "http://127.0.0.1:8000/api/interviews",
       config
     );
     return response.data.data;
@@ -263,7 +263,7 @@ export const InterviewList = () => {
         // selectedValue={language}
         hide={true}
       />
-      <button type="button" onClick={() => setStageFilter(1)}>
+      {/* <button type="button" onClick={() => setStageFilter(1)}>
         stage1
       </button>
       <button type="button" onClick={() => setStageFilter(2)}>
@@ -271,7 +271,7 @@ export const InterviewList = () => {
       </button>
       <button type="button" onClick={() => setStageFilter(3)}>
         stage3
-      </button>
+      </button> */}
       <input
         type="date"
         value={startDateFilter}

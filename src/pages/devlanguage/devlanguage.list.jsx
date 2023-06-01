@@ -7,9 +7,14 @@ import Can from "../../components/utilites/can";
 import Loader from "../../components/loader";
 import { useQuery } from "react-query";
 import languageService from "../../services/languageService";
+import { toast,ToastContainer } from "react-toastify";
+import { useLocation } from "react-router-dom";
+
 export const DevLanguageList = () => {
   const { token } = useAuth();
   const [devlanguageList, setDevlanguageList] = useState([]);
+  const location = useLocation();
+  const { successMessage } = location.state || {};
   const {
     data: languages,
     isLoading: isLanguageLoading,
@@ -20,6 +25,9 @@ export const DevLanguageList = () => {
 
   useEffect(() => {
     languages && setDevlanguageList(languages);
+    if (successMessage) {
+      toast.success(successMessage);
+    }
   }, [languages]);
 
   const columns = useMemo(
@@ -86,6 +94,8 @@ export const DevLanguageList = () => {
   if (isLanguageError) return "Something went wrong...";
   if (languageError) return `An error has occurred: ${languageError.message}`;
   return (
+    <>
+    <ToastContainer position="top-right" autoClose={5000} />
     <div className="table-wrap">
       <div className="table-wrap__head">
         <div className="search-content">
@@ -160,5 +170,6 @@ export const DevLanguageList = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };

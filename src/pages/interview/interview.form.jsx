@@ -8,6 +8,7 @@ import { useAuth } from "../../store/AuthContext";
 export const InterviewCreate = () => {
   const { state } = useLocation();
   const { id, stageId } = state;
+  console.log(stageId);
   const [data, setData] = useState([{}]);
 
   const [interviewer_id, setInterviewers] = useState([]);
@@ -138,8 +139,8 @@ export const InterviewCreate = () => {
           options={interviewStages.map((stage) => ({
             id: stage.id,
             name: stage.name,
-            selected: stage.id === selectedStageId,
-            disabled: stage.id !== selectedStageId,
+            selected: stage.id == selectedStageId,
+            disabled: stage.id != selectedStageId,
           }))}
           selectedValue={selectedStageId.toString()}
           className="custom-dropdown"

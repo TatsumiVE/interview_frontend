@@ -45,13 +45,22 @@ export const CandidateCreate = () => {
       formData,
       config
     );
-    console.log(response);
-    return response;
+    console.log(response.data);
+    console.log(response.data.data.id);
+    return response.data.data.id;
   };
 
-  const { mutate: createCandidate } = useMutation({
+  const createCandidate = useMutation({
     mutationKey: ["post", "candidates"],
     mutationFn: addCandidate,
+    onSuccess: (id) => {
+      navigate("/interview/create", {
+        state: {
+          id: id,
+          stageId: "0",
+        },
+      });
+    },
   });
 
   const handleSubmit = async (e) => {
@@ -81,9 +90,7 @@ export const CandidateCreate = () => {
       agency_id: agency,
     };
 
-    createCandidate(formData);
-
-    // navigate("/interview/create/");
+    createCandidate.mutate(formData);
   };
 
   const handleAdd = () => {
