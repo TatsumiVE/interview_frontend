@@ -133,6 +133,7 @@ export const PositionList = () => {
                 route="create"
                 linkText="txt-light txt-sm"
                 text="Create Position"
+                icon="fa-solid fa-plus"
               />
             </Can>
           </div>

@@ -117,7 +117,7 @@ export const AgencyList = () => {
               route="create"
               linkText="txt-light txt-sm"
               text="Create Agency"
-              icon="fa-solid fa-user-plus"
+              icon="fa-solid fa-plus"
             />
           </div>
         </div>

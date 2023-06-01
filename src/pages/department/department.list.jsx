@@ -116,6 +116,7 @@ export const DepartmentList = () => {
                 route="create"
                 linkText="txt-light txt-sm"
                 text="Create Department"
+                icon="fa-solid fa-plus"
               />
             </Can>
           </div>

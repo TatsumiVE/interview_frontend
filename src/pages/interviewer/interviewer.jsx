@@ -130,6 +130,7 @@ export const Employee = () => {
               route="create"
               linkText="txt-light txt-sm"
               text="Create Interviewer"
+              icon="fa-solid fa-plus"
             />
           </div>
         </div>
