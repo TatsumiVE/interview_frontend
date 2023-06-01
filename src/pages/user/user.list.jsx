@@ -82,7 +82,6 @@ export const UserList = () => {
         if (successMessage) {
           toast.success(successMessage);
         }
-
       } catch (error) {
         console.error(error);
       }
@@ -232,6 +231,5 @@ export const UserList = () => {
         </div>
       </div>
     </>
-
   );
 };

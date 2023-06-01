@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
+import { toast } from "react-toastify";
 import { Input, Dropdown, Button, ButtonLink } from "../../components";
 import departmentService from "../../services/departmentService";
 import positionService from "../../services/positionService";
 export const InterviewerUpdate = () => {
   const { id } = useParams();
   const { token } = useAuth();
+  const navigate = useNavigate();
   const [error, setError] = useState([]);
   const [interviewer, setInterviewer] = useState({
     name: "",
@@ -23,11 +25,14 @@ export const InterviewerUpdate = () => {
   };
   const updateInterviewer = useMutation(async () => {
     try {
-     const response = axios.put(
+    
+      const response = axios.put(
         `http://localhost:8000/api/interviewers/${id}`,
         interviewer,
         config
       );
+
+  //console.log(response);
       let successMessage = response.data.message;
       console.log(successMessage);
       toast.success(successMessage);
@@ -36,17 +41,23 @@ export const InterviewerUpdate = () => {
         navigate('/interviewer');
       }, 1000);  
 
-      return response;
-
     } catch (error) {
-      setError(error.response.data);
+      setError(error.response.data.err_msg.errors);
+      //setError(error.response.data);
+      console.log(error);
     }
   });
 
   const handleUpdate = (event) => {
-    event.preventDefault();
-    updateInterviewer.mutate();
-  };
+  event.preventDefault();
+  setError({
+    name: "",
+    email: "",
+    department_id: "",
+    position_id: "",
+  });
+  updateInterviewer.mutate();
+};
 
   const getInterviewer = async () => {
     try {
@@ -117,7 +128,9 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error.data && <span className="txt-danger txt-ss">{error.data}</span>}
+        {error.data && (
+          <span className="txt-danger txt-ss">{error.data[0]}</span>
+        )}
 
         <Input
           labelName="Email"
@@ -130,7 +143,9 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error.data && <span className="txt-danger txt-ss">{error.data}</span>}
+        {error.data && (
+          <span className="txt-danger txt-ss">{error.data[1]}</span>
+        )}
 
         <Dropdown
           labelName="Department"
@@ -141,8 +156,8 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error.department && (
-          <span className="txt-danger txt-ss">{error.department}</span>
+        {error.data && (
+          <span className="txt-danger txt-ss">{error.data[2]}</span>
         )}
 
         <Dropdown
@@ -154,8 +169,8 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error.position && (
-          <span className="txt-danger txt-ss">{error.position}</span>
+        {error.data && (
+          <span className="txt-danger txt-ss">{error.data[3]}</span>
         )}
 
         <div className="button-group--user">
