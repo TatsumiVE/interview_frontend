@@ -14,11 +14,11 @@ export const DepartmentUpdate = () => {
     const [department, setDepartment] = useState([]);
  
 
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    };
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
 
     const addDepartment = async () => {
@@ -80,7 +80,10 @@ export const DepartmentUpdate = () => {
         }
     };
 
-    const { data: departmentData } = useQuery(["departmentData", id], getDepartment);
+  const { data: departmentData } = useQuery(
+    ["departmentData", id],
+    getDepartment
+  );
 
     return (        
         <div className="card-min">
@@ -106,5 +109,6 @@ export const DepartmentUpdate = () => {
                 </div>
             </form>
         </div>
-    );
+      
+  );
 };

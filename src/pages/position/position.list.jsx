@@ -55,8 +55,9 @@ export const PositionList = () => {
               type="button"
               className="btn-success"
               route={`update/${row.original.id}`}
-              text="Update"
+              text="Edit"
               linkText="txt-light txt-sm"
+              icon="fa-solid fa-pen-to-square"
             />
           </Can>
         ),
@@ -118,6 +119,7 @@ export const PositionList = () => {
                 route="create"
                 linkText="txt-light txt-sm"
                 text="Create Position"
+                icon="fa-solid fa-plus"
               />
             </Can>
           </div>

@@ -1,111 +1,3 @@
-// import axios from "axios";
-// import { useAuth } from "../../store/AuthContext";
-// import { useLocation, Link } from "react-router-dom";
-// import { useQuery, useMutation, QueryClient } from "react-query";
-// import Can from "../../components/utilites/can";
-
-// export const InterviewList = () => {
-//   return <></>;
-// };
-// const { token, user, can } = useAuth();
-// const queryClient = new QueryClient();
-
-// const location = useLocation();
-// const searchParams = new URLSearchParams(location.search);
-// const message = searchParams.get("message");
-
-// const getCandidates = async () => {
-//   const config = {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   };
-//   const response = await axios.get(
-//     "http://127.0.0.1:8000/api/candidates",
-//     config
-//   );
-//   return response.data.data;
-// };
-
-// const handleTerminate = (candidateId) => {
-//   interviewTerminate(candidateId);
-// };
-
-// const terminateProcess = async (id) => {
-//   const response = await axios.post(
-//     `http://127.0.0.1:8000/api/interview-process/terminate/${id}`,
-//     {},
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     }
-//   );
-//   return response.data;
-// };
-
-// const { mutate: interviewTerminate } = useMutation({
-//   mutationKey: ["post", "interview-process", "terminate"],
-//   mutationFn: terminateProcess,
-//   onSuccess: () => {
-//     queryClient.invalidateQueries(["get", "candidates"]);
-//   },
-// });
-
-// const {
-//   data: candidateList,
-//   isLoading,
-//   isError,
-//   isSuccess,
-//   error,
-// } = useQuery({
-//   queryKey: ["get", "candidates"],
-//   queryFn: getCandidates,
-// });
-
-// const findStageId = (candidateId) => {
-//   const candidate = candidateList.find(
-//     (candidate) => candidate.id === candidateId
-//   );
-
-//   if (candidate && candidate.interviews.length > 0) {
-//     const lastInterview =
-//       candidate.interviews[candidate.interviews.length - 1];
-//     if (
-//       lastInterview.interview_stage &&
-//       lastInterview.interview_stage.stage_name !== undefined
-//     ) {
-//       return lastInterview.interview_stage.id;
-//     } else {
-//       return "Unknown stage";
-//     }
-//   } else {
-//     return 1;
-//   }
-// };
-// if (isLoading) return "Loading...";
-// if (isError) return "Something went wrong";
-// if (error) return "An error has occurred: " + error.message;
-
-// const interview = (candidate) => {
-//   const interviews = candidate.interviews || [];
-//   const lastInterview = interviews[interviews.length - 1] || {};
-//   const lastStage = lastInterview.interview_stage.stage_name || 0;
-
-//   const canCreate = !(lastStage && !lastInterview.interview_result)
-
-//   const canAssessment = lastStage && !lastInterview.interview_result;
-
-//   const canResult = lastStage && !lastInterview.interview_result;
-
-//   return {
-//     canCreate,
-//     canAssessment,
-//     canResult,
-//     lastStage
-//   }
-// }
-
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { Link } from "react-router-dom";
@@ -122,11 +14,15 @@ export const InterviewList = () => {
   const queryClient = new QueryClient();
   const [language, setLanguage] = useState("All");
   const [stageFilter, setStageFilter] = useState("");
+  const today = new Date();
+  const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const start = new Date(today.getFullYear(), today.getMonth(), 1);
+
   const [startDateFilter, setStartDateFilter] = useState(
-    new Date().toLocaleDateString("af-ZA")
+    start.toLocaleDateString("af-ZA")
   );
   const [endDateFilter, setEndDateFilter] = useState(
-    new Date().toLocaleDateString("af-ZA")
+    last.toLocaleDateString("af-ZA")
   );
 
   const getCandidates = async () => {
@@ -166,10 +62,6 @@ export const InterviewList = () => {
     isSuccess: isLanguageSuccess,
     error: languageError,
   } = useQuery(["get", "languages"], () => languageService.getAll(token));
-
-  // useEffect(() => {
-  //   languages && setLanguage(languages);
-  // }, [languages]);
 
   const { mutate: interviewTerminate } = useMutation({
     mutationKey: ["post", "interview-process", "terminate"],
@@ -244,7 +136,11 @@ export const InterviewList = () => {
         })
   )?.filter((candidate) => {
     const date = candidate?.interviews[0]?.interview_stage?.interview_date;
-    return startDateFilter < date && date < endDateFilter;
+    console.log("caniddateffffzzzzzzzzzzzz", date);
+    console.log("startttttttttttt", startDateFilter);
+    console.log("enddddddddddddd", endDateFilter);
+    console.log(startDateFilter <= date && date <= endDateFilter);
+    return startDateFilter <= date && date <= endDateFilter;
   });
 
   return (
@@ -260,10 +156,9 @@ export const InterviewList = () => {
             [{ id: 0, name: "All" }, ...languages][e.target.value].name
           );
         }}
-        // selectedValue={language}
         hide={true}
       />
-      {/* <button type="button" onClick={() => setStageFilter(1)}>
+      <button type="button" onClick={() => setStageFilter(1)}>
         stage1
       </button>
       <button type="button" onClick={() => setStageFilter(2)}>
@@ -271,7 +166,7 @@ export const InterviewList = () => {
       </button>
       <button type="button" onClick={() => setStageFilter(3)}>
         stage3
-      </button> */}
+      </button>
       <input
         type="date"
         value={startDateFilter}

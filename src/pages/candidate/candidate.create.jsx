@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useQuery } from "react-query";
 import {
   Dropdown,
   Input,
@@ -7,28 +8,37 @@ import {
   TextArea,
   InputCheckbox,
   ButtonLink,
+  Radio,
 } from "../../components/utilites";
 import { useMutation } from "react-query";
 import { useAuth } from "../../store/AuthContext";
 import { useNavigate } from "react-router-dom";
+import positionService from "../../services/positionService";
+import agencyService from "../../services/agencyService";
+import Loader from "../../components/loader";
+import languageService from "../../services/languageService";
+
 export const CandidateCreate = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone_number, setPhone] = useState("");
-  const [date_of_birth, setBirth] = useState("");
-  const [residential_address, setAddress] = useState("");
-  const [willingness_to_travel, setTravel] = useState(false);
-  const [gender, setGender] = useState("");
-  const [expected_salary, setExpected] = useState("");
-  const [last_salary, setLast] = useState("");
-  const [cv_path, setCv] = useState("");
-  const [earliest_starting_date, setEarliest] = useState("");
-  const [position, setPosition] = useState("");
-  const [agency, setAgency] = useState("");
   const [languageList, setLanguageList] = useState([]);
   const { token } = useAuth();
   const navigate = useNavigate();
 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    gender: "",
+    phone_number: "",
+    residential_address: "",
+    date_of_birth: "",
+    cv_path: "",
+    willingness_to_travel: "",
+    expected_salary: "",
+    last_salary: "",
+    earliest_starting_date: "",
+    position_id: "",
+    agency_id: "",
+    data: [],
+  });
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -39,16 +49,52 @@ export const CandidateCreate = () => {
     { devlanguage_id: "", year: "", month: "" },
   ]);
 
+  const requestData = data.map((row) => ({
+    experience: {
+      month: row.month,
+      year: row.year,
+    },
+    devlanguage_id: row.devlanguage_id,
+  }));
+
   const addCandidate = async (formData) => {
     const response = await axios.post(
       "http://localhost:8000/api/candidates",
-      formData,
+      { ...formData, data: requestData },
       config
     );
-    console.log(response.data);
-    console.log(response.data.data.id);
+
     return response.data.data.id;
   };
+
+  const {
+    data: positions,
+    isLoading: isPositionLoading,
+    isError: isPositionError,
+    isSuccess: isPositionSuccess,
+    error: positionError,
+  } = useQuery(["get", "positions"], () => positionService.getAll(token));
+
+  const {
+    data: agencies,
+    isLoading: isAgencyLoading,
+    isError: isAgencyError,
+    isSuccess: isAgencySuccess,
+    error: agencyError,
+  } = useQuery(["get", "agencies"], () => agencyService.getAll(token));
+
+  const {
+    data: languages,
+    isLoading: isLanguageLoading,
+    isError: isLanguageError,
+    isSuccess: isLanguageSuccess,
+    error: languageError,
+  } = useQuery(["get", "languages"], () => languageService.getAll(token));
+
+  useEffect(() => {
+    languages && setLanguageList(languages);
+  }, [languages]);
+
 
   const createCandidate = useMutation({
     mutationKey: ["post", "candidates"],
@@ -65,34 +111,9 @@ export const CandidateCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const requestData = data.map((row) => ({
-      experience: {
-        month: row.month,
-        year: row.year,
-      },
-      devlanguage_id: row.devlanguage_id,
-    }));
-
-    const formData = {
-      name,
-      email,
-      gender,
-      phone_number,
-      residential_address,
-      date_of_birth,
-      cv_path,
-      data: requestData,
-      willingness_to_travel,
-      expected_salary,
-      last_salary,
-      earliest_starting_date,
-      position_id: position,
-      agency_id: agency,
-    };
 
     createCandidate.mutate(formData);
   };
-
   const handleAdd = () => {
     setData([...data, { languageList: "", year: "", month: "" }]);
   };
@@ -102,36 +123,11 @@ export const CandidateCreate = () => {
     list.splice(index, 1);
     setData(list);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const languageResponse = await axios.get(
-          "http://localhost:8000/api/dev-languages",
-          config
-        );
-        setLanguageList(languageResponse.data);
-
-        const positionResponse = await axios.get(
-          "http://localhost:8000/api/positions",
-          config
-        );
-        setPosition(positionResponse.data);
-        console.log(positionResponse.data);
-
-        const agencyResponse = await axios.get(
-          "http://localhost:8000/api/agencies",
-          config
-        );
-        setAgency(agencyResponse.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
+  if (isAgencyLoading || isPositionLoading) return <Loader />;
+  if (isPositionError) return "Something went wrong...";
+  if (positionError) return `An error has occurred: ${positionError.message}`;
+  if (isAgencyError) return "Something went wrong...";
+  if (agencyError) return `An error has occurred: ${agencyError.message}`;
   return (
     <>
       <div className="card">
@@ -143,18 +139,22 @@ export const CandidateCreate = () => {
                 type="text"
                 name="name"
                 placeholder=" Enter Candidate Name..."
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 errorMessage="*"
               />
-              
+
               <Input
                 labelName="Email"
                 type="email"
                 name="email"
                 placeholder=" Enter Email..."
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 errorMessage="*"
               />
 
@@ -163,8 +163,10 @@ export const CandidateCreate = () => {
                 type="tel"
                 name="phoneNumber"
                 placeholder=" Enter Phone Number..."
-                value={phone_number}
-                onChange={(e) => setPhone(e.target.value)}
+                value={formData.phone_number}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone_number: e.target.value })
+                }
                 errorMessage="*"
               />
 
@@ -173,74 +175,87 @@ export const CandidateCreate = () => {
                 type="date"
                 name="date_of_birth"
                 placeholder=" Enter Date of Birth..."
-                value={date_of_birth}
-                onChange={(e) => setBirth(e.target.value)}
+                value={formData.date_of_birth}
+                onChange={(e) =>
+                  setFormData({ ...formData, date_of_birth: e.target.value })
+                }
                 errorMessage="*"
               />
 
               <TextArea
                 labelName="Address"
                 name="residential_address"
-                onChange={(e) => setAddress(e.target.value)}
                 placeholder=" Enter Residential Address..."
-                className=""
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    residential_address: e.target.value,
+                  })
+                }
                 errorMessage="*"
               />
 
               <InputCheckbox
                 type="checkbox"
                 name="willingness_to_travel"
-                value=""
-                placeholder=""
-                onChange={(e) => setTravel(e.target.checked)}
+                value={formData.willingness_to_travel}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    willingness_to_travel: e.target.value,
+                  })
+                }
                 labelName="Willingness To Travel"
               />
 
               <div className="radio-group">
-                <InputCheckbox
+                <Radio
                   labelName="Male"
-                  type="radio"
-                  name="gender"
-                  placeholder=""
                   value="1"
-                  checked={gender === "1"}
-                  onChange={(e) => setGender(e.target.value)}
+                  name="gender"
+                  checked={formData.gender == "1"}
+                  onChange={(e) =>
+                    setFormData({ ...formData, gender: e.target.value })
+                  }
                 />
-                <InputCheckbox
+                <Radio
                   labelName="Female"
-                  type="radio"
-                  name="gender"
-                  placeholder=""
                   value="2"
-                  checked={gender === "2"}
-                  onChange={(e) => setGender(e.target.value)}
-                />
-                <InputCheckbox
-                  labelName="Non Binary"
-                  type="radio"
                   name="gender"
-                  placeholder=""
-                  value="3"
-                  checked={gender === "3"}
-                  onChange={(e) => setGender(e.target.value)}
+                  checked={formData.gender == "2"}
+                  onChange={(e) =>
+                    setFormData({ ...formData, gender: e.target.value })
+                  }
                 />
-                <span className="txt-danger star">*</span>
+                <Radio
+                  labelName="Non-Binary"
+                  value="3"
+                  name="gender"
+                  checked={formData.gender == "3"}
+                  onChange={(e) =>
+                    setFormData({ ...formData, gender: e.target.value })
+                  }
+                />
               </div>
             </div>
             <div className="card-right">
               <Dropdown
                 labelName="Position"
-                options={position.data}
-                selectedValue={position}
-                onChange={(e) => setPosition(e.target.value)}
+                options={positions}
+                selectedValue={formData.position_id}
+                onChange={(e) =>
+                  setFormData({ ...formData, position_id: e.target.value })
+                }
                 errorMessage="*"
               />
 
               <Dropdown
                 labelName="Agency"
-                options={agency.data}
-                selectedValue={agency}
-                onChange={(e) => setAgency(e.target.value)}
+                options={agencies}
+                selectedValue={formData.agency_id}
+                onChange={(e) =>
+                  setFormData({ ...formData, agency_id: e.target.value })
+                }
                 errorMessage="*"
               />
 
@@ -249,16 +264,23 @@ export const CandidateCreate = () => {
                 type="number"
                 name="expected_salary"
                 placeholder=" Enter Expected Salary..."
-                value={expected_salary}
-                onChange={(e) => setExpected(e.target.value)}
+                value={formData.expected_salary}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    expected_salary: e.target.value,
+                  })
+                }
               />
               <Input
                 labelName="Last Salary"
                 type="number"
                 name="last_salary"
                 placeholder=" Enter Last Salary..."
-                value={last_salary}
-                onChange={(e) => setLast(e.target.value)}
+                value={formData.last_salary}
+                onChange={(e) =>
+                  setFormData({ ...formData, last_salary: e.target.value })
+                }
               />
 
               <Input
@@ -266,8 +288,10 @@ export const CandidateCreate = () => {
                 type="text"
                 name="cv_path"
                 placeholder=" Enter Cv Path..."
-                value={cv_path}
-                onChange={(e) => setCv(e.target.value)}
+                value={formData.cv_path}
+                onChange={(e) =>
+                  setFormData({ ...formData, cv_path: e.target.value })
+                }
                 errorMessage="*"
               />
 
@@ -276,8 +300,13 @@ export const CandidateCreate = () => {
                 type="date"
                 name="earliest_starting_date"
                 placeholder="Enter Earliest Starting Date..."
-                value={earliest_starting_date}
-                onChange={(e) => setEarliest(e.target.value)}
+                value={formData.earliest_starting_date}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    earliest_starting_date: e.target.value,
+                  })
+                }
               />
             </div>
           </div>
@@ -299,7 +328,7 @@ export const CandidateCreate = () => {
                 <div className="card-language">
                   <Dropdown
                     labelName="Language"
-                    options={languageList.data}
+                    options={languageList}
                     onChange={(e) => {
                       const updatedData = [...data];
                       updatedData[index].devlanguage_id = e.target.value;

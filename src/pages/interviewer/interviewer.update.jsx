@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../../store/AuthContext";
 import { toast } from "react-toastify";
+import { useAuth } from "../../store/AuthContext";
 import { Input, Dropdown, Button, ButtonLink } from "../../components";
 import departmentService from "../../services/departmentService";
 import positionService from "../../services/positionService";
@@ -19,6 +19,7 @@ export const InterviewerUpdate = () => {
     department_id: "",
     position_id: "",
   });
+
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -40,9 +41,8 @@ export const InterviewerUpdate = () => {
       toast.success(successMessage);
 
       setTimeout(() => {
-        navigate('/interviewer');
+        navigate("/interviewer");
       }, 1000);
-
     } catch (error) {
       if (error.response && error.response.data && error.response.data.data) {
         setError(error.response.data.data);

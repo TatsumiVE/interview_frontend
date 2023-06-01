@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useTable, usePagination, useGlobalFilter } from "react-table";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
-import { ButtonLink, } from "../../components";
+import { ButtonLink } from "../../components";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../../components/loader";
 import Can from "../../components/utilites/can";
@@ -35,7 +35,6 @@ export const Employee = () => {
       if (successMessage) {
         toast.success(successMessage);
       }
-
     };
     fetchInterviewers();
   }, [successMessage]);
@@ -61,8 +60,9 @@ export const Employee = () => {
                 type="button"
                 className="btn-info"
                 route={`user/create/${row.original.id}`}
-                text="Create Role"
                 linkText="txt-light txt-sm"
+                text="Create Role"
+                icon="fa-solid fa-plus"
               />
             </Can>
             &nbsp;
@@ -71,11 +71,11 @@ export const Employee = () => {
                 type="button"
                 className="btn-success"
                 route={`/interviewer/update/${row.original.id}`}
-                text="Update"
+                text="Edit"
                 linkText="txt-light txt-sm"
+                icon="fa-solid fa-pen-to-square"
               />
             </Can>
-
           </div>
         ),
       },
@@ -105,7 +105,7 @@ export const Employee = () => {
     useGlobalFilter,
     usePagination
   );
-  if (interviewers.length === 0) return <Loader/>;
+  if (interviewers.length === 0) return <Loader />;
 
   const { globalFilter, pageIndex } = state;
 
@@ -124,7 +124,14 @@ export const Employee = () => {
             />
           </div>
           <div className="create-content">
-            <ButtonLink type="button" className="btn-primary" route="create" linkText="txt-light txt-sm" text="Create Interviewer" />
+            <ButtonLink
+              type="button"
+              className="btn-primary"
+              route="create"
+              linkText="txt-light txt-sm"
+              text="Create Interviewer"
+              icon="fa-solid fa-plus"
+            />
           </div>
         </div>
 
@@ -156,7 +163,12 @@ export const Employee = () => {
           </table>
         </div>
         <div className="table-wrap__pagination">
-          <button type="button" onClick={() => previousPage()} disabled={!canPreviousPage} className="txt-primary">
+          <button
+            type="button"
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+            className="txt-primary"
+          >
             &lt;&lt;
           </button>
           <span className="page-content">
@@ -165,7 +177,11 @@ export const Employee = () => {
               {pageIndex + 1} of {pageOptions.length}
             </strong>
           </span>
-          <button onClick={() => nextPage()} disabled={!canNextPage} className="txt-primary">
+          <button
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+            className="txt-primary"
+          >
             &gt;&gt;
           </button>
         </div>
@@ -173,24 +189,6 @@ export const Employee = () => {
     </>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import { useState, useEffect, useMemo } from "react";
 // import { Link } from "react-router-dom";
