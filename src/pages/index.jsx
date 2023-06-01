@@ -15,3 +15,5 @@ export * from "./position";
 export * from "./devlanguage";
 export * from "./chart";
 export * from "./notfound";
+export * from "./rate";
+export * from "./topic";

@@ -5,13 +5,14 @@ import axios from "axios";
 import { Dropdown, Input, Button, ButtonLink } from "../../components";
 import { useAuth } from "../../store/AuthContext";
 import Can from "../../components/utilites/can";
-
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 export const UserUpdate = () => {
   const { token } = useAuth();
   const { id } = useParams();
-  const [error, setError] = useState([]);
+  const [error, setError] = useState("");
   const [user, setUser] = useState([]);
-
+  const navigate = useNavigate();
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -20,7 +21,16 @@ export const UserUpdate = () => {
 
   const updateUser = useMutation(async () => {
     try {
-      axios.put(`http://localhost:8000/api/users/${id}`, user, config);
+      const response = axios.put(
+        `http://localhost:8000/api/users/${id}`,
+        user,
+        config
+      );
+      // let successMessage = response.data.message;
+      // toast.success(successMessage);
+      // setTimeout(() => {
+      //   navigate("/interviewer");
+      // }, 1000);
     } catch (error) {
       setError(error.response.data.err_msg.errors);
     }
@@ -37,7 +47,7 @@ export const UserUpdate = () => {
         `http://localhost:8000/api/users/${id}`,
         config
       );
-      console.log(response.data.data);
+
       setUser(response.data.data);
       return response.data.data;
     } catch (error) {
@@ -92,6 +102,7 @@ export const UserUpdate = () => {
             placeholder="Enter Name"
             value={user.interviewer_id.name}
           />
+
           <Input
             labelName="Email"
             type="email"
@@ -99,6 +110,7 @@ export const UserUpdate = () => {
             placeholder=" Enter Email"
             value={user.interviewer_id.email}
           />
+
           <Dropdown
             labelName="Role"
             options={roles}
@@ -106,9 +118,9 @@ export const UserUpdate = () => {
             onChange={(e) => setUser({ ...user, role: e.target.value })}
             errorMessage="*"
           />
-          {error.role && (
+          {/* {error.role && (
             <span className="txt-danger txt-ss">{error.role}</span>
-          )}
+          )} */}
 
           <div className="button-group--user">
             <Can permission={"userUpdate"}>
@@ -130,5 +142,4 @@ export const UserUpdate = () => {
         </form>
       </div>
     );
-
-}
+};

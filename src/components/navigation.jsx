@@ -55,6 +55,16 @@ export const MainNavigation = () => {
           Language
         </NavigationLink>
       </Can>
+      <Can permission={"rateList"}>
+        <NavigationLink to="/rate" icon="fa-percent">
+          Rate
+        </NavigationLink>
+      </Can>
+      <Can permission={"topicList"}>
+        <NavigationLink to="/topic" icon="fa-biohazard">
+          Topic
+        </NavigationLink>
+      </Can>
 
       <NavigationLink to="/setting" icon="fa-gear">
         Setting

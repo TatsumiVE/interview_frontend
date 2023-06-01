@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../store/AuthContext";
+import { toast } from "react-toastify";
 import { Input, Dropdown, Button, ButtonLink } from "../../components";
 import departmentService from "../../services/departmentService";
 import positionService from "../../services/positionService";
@@ -11,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 export const InterviewerUpdate = () => {
   const { id } = useParams();
   const { token } = useAuth();
+  const navigate = useNavigate();
   const [error, setError] = useState([]);
   const [interviewer, setInterviewer] = useState({
     name: "",
@@ -32,23 +34,30 @@ export const InterviewerUpdate = () => {
         interviewer,
         config
       );
-      let successMessage = response.data.message;
 
+      //console.log(response);
+      let successMessage = response.data.message;
+      console.log(successMessage);
       toast.success(successMessage);
 
       setTimeout(() => {
         navigate("/interviewer");
       }, 1000);
-
-      return response;
     } catch (error) {
-      setError(error.response);
-      console.log(error.response);
+      setError(error.response.data.err_msg.errors);
+      //setError(error.response.data);
+      console.log(error);
     }
   });
 
   const handleUpdate = (event) => {
     event.preventDefault();
+    setError({
+      name: "",
+      email: "",
+      department_id: "",
+      position_id: "",
+    });
     updateInterviewer.mutate();
   };
 
@@ -121,22 +130,8 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {console.log(error)}
-        {error && (
-          <span className="txt-danger txt-ss">{error.response.data.name}</span>
-        )}
-        {error && (
-          <span className="txt-danger txt-ss">{error.response.data.email}</span>
-        )}
-        {error && (
-          <span className="txt-danger txt-ss">
-            {error.response.data.department_id}
-          </span>
-        )}
-        {error && (
-          <span className="txt-danger txt-ss">
-            {error.response.data.position_id}
-          </span>
+        {error.data && (
+          <span className="txt-danger txt-ss">{error.data[0]}</span>
         )}
 
         <Input
@@ -150,7 +145,9 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error && <span className="txt-danger txt-ss">{error.email}</span>}
+        {error.data && (
+          <span className="txt-danger txt-ss">{error.data[1]}</span>
+        )}
 
         <Dropdown
           labelName="Department"
@@ -161,7 +158,9 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error && <span className="txt-danger txt-ss">{error.department}</span>}
+        {error.data && (
+          <span className="txt-danger txt-ss">{error.data[2]}</span>
+        )}
 
         <Dropdown
           labelName="Position"
@@ -172,7 +171,9 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error && <span className="txt-danger txt-ss">{error.position}</span>}
+        {error.data && (
+          <span className="txt-danger txt-ss">{error.data[3]}</span>
+        )}
 
         <div className="button-group--user">
           <Button
