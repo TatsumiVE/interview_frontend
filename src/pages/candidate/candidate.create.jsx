@@ -1,14 +1,17 @@
-
-
-
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Dropdown, Input, Button, TextArea, InputCheckbox, ButtonLink } from "../../components/utilites";
+import {
+  Dropdown,
+  Input,
+  Button,
+  TextArea,
+  InputCheckbox,
+  ButtonLink,
+} from "../../components/utilites";
 import { useMutation } from "react-query";
 import { useAuth } from "../../store/AuthContext";
-
+import { useNavigate } from "react-router-dom";
 export const CandidateCreate = () => {
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone_number, setPhone] = useState("");
@@ -24,7 +27,8 @@ export const CandidateCreate = () => {
   const [agency, setAgency] = useState("");
   const [languageList, setLanguageList] = useState([]);
   const { token } = useAuth();
-  
+  const navigate = useNavigate();
+
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -41,6 +45,7 @@ export const CandidateCreate = () => {
       formData,
       config
     );
+    console.log(response);
     return response;
   };
 
@@ -77,6 +82,8 @@ export const CandidateCreate = () => {
     };
 
     createCandidate(formData);
+
+    // navigate("/interview/create/");
   };
 
   const handleAdd = () => {
@@ -181,7 +188,7 @@ export const CandidateCreate = () => {
                 labelName="Willingness To Travel"
               />
 
-              <div className="radio-group">                
+              <div className="radio-group">
                 <InputCheckbox
                   labelName="Male"
                   type="radio"
@@ -209,9 +216,8 @@ export const CandidateCreate = () => {
                   checked={gender === "3"}
                   onChange={(e) => setGender(e.target.value)}
                 />
-                 <span className="txt-danger star">*</span>              
+                <span className="txt-danger star">*</span>
               </div>
-
             </div>
             <div className="card-right">
               <Dropdown
@@ -344,11 +350,16 @@ export const CandidateCreate = () => {
               text="Submit"
               className="txt-light btn-primary"
             />
-            <ButtonLink type="button" className="btn-default" route={"/interview"} text="Cancel" linkText="txt-light txt-sm"/>
+            <ButtonLink
+              type="button"
+              className="btn-default"
+              route={"/interview"}
+              text="Cancel"
+              linkText="txt-light txt-sm"
+            />
           </div>
-        </form >
-
-      </div >
+        </form>
+      </div>
     </>
   );
 };

@@ -26,11 +26,11 @@ export const UserUpdate = () => {
         user,
         config
       );
-      let successMessage = response.data.message;
-      toast.success(successMessage);
-      setTimeout(() => {
-        navigate("/interviewer");
-      }, 1000);
+      // let successMessage = response.data.message;
+      // toast.success(successMessage);
+      // setTimeout(() => {
+      //   navigate("/interviewer");
+      // }, 1000);
     } catch (error) {
       setError(error.response.data.err_msg.errors);
     }
@@ -102,9 +102,7 @@ export const UserUpdate = () => {
             placeholder="Enter Name"
             value={user.interviewer_id.name}
           />
-          {error.name && (
-            <span className="txt-danger txt-ss">{error.name}</span>
-          )}
+
           <Input
             labelName="Email"
             type="email"
@@ -112,9 +110,7 @@ export const UserUpdate = () => {
             placeholder=" Enter Email"
             value={user.interviewer_id.email}
           />
-          {error.email && (
-            <span className="txt-danger txt-ss">{error.email}</span>
-          )}
+
           <Dropdown
             labelName="Role"
             options={roles}
@@ -122,9 +118,9 @@ export const UserUpdate = () => {
             onChange={(e) => setUser({ ...user, role: e.target.value })}
             errorMessage="*"
           />
-          {error.role && (
+          {/* {error.role && (
             <span className="txt-danger txt-ss">{error.role}</span>
-          )}
+          )} */}
 
           <div className="button-group--user">
             <Can permission={"userUpdate"}>
@@ -146,5 +142,4 @@ export const UserUpdate = () => {
         </form>
       </div>
     );
-
-}
+};

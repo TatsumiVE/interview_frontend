@@ -111,12 +111,23 @@ import { useAuth } from "../../store/AuthContext";
 import { Link } from "react-router-dom";
 import { useQuery, useMutation, QueryClient } from "react-query";
 import Can from "../../components/utilites/can";
+import languageService from "../../services/languageService";
 
 import Loader from "../../components/loader";
+import { useEffect, useState } from "react";
+import { Dropdown } from "../../components";
 
 export const InterviewList = () => {
   const { token, user } = useAuth();
   const queryClient = new QueryClient();
+  const [language, setLanguage] = useState("All");
+  const [stageFilter, setStageFilter] = useState("");
+  const [startDateFilter, setStartDateFilter] = useState(
+    new Date().toLocaleDateString("af-ZA")
+  );
+  const [endDateFilter, setEndDateFilter] = useState(
+    new Date().toLocaleDateString("af-ZA")
+  );
 
   const getCandidates = async () => {
     const config = {
@@ -147,6 +158,18 @@ export const InterviewList = () => {
     );
     return response.data;
   };
+
+  const {
+    data: languages,
+    isLoading: isLanguageLoading,
+    isError: isLanguageError,
+    isSuccess: isLanguageSuccess,
+    error: languageError,
+  } = useQuery(["get", "languages"], () => languageService.getAll(token));
+
+  // useEffect(() => {
+  //   languages && setLanguage(languages);
+  // }, [languages]);
 
   const { mutate: interviewTerminate } = useMutation({
     mutationKey: ["post", "interview-process", "terminate"],
@@ -211,13 +234,61 @@ export const InterviewList = () => {
     };
   };
 
+  const candidateToShow = (
+    language === "All"
+      ? candidateList
+      : candidateList.filter((candidate) => {
+          return candidate.specific_languages
+            .map((lan) => lan.devlanguage.name)
+            .includes(language);
+        })
+  )?.filter((candidate) => {
+    const date = candidate?.interviews[0]?.interview_stage?.interview_date;
+    return startDateFilter < date && date < endDateFilter;
+  });
+
   return (
     <div>
-      <Can permission={"canidateCreate"}>
-        <button type="button">
-          <Link to="/candidate/create">Create Candidate</Link>
-        </button>
-      </Can>
+      <button type="button">
+        <Link to="/candidates/create">Create Candidate</Link>
+      </button>
+      <Dropdown
+        labelName="Language"
+        options={[{ id: 0, name: "All" }, ...languages]}
+        onChange={(e) => {
+          setLanguage(
+            [{ id: 0, name: "All" }, ...languages][e.target.value].name
+          );
+        }}
+        // selectedValue={language}
+        hide={true}
+      />
+      <button type="button" onClick={() => setStageFilter(1)}>
+        stage1
+      </button>
+      <button type="button" onClick={() => setStageFilter(2)}>
+        stage2
+      </button>
+      <button type="button" onClick={() => setStageFilter(3)}>
+        stage3
+      </button>
+      <input
+        type="date"
+        value={startDateFilter}
+        onChange={(e) => {
+          if (e.target.value > endDateFilter)
+            return alert("start-date can't greater than end-date");
+          setStartDateFilter(e.target.value);
+        }}
+      />
+      <input
+        type="date"
+        value={endDateFilter}
+        onChange={(e) => {
+          setEndDateFilter(e.target.value);
+        }}
+      />
+      <span>Count: {candidateList.length}</span>
 
       <table className="candidate-table">
         <thead>
@@ -229,12 +300,12 @@ export const InterviewList = () => {
             <th>Phone Number</th>
             <th>Applied Position</th>
             <th>Language</th>
-            <th>Edit</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
-          {isSuccess && candidateList.length > 0 ? (
-            candidateList.map((candidate) => (
+          {isSuccess && candidateToShow.length > 0 ? (
+            candidateToShow.map((candidate) => (
               <tr key={candidate.id}>
                 <td>{candidate.name}</td>
                 <td>{candidate.email}</td>
@@ -323,6 +394,9 @@ export const InterviewList = () => {
                       Terminate
                     </button>
                   </Can>
+                </td>
+                <td>
+                  {candidate?.interviews[0]?.interview_stage?.interview_date}
                 </td>
               </tr>
             ))

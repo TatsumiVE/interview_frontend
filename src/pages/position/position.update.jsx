@@ -11,7 +11,7 @@ export const PositionUpdate = () => {
 
   const config = {
     headers: {
-      Authorization:` Bearer ${token}`,
+      Authorization: ` Bearer ${token}`,
     },
   };
 
@@ -21,7 +21,7 @@ export const PositionUpdate = () => {
   const updatePosition = useMutation(async () => {
     try {
       await axios.put(
-       ` http://localhost:8000/api/positions/${id}`,
+        ` http://localhost:8000/api/positions/${id}`,
         position,
         config
       );
@@ -38,7 +38,7 @@ export const PositionUpdate = () => {
   const getPosition = async () => {
     try {
       const response = await axios.get(
-       ` http://localhost:8000/api/positions/${id}`,
+        ` http://localhost:8000/api/positions/${id}`,
         config
       );
       const positionData = response.data.data;
@@ -60,7 +60,7 @@ export const PositionUpdate = () => {
       </div>
       <form onSubmit={handleUpdate} className="card-min__form">
         <Input
-        labelName="Name"
+          labelName="Name"
           type="text"
           name="name"
           value={position.name}
@@ -68,12 +68,25 @@ export const PositionUpdate = () => {
           placeholder="Enter Name..."
           errorMessage="*"
         />
-       <div className="button-group--user">
-          <Button type="submit" text="Update" className="txt-light btn-primary" />
-          <ButtonLink type="button" className="btn-default" route={"/position"} text="Cancel" linkText="txt-light txt-sm"/>
+        {/* {error.position && (
+          <span className="txt-danger txt-ss">{error.position}</span>
+        )} */}
+
+        <div className="button-group--user">
+          <Button
+            type="submit"
+            text="Update"
+            className="txt-light btn-primary"
+          />
+          <ButtonLink
+            type="button"
+            className="btn-default"
+            route={"/position"}
+            text="Cancel"
+            linkText="txt-light txt-sm"
+          />
         </div>
       </form>
     </div>
   );
 };
-﻿

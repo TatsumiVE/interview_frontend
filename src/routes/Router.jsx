@@ -48,30 +48,30 @@ export const Router = () => {
           <Route path="/" element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
 
-                    <Route path="candidates">
-                        <Route index element={<Candidate />} />
-                        <Route path="create" element={<CandidateCreate />} />
-                        <Route path="update/:id" element={<CandidateUpdate />} />
-                        <Route path=":id" element={<CandidateDetails />}>
-                            <Route index element={<Navigate to="details" replace />} />
-                            <Route path="details" element={<CDetails />} />
-                            <Route path="cv" element={<CCv />} />
-                            <Route path="stages" element={<CStages />} />
-                            <Route path="interviews" element={<CInterviews />} />
-                        </Route>
-                    </Route>
-                    <Route path="interviewer">
-                        <Route index element={<Employee />} />
-                        <Route path="create" element={<InterviewerCreate />} />
-                        <Route path="update/:id" element={<InterviewerUpdate />} />
-                        <Route path="user/create/:id" element={<UserCreate />} />
-                    </Route>
-                    <Route path="interview">
-                        <Route index element={<InterviewList />} />
-                        <Route path="create" element={<InterviewCreate />} />
-                        <Route path="assessment" element={<InterviewAssessment />} />
-                        <Route path="result" element={<InterviewResult />} />
-                    </Route>
+          <Route path="candidates">
+            <Route index element={<Candidate />} />
+            <Route path="create" element={<CandidateCreate />} />
+            <Route path="update/:id" element={<CandidateUpdate />} />
+            <Route path=":id" element={<CandidateDetails />}>
+              <Route index element={<Navigate to="details" replace />} />
+              <Route path="details" element={<CDetails />} />
+              <Route path="cv" element={<CCv />} />
+              <Route path="stages" element={<CStages />} />
+              <Route path="interviews" element={<CInterviews />} />
+            </Route>
+          </Route>
+          <Route path="interviewer">
+            <Route index element={<Employee />} />
+            <Route path="create" element={<InterviewerCreate />} />
+            <Route path="update/:id" element={<InterviewerUpdate />} />
+            <Route path="user/create/:id" element={<UserCreate />} />
+          </Route>
+          <Route path="interview">
+            <Route index element={<InterviewList />} />
+            <Route path="create" element={<InterviewCreate />} />
+            <Route path="assessment" element={<InterviewAssessment />} />
+            <Route path="result" element={<InterviewResult />} />
+          </Route>
 
           <Route path="interview">
             <Route index element={<InterviewList />} />
