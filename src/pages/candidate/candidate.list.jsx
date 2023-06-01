@@ -229,13 +229,18 @@ import { Dropdown } from "../../components";
 import languageService from "../../services/languageService";
 
 export const Candidate = () => {
-  const [candidateData, setCandidateData] = useState([]);
   const { token } = useAuth();
+  const [candidateData, setCandidateData] = useState([]);
   const [language, setLanguage] = useState("All");
+  const [grade, setGrade] = useState("");
   const today = new Date();
+  const grades = [
+    { id: 1, name: "A" },
+    { id: 2, name: "B" },
+    { id: 3, name: "C" },
+  ];
   const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
   const start = new Date(today.getFullYear(), today.getMonth(), 1);
-
   const [startDateFilter, setStartDateFilter] = useState(
     start.toLocaleDateString("af-ZA")
   );
@@ -265,31 +270,25 @@ export const Candidate = () => {
   } = useQuery(["get", "languages"], () => languageService.getAll(token));
 
   useEffect(() => {
-    const fetchCandidates = async () => {
-      const data = await getCandidates();
-      setCandidateData(data);
-    };
-
-    fetchCandidates();
+    console.log("effect");
+    getCandidates().then((data) => setCandidateData(data));
   }, []);
 
-  const candidateToShow = (
-    language === "All"
-      ? candidateData
-      : candidateData.filter((candidate) => {
-          return candidate.specific_languages
-            .map((lan) => lan.devlanguage.name)
-            .includes(language);
-        })
-  )?.filter((candidate) => {
-    const date = candidate?.interviews[0]?.interview_stage?.interview_date;
-    return startDateFilter <= date && date <= endDateFilter;
-  });
-
+  const [a, b] = useState([]);
   useEffect(() => {
-    setCandidateData(candidateToShow);
-    console.log(candidateData);
-  }, [language, startDateFilter, endDateFilter]);
+    b(
+      language === "All"
+        ? candidateData
+        : candidateData.filter((candidate) => {
+            return candidate.specific_languages
+              .map((lan) => lan.devlanguage.name)
+              .includes(language);
+          })
+    )?.filter((candidate) => {
+      const date = candidate?.interviews[0]?.interview_stage?.interview_date;
+      return startDateFilter <= date && date <= endDateFilter;
+    });
+  }, [candidateData, startDateFilter, endDateFilter, language]);
 
   const columns = useMemo(
     () => [
@@ -364,7 +363,7 @@ export const Candidate = () => {
   } = useTable(
     {
       columns,
-      data: candidateData,
+      data: a,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -374,18 +373,30 @@ export const Candidate = () => {
   const { globalFilter, pageIndex } = state;
   if (isLanguageLoading) return <Loader />;
   if (isLanguageError) return "Something went wrong";
-  if (candidateData.length === 0) return <Loader />;
   return (
     <>
       <Dropdown
         labelName="Language"
         options={[{ id: 0, name: "All" }, ...languages]}
         onChange={(e) => {
+          console.log("id ", e.target.value);
+          console.log(
+            [{ id: 0, name: "All" }, ...languages].filter(
+              (lan) => lan.id == e.target.value
+            )[0].name
+          );
           setLanguage(
-            [{ id: 0, name: "All" }, ...languages][e.target.value].name
+            [{ id: 0, name: "All" }, ...languages].filter(
+              (lan) => lan.id == e.target.value
+            )[0].name
           );
         }}
         hide={true}
+      />
+      <Dropdown
+        labelName="Grade"
+        options={grades}
+        onChange={(e) => setGrade(e.target.value)}
       />
 
       <input

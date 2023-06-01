@@ -11,7 +11,6 @@ export const Dropdown = ({
   if (!options) {
     return null;
   }
-
   return (
     <div className="input-form">
       <label>
@@ -19,7 +18,7 @@ export const Dropdown = ({
       </label>
       <select onChange={onChange} className="select">
         {!hide && (
-          <option key="0" value="">
+          <option key="-1" value="">
             Select {labelName}
           </option>
         )}
@@ -28,7 +27,7 @@ export const Dropdown = ({
           <option
             key={option.id}
             value={option.id}
-            selected={option.selected}
+            selected={option.id == selectedValue}
             disabled={option.disabled}
           >
             {option.name}
@@ -39,17 +38,6 @@ export const Dropdown = ({
   );
 };
 
-Dropdown.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-  ),
-  selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  onChange: PropTypes.func.isRequired,
-  labelName: PropTypes.string.isRequired,
-};
 Dropdown.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
