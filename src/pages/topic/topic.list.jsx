@@ -62,13 +62,14 @@ export const TopicList = () => {
     []
   );
 
-  const data = useMemo(() => TopicList || [], [TopicList]);
+  const data = useMemo(() => TopicList , [TopicList]);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
     state,
     setGlobalFilter,
@@ -82,7 +83,7 @@ export const TopicList = () => {
   } = useTable(
     {
       columns,
-      data,
+      data:TopicList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -135,7 +136,7 @@ export const TopicList = () => {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
+              {page.map((row) => {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>

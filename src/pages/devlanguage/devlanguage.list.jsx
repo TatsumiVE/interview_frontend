@@ -62,13 +62,14 @@ export const DevLanguageList = () => {
     []
   );
 
-  const data = useMemo(() => devlanguageList || [], [devlanguageList]);
+  const data = useMemo(() => devlanguageList , [devlanguageList]);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
     state,
     setGlobalFilter,
@@ -82,7 +83,7 @@ export const DevLanguageList = () => {
   } = useTable(
     {
       columns,
-      data,
+      data:devlanguageList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -133,7 +134,7 @@ export const DevLanguageList = () => {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
+            {page.map((row) => {
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()}>

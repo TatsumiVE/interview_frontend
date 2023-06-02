@@ -66,13 +66,14 @@ export const PositionList = () => {
     []
   );
 
-  const data = useMemo(() => PositionList || [], [PositionList]);
+  const data = useMemo(() => PositionList , [PositionList]);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
     state,
     setGlobalFilter,
@@ -86,7 +87,7 @@ export const PositionList = () => {
   } = useTable(
     {
       columns,
-      data,
+      data:PositionList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -138,7 +139,7 @@ export const PositionList = () => {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
+              {page.map((row) => {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>

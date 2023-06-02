@@ -62,13 +62,14 @@ export const RateList = () => {
     []
   );
 
-  const data = useMemo(() => RateList || [], [RateList]);
+  const data = useMemo(() => RateList , [RateList]);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
     state,
     setGlobalFilter,
@@ -77,12 +78,11 @@ export const RateList = () => {
     canNextPage,
     canPreviousPage,
     pageOptions,
-    gotoPage,
-    pageCount,
+    
   } = useTable(
     {
       columns,
-      data,
+      data:RateList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -135,7 +135,7 @@ export const RateList = () => {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
+              {page.map((row) => {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>

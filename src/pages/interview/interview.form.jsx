@@ -5,9 +5,12 @@ import { useQuery, useMutation } from "react-query";
 import { Dropdown, Button, Input, ButtonLink } from "../../components";
 import { useAuth } from "../../store/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 export const InterviewCreate = () => {
   const { state } = useLocation();
   const { id, stageId } = state;
+  const { successMessage } = state || {};
+
 
   const [data, setData] = useState([{}]);
   const navigate = useNavigate();
@@ -27,6 +30,13 @@ export const InterviewCreate = () => {
     interview_time: "",
     location: "",
   });
+
+  // useEffect(() => {
+  //   if (successMessage) {
+  //     toast.success(successMessage);
+  //   }
+  // }, [successMessage]);
+
   const createInterview = async (formData) => {
     const response = await axios.post(
       "http://localhost:8000/api/interview-process",
@@ -84,6 +94,7 @@ export const InterviewCreate = () => {
         }
       );
       setInterviewers(interviewerResponse.data.data);
+
     } catch (error) {
       return error.message;
     }
@@ -111,111 +122,114 @@ export const InterviewCreate = () => {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div className="card-min">
-      <div className="card-min__header">
-        <h2>Interview Create</h2>
-      </div>
-      <form onSubmit={handleSubmit} className="card-min__form">
-        <Input
-          labelName="Date"
-          type="date"
-          name="interview_date"
-          value={formData.interview_date}
-          onChange={(e) =>
-            setFormData({ ...formData, interview_date: e.target.value })
-          }
-          errorMessage="*"
-        />
-
-        <Input
-          labelName="Time"
-          type="time"
-          name="time"
-          value={formData.interview_time}
-          onChange={(e) =>
-            setFormData({ ...formData, interview_time: e.target.value })
-          }
-          errorMessage="*"
-        />
-        <Dropdown
-          labelName="Interview Stages"
-          options={interviewStages.map((stage) => ({
-            id: stage.id,
-            name: stage.name,
-            selected: stage.id == selectedStageId,
-            disabled: stage.id != selectedStageId,
-          }))}
-          hide={true}
-          selectedValue={selectedStageId.toString()}
-          className="custom-dropdown"
-          errorMessage="*"
-        />
-
-        <Dropdown
-          labelName="Location"
-          options={location}
-          selectedValue={formData.location.toString()}
-          onChange={(e) =>
-            setFormData({ ...formData, location: e.target.value })
-          }
-          errorMessage="*"
-        />
-
-        <div className="btn-plus">
-          {data.length < 4 && (
-            <Button
-              type="button"
-              onClick={handleAdd}
-              text="+"
-              btnColor=""
-              className="txt-light btn-primary"
-            />
-          )}
+    <>
+      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer" />
+      <div className="card-min">
+        <div className="card-min__header">
+          <h2>Interview Create</h2>
         </div>
+        <form onSubmit={handleSubmit} className="card-min__form">
+          <Input
+            labelName="Date"
+            type="date"
+            name="interview_date"
+            value={formData.interview_date}
+            onChange={(e) =>
+              setFormData({ ...formData, interview_date: e.target.value })
+            }
+            errorMessage="*"
+          />
 
-        {data.map((interviewerId, index) => (
-          <div key={index} className="card-input--box">
-            <div className="card-input--first">
-              <div className="card-input--language">
-                <Dropdown
-                  labelName="Interviewers"
-                  options={interviewer_id}
-                  selectedValue={formData.interviewerId}
-                  onChange={(e) => {
-                    const updatedData = [...data];
-                    updatedData[index].interviewer_id = e.target.value;
-                    setData(updatedData);
-                  }}
-                />
-              </div>
-              <div className="card-input--btnMinus">
-                {data.length > 1 && (
-                  <Button
-                    type="button"
-                    onClick={() => handleRemove(index)}
-                    text="-"
-                    className="txt-light btn-default"
+          <Input
+            labelName="Time"
+            type="time"
+            name="time"
+            value={formData.interview_time}
+            onChange={(e) =>
+              setFormData({ ...formData, interview_time: e.target.value })
+            }
+            errorMessage="*"
+          />
+          <Dropdown
+            labelName="Interview Stages"
+            options={interviewStages.map((stage) => ({
+              id: stage.id,
+              name: stage.name,
+              selected: stage.id == selectedStageId,
+              disabled: stage.id != selectedStageId,
+            }))}
+            hide={true}
+            selectedValue={selectedStageId.toString()}
+            className="custom-dropdown"
+            errorMessage="*"
+          />
+
+          <Dropdown
+            labelName="Location"
+            options={location}
+            selectedValue={formData.location.toString()}
+            onChange={(e) =>
+              setFormData({ ...formData, location: e.target.value })
+            }
+            errorMessage="*"
+          />
+
+          <div className="btn-plus">
+            {data.length < 4 && (
+              <Button
+                type="button"
+                onClick={handleAdd}
+                text="+"
+                btnColor=""
+                className="txt-light btn-primary"
+              />
+            )}
+          </div>
+
+          {data.map((interviewerId, index) => (
+            <div key={index} className="card-input--box">
+              <div className="card-input--first">
+                <div className="card-input--language">
+                  <Dropdown
+                    labelName="Interviewers"
+                    options={interviewer_id}
+                    selectedValue={formData.interviewerId}
+                    onChange={(e) => {
+                      const updatedData = [...data];
+                      updatedData[index].interviewer_id = e.target.value;
+                      setData(updatedData);
+                    }}
                   />
-                )}
+                </div>
+                <div className="card-input--btnMinus">
+                  {data.length > 1 && (
+                    <Button
+                      type="button"
+                      onClick={() => handleRemove(index)}
+                      text="-"
+                      className="txt-light btn-default"
+                    />
+                  )}
+                </div>
               </div>
             </div>
+          ))}
+          <div className="button-group--user">
+            <Button
+              type="submit"
+              text="Create"
+              className="txt-light btn-primary"
+            ></Button>
+            <ButtonLink
+              type="button"
+              className="btn-default"
+              route={"/interview"}
+              text="Cancel"
+              linkText="txt-light txt-sm"
+            />
           </div>
-        ))}
-        <div className="button-group--user">
-          <Button
-            type="submit"
-            text="Create"
-            className="txt-light btn-primary"
-          ></Button>
-          <ButtonLink
-            type="button"
-            className="btn-default"
-            route={"/interview"}
-            text="Cancel"
-            linkText="txt-light txt-sm"
-          />
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </>
   );
 };

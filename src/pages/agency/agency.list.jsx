@@ -67,13 +67,14 @@ export const AgencyList = () => {
     []
   );
 
-  const data = useMemo(() => agencyList || [], [agencyList]);
+  const data = useMemo(() => agencyList, [agencyList]);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
     state,
     setGlobalFilter,
@@ -82,12 +83,11 @@ export const AgencyList = () => {
     canNextPage,
     canPreviousPage,
     pageOptions,
-    gotoPage,
-    pageCount,
+    
   } = useTable(
     {
       columns,
-      data,
+      data:agencyList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -140,7 +140,7 @@ export const AgencyList = () => {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
+              {page.map((row) => {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>
