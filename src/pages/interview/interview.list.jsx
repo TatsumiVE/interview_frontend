@@ -101,10 +101,23 @@ export const InterviewList = () => {
     // const canCreate = !(
     //   lastStage < 4 && lastInterview.interview_result !== null
     // );
+    console.log(lastStage);
+    console.log(!lastInterview.interview_result);
+    const canAssessment =
+      lastStage &&
+      lastInterview.interview_assign.length > 0 &&
+      !lastInterview.interview_result &&
+      !lastInterview.interview_assign.some(
+        (assign) => assign.remarks.length > 0
+      );
+    console.log("herereeeeeeee", canAssessment);
 
-    const canAssessment = lastInterview.interview_result;
-
-    const canResult = lastStage && !lastInterview.interview_result;
+    const canResult =
+      lastStage &&
+      !lastInterview.interview_result &&
+      lastInterview.interview_assign.some(
+        (assign) => assign.remarks.length > 0
+      );
 
     return {
       canCreate,
@@ -254,10 +267,10 @@ export const InterviewList = () => {
                           interviewerId: user.id,
                         }}
                         style={{
-                          pointerEvents: check(candidate).canAssessment
+                          pointerEvents: check(interview).canAssessment
                             ? "all"
                             : "none",
-                          background: check(candidate).canAssessment
+                          background: check(interview).canAssessment
                             ? "green"
                             : "red",
                         }}
@@ -274,10 +287,10 @@ export const InterviewList = () => {
                           candidateName: candidate.name,
                         }}
                         style={{
-                          pointerEvents: check(candidate).canResult
+                          pointerEvents: check(interview).canResult
                             ? "all"
                             : "none",
-                          background: check(candidate).canResult
+                          background: check(interview).canResult
                             ? "green"
                             : "red",
                         }}
