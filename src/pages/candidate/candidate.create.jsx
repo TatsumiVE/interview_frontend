@@ -22,7 +22,7 @@ export const CandidateCreate = () => {
   const [languageList, setLanguageList] = useState([]);
   const { token } = useAuth();
   const navigate = useNavigate();
-  const { formActive, setFormActive } = useState(false);
+  const [formActive, setFormActive] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -153,44 +153,48 @@ export const CandidateCreate = () => {
         <form
           onSubmit={handleSubmit}
           className="card-form"
-          // onBlur={() => {
-          //   console.log("trrrrr");
-          // }}
+          onBlur={() => {
+            setFormActive(true);
+          }}
         >
           <div className="card-wrap">
             <div className="card-left">
-              {console.log(formActive, "fdasssssssssss")}
-              <Input
-                labelName="Name"
-                type="text"
-                name="name"
-                placeholder=" Enter Candidate Name..."
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                errorMessage="*"
-              />
-
-              <Input
-                labelName="Email"
-                type="email"
-                name="email"
-                placeholder=" Enter Email..."
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                errorMessage="*"
-              />
-              {isValidEmail(formData.email) && formActive ? (
-                ""
-              ) : (
-                <span className="txt-danger validated-error">
-                  email field format is invalid
-                </span>
-              )}
-
+              <div className="input-group">
+                <Input
+                  labelName="Name"
+                  type="text"
+                  name="name"
+                  placeholder=" Enter Candidate Name..."
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                  errorMessage="*"
+                />
+                {!isValidEmail(formData.email) && formActive ? (
+                  <span className="txt-danger validated-error">
+                    Email format is invalid!
+                  </span>
+                ) : null}
+              </div>
+              <div className="input-group">
+                <Input
+                  labelName="Email"
+                  type="email"
+                  name="email"
+                  placeholder=" Enter Email..."
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  errorMessage="*"
+                />
+                {!isValidEmail(formData.email) && formActive ? (
+                  <span className="txt-danger validated-error">
+                    Email format is invalid!
+                  </span>
+                ) : null}
+              </div>
               <Input
                 labelName="Phone Number"
                 type="tel"
@@ -202,14 +206,13 @@ export const CandidateCreate = () => {
                 }
                 errorMessage="*"
               />
-              {isValidPhoneNumber(formData.phone_number) && formActive ? (
+              {/* {isValidPhoneNumber(formData.phone_number) ? (
                 ""
               ) : (
                 <span className="txt-danger validated-error">
                   phone number format is invalid
                 </span>
-              )}
-
+              )} */}
               <Input
                 labelName="Date of Birth"
                 type="date"
@@ -221,7 +224,6 @@ export const CandidateCreate = () => {
                 }
                 errorMessage="*"
               />
-
               <TextArea
                 labelName="Address"
                 name="residential_address"
@@ -234,7 +236,6 @@ export const CandidateCreate = () => {
                 }
                 errorMessage="*"
               />
-
               <InputCheckbox
                 type="checkbox"
                 name="willingness_to_travel"
@@ -247,7 +248,6 @@ export const CandidateCreate = () => {
                 }
                 labelName="Willingness To Travel"
               />
-
               <div className="radio-group">
                 <Radio
                   labelName="Male"
