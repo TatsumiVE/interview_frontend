@@ -22,6 +22,7 @@ export const CandidateCreate = () => {
   const [languageList, setLanguageList] = useState([]);
   const { token } = useAuth();
   const navigate = useNavigate();
+  const { formActive, setFormActive } = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -48,6 +49,25 @@ export const CandidateCreate = () => {
   const [data, setData] = useState([
     { devlanguage_id: "", year: "", month: "" },
   ]);
+
+  const isValidPhoneNumber = (phoneNumber) => {
+    const phonePattern = /^\d{10}$/;
+
+    return phonePattern.test(phoneNumber);
+  };
+  const isValidEmail = (email) => {
+    // Regular expression pattern for email validation
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
+    return emailPattern.test(email);
+  };
+  // const checkValidate = () => {
+  //   const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  //   const phonePattern = /^\d{11}$/;
+  //   formData.name.length > 5 &&
+  //     emailPattern.test(formData.email) &&
+  //     phonePattern.test(formData.phone_number);
+  // };
 
   const requestData = data.map((row) => ({
     experience: {
@@ -95,7 +115,6 @@ export const CandidateCreate = () => {
     languages && setLanguageList(languages);
   }, [languages]);
 
-
   const createCandidate = useMutation({
     mutationKey: ["post", "candidates"],
     mutationFn: addCandidate,
@@ -131,9 +150,16 @@ export const CandidateCreate = () => {
   return (
     <>
       <div className="card">
-        <form onSubmit={handleSubmit} className="card-form">
+        <form
+          onSubmit={handleSubmit}
+          className="card-form"
+          // onBlur={() => {
+          //   console.log("trrrrr");
+          // }}
+        >
           <div className="card-wrap">
             <div className="card-left">
+              {console.log(formActive, "fdasssssssssss")}
               <Input
                 labelName="Name"
                 type="text"
@@ -157,6 +183,13 @@ export const CandidateCreate = () => {
                 }
                 errorMessage="*"
               />
+              {isValidEmail(formData.email) && formActive ? (
+                ""
+              ) : (
+                <span className="txt-danger validated-error">
+                  email field format is invalid
+                </span>
+              )}
 
               <Input
                 labelName="Phone Number"
@@ -169,6 +202,13 @@ export const CandidateCreate = () => {
                 }
                 errorMessage="*"
               />
+              {isValidPhoneNumber(formData.phone_number) && formActive ? (
+                ""
+              ) : (
+                <span className="txt-danger validated-error">
+                  phone number format is invalid
+                </span>
+              )}
 
               <Input
                 labelName="Date of Birth"

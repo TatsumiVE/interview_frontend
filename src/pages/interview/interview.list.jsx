@@ -15,7 +15,7 @@ export const InterviewList = () => {
   const { token, user } = useAuth();
   const queryClient = new QueryClient();
   const [language, setLanguage] = useState("All");
-  const [stageFilter, setStageFilter] = useState("");
+  const [stageFilter, setStageFilter] = useState(0);
 
   const [candidateList, setCandidateList] = useState([]);
   const [interviewList, setInterviewList] = useState([]);
@@ -61,33 +61,6 @@ export const InterviewList = () => {
     return response.data;
   };
 
-  // const check = (candidate) => {
-  //   // console.log(candidate);
-  //   const interviews = candidate.interviews || [];
-  //   // console.log(interviews);
-  //   const lastInterview = interviews[interviews.length - 1] || {};
-  //   const lastStage = lastInterview.interview_stage?.stage_name || 0;
-
-  //   const lastAssessment = lastInterview;
-  //   console.log(lastInterview);
-  //   const canCreate = !(
-  //     lastStage &&
-  //     lastStage > 3 &&
-  //     !lastInterview.interview_result
-  //   );
-
-  //   const canAssessment = lastStage && !lastInterview.interview_result;
-
-  //   const canResult = lastStage && !lastInterview.interview_result;
-
-  //   return {
-  //     canCreate,
-  //     canAssessment,
-  //     canResult,
-  //     lastStage,
-  //   };
-  // };
-
   const check = (interview) => {
     // console.log(candidate);
     // const interviews = candidate.interviews || [];
@@ -96,13 +69,10 @@ export const InterviewList = () => {
     const lastStage = lastInterview.interview_stage?.stage_name || 0;
 
     // const lastAssessment = lastInterview;
-    console.log(lastInterview);
     const canCreate = !(lastStage && !lastInterview.interview_result);
     // const canCreate = !(
     //   lastStage < 4 && lastInterview.interview_result !== null
     // );
-    console.log(lastStage);
-    console.log(!lastInterview.interview_result);
     const canAssessment =
       lastStage &&
       lastInterview.interview_assign.length > 0 &&
@@ -110,7 +80,6 @@ export const InterviewList = () => {
       !lastInterview.interview_assign.some(
         (assign) => assign.remarks.length > 0
       );
-    console.log("herereeeeeeee", canAssessment);
 
     const canResult =
       lastStage &&
@@ -171,21 +140,29 @@ export const InterviewList = () => {
 
   const [a, b] = useState();
   useEffect(() => {
+    console.log(stageFilter, "stagee11111111");
     b(
-      language === "All"
+      (language === "All"
         ? data
         : data.filter(({ candidate }) => {
             return candidate.specific_languages
               .map((lan) => lan.devlanguage.name)
               .includes(language);
           })
-    )?.filter(({ candidate }) => {
-      const date = candidate?.interviews[0]?.interview_stage?.interview_date;
+      )
+        ?.filter(({ interview }) => {
+          const date = interview[0]?.interview_stage?.interview_date;
 
-      return startDateFilter <= date && date <= endDateFilter;
-    });
-  }, [data, startDateFilter, endDateFilter, language]);
-  console.log("a=> ", a);
+          return startDateFilter <= date && date <= endDateFilter;
+        })
+        ?.filter(({ interview }) => {
+          console.log(stageFilter, "stageeeeeeeee");
+          return stageFilter === 0
+            ? true
+            : stageFilter === interview[0]?.interview_stage.stage_name;
+        })
+    );
+  }, [data, startDateFilter, endDateFilter, language, stageFilter]);
   const columns = useMemo(
     () =>
       a
@@ -193,7 +170,6 @@ export const InterviewList = () => {
             {
               Header: "No.",
               Cell: ({ row }) => {
-                console.log("aflksaddasfadsfsa => ", row);
                 return <div>{row.index + 1}.</div>;
               },
             },
@@ -364,12 +340,6 @@ export const InterviewList = () => {
         labelName="Language"
         options={[{ id: 0, name: "All" }, ...languages]}
         onChange={(e) => {
-          console.log("id ", e.target.value);
-          console.log(
-            [{ id: 0, name: "All" }, ...languages].filter(
-              (lan) => lan.id == e.target.value
-            )[0].name
-          );
           setLanguage(
             [{ id: 0, name: "All" }, ...languages].filter(
               (lan) => lan.id == e.target.value
@@ -378,7 +348,9 @@ export const InterviewList = () => {
         }}
         hide={true}
       />
-
+      <button type="button" onClick={() => setStageFilter(0)}>
+        All
+      </button>
       <button type="button" onClick={() => setStageFilter(1)}>
         stage1
       </button>
@@ -405,16 +377,16 @@ export const InterviewList = () => {
           setEndDateFilter(e.target.value);
         }}
       />
-      <span>Count: {candidateList.length}</span>
+      <span>Count: {a?.length}</span>
       <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">
-            <input
+            {/* <input
               type="text"
               value={globalFilter || ""}
               onChange={(e) => setGlobalFilter(e.target.value)}
               placeholder="  Search..."
-            />
+            /> */}
           </div>
         </div>
         <div className="table-wrap__main">

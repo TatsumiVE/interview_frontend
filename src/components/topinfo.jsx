@@ -29,7 +29,7 @@ export const TopInfo = () => {
   return (
     <>
       <div className="topinfo-path">
-        {location.pathname.slice(1).toUpperCase()}
+        <h1>Interview Management System</h1>
       </div>
       <div className="topinfo-userinfo">
         <div>

@@ -82,7 +82,6 @@ export const InterviewResult = () => {
               name="result"
               placeholder=""
               value="1"
-              checked={interview_result === "1"}
               onChange={(e) => setResult(e.target.value)}
             />
             <div className="radio-fail">
@@ -92,7 +91,6 @@ export const InterviewResult = () => {
                 name="result"
                 placeholder=""
                 value="0"
-                checked={interview_result === "2"}
                 onChange={(e) => setResult(e.target.value)}
               />
             </div>
