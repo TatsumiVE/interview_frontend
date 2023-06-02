@@ -16,7 +16,7 @@ const candidateService = () => {
 
   const get = async (id, token) => {
     const response = await axios.get(`${baseUrl}/${id}`, config(token));
-    console.log("candidateeeeee", response.data.data);
+
     return response.data.data;
   };
 

@@ -37,8 +37,7 @@ export const AgencyList = () => {
   const columns = useMemo(
     () => [
       {
-        Header: "Id",
-        accessor:'id',
+        Header: "No",
         Cell: ({ row }) => {
           return <div>{row.index + 1}.</div>;
         },

@@ -3,26 +3,26 @@
   height: 80px;
   position: relative;
   border-radius: 50%;
-  border: 6px solid var(--color-1);
+  border: 8px solid var(--color-1);
   border-color: var(--color-1) transparent;
   animation: spin 2s ease-out infinite;
 }
 
-.loader::before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: 6px solid var(--color-1);
-  border-color: transparent var(--color-1);
-  animation: spin 2s ease-out infinite;
-  transform-origin: center;
-  box-sizing: border-box;
-}
+// .loader::before {
+//   content: "";
+//   display: block;
+//   position: absolute;
+//   top: 8px;
+//   left: 8px;
+//   width: 52px;
+//   height: 52px;
+//   border-radius: 50%;
+//   border: 6px solid var(--color-1);
+//   border-color: transparent var(--color-1);
+//   animation: spin 2s ease-out infinite;
+//   transform-origin: center;
+//   box-sizing: border-box;
+// }
 
 // .loader::after {
 //   box-sizing: border-box;

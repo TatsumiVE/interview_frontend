@@ -71,9 +71,6 @@ export const CStages = () => {
           <div className="info-card">
             <div className="info-header">
               <h2>Detail</h2>
-              <span>
-                <Link to="">Edit info</Link>
-              </span>
             </div>
             <div className="info-main">
               <div className="field">
@@ -137,7 +134,7 @@ export const CStages = () => {
                   </div>
                   {show.id === i.id && !show.isCollapse && (
                     <div className="info-row-collapse">
-                      {i.grade ? (
+                      {i.remarks[0].grade ? (
                         <>
                           <p>
                             <span>GRADE</span>

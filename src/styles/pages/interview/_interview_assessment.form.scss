@@ -1,79 +1,72 @@
 .card {
-    &__header h2 {
-        padding: 10px 0;
-        text-align: center;
-        font-size: map-get($font-size, lg);
-        font-weight: map-get($weight, medium);
-        color: map-get($colors, primary);
+  &__header h2 {
+    padding: 10px 0;
+    text-align: center;
+    font-size: map-get($font-size, lg);
+    font-weight: map-get($weight, medium);
+    color: map-get($colors, text);
+  }
 
+  &__form {
+    padding: 20px 20px;
+  }
+
+  &__txt {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    h3 {
+      margin-bottom: 5px;
     }
+  }
 
-    &__form {
-        padding: 20px 20px;
-    }
+  .input-record {
+    width: 218px;
+    margin-right: 5px;
+  }
 
-    &__txt {
-        margin-bottom: 20px;
+  &__question {
+    .question {
+      &__title {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+      }
 
-        h3 {
-            margin-bottom: 5px;
-        }
-    }
+      &__topic {
+        margin: 5px 0;
+      }
 
-    .input-record {
-        width: 218px;
-        margin-right:5px;
-    }
+      &__rate {
+        margin-top: 5px;
+        margin-left: 130px;
+      }
 
-    &__question {
-        .question {
-            &__title {
-                display: flex;
-                flex-direction: row;
-            }
+      &__body {
+        margin-bottom: 30px;
 
-            &__topic {
-                margin: 5px 0;
-            }
-
-            &__rate {
-                margin-top: 5px;
-                margin-left: 130px;
-            }
-
-            &__body {
-                margin-bottom: 30px;
-
-                .question-card {
-                    display: flex;
-                    flex-direction: row;
-                }
-
-                .topic {
-                    width: 32%;
-                    padding:13px 0;
-                    
-                }
-
-                .rate {
-                    width: 68%;  
-                    padding:5px;                                                
-                  
-                }
-            }
-
+        .question-card {
+          display: flex;
+          flex-direction: row;
         }
 
+        .topic {
+          width: 32%;
+          padding: 13px 0;
+        }
 
+        .rate {
+          width: 68%;
+          padding: 5px;
+        }
+      }
     }
+  }
 
-    .comment-box {
-        width: 100%;
-        height: 90px;
-        margin-top:5px;
-    }
-
+  .comment-box {
+    width: 100%;
+    height: 90px;
+    margin-top: 5px;
+  }
 }

@@ -27,9 +27,7 @@ export const AuthContextProvider = ({ children }) => {
             },
           }
         );
-        console.log(response.data.valid, "valid");
         if (!response.data.valid) {
-          console.log("invalid");
           handleLogout();
         } else {
           setIsLogin(true);
@@ -45,7 +43,6 @@ export const AuthContextProvider = ({ children }) => {
 
     if (token) {
       checkTokenValidity();
-      console.log("here check");
     } else {
       setIsLoading(false);
     }
@@ -63,7 +60,6 @@ export const AuthContextProvider = ({ children }) => {
       setToken(response.data.data.token);
       setUser(response.data.data);
       const { permission } = response.data.data;
-      console.log(permission);
       localStorage.setItem("token", response.data.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.data));
 
