@@ -1,21 +1,23 @@
 .navbar {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 0 1rem;
-}
+  justify-content: flex-start;
 
-.navbar > a {
-  display: inline-block;
-  width: 100%;
-  padding: 0.8rem 1rem;
-  color: white;
-  border-radius: 0.5rem;
-  text-decoration: none;
-}
+  a {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 0.5rem;
+  }
 
-.navbar i {
-    margin-right: 1rem;
-    width:0.8rem;
+  i {
+    width: 1rem;
+  }
 }

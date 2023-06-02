@@ -3,15 +3,15 @@ import { MainNavigation, Title, TopInfo } from "../components";
 
 export const Layout = () => (
   <div className="container">
-    <section className="container-section__left">
+    <div className="nav">
       <Title />
       <MainNavigation />
-    </section>
-    <section className="container-section__right">
+    </div>
+    <div className="header">
       <TopInfo />
-      <main className="main">
-        <Outlet />
-      </main>
-    </section>
+    </div>
+    <div className="main">
+      <Outlet />
+    </div>
   </div>
 );

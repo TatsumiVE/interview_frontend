@@ -1,96 +1,78 @@
 .login-form {
-    width: 320px;
-    margin: 5rem auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 1.5rem;
-}
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1.5rem;
 
-.form-header {
+  .form-header {
     font-size: 1.5rem;
-}
+  }
 
-.form-desc {
+  .form-desc {
     font-size: 0.9rem;
-}
+  }
 
-.form-input {
+  .form-input {
     position: relative;
     width: 100%;
-}
 
-input:focus {
-    outline: 2px solid rgb(23, 122, 254);
-    box-shadow: 1px 1px 10px rgb(23, 122, 254);
-}
+    input:focus {
+      outline: 2px solid rgb(23, 122, 254);
+      box-shadow: 1px 1px 10px rgb(23, 122, 254);
+    }
 
-.form-input__text,
-.form-input__pwd {
-    border: none;
-    width: 300px;
-    height:40px;
-    font-size: 1rem;
-    padding: 0.5rem 2.5rem;
-    border-radius: 5px;
-    background-color: rgb(245, 247, 249);
-}
+    .form-input__text,
+    .form-input__pwd {
+      border: none;
+      width: 100%;
+      font-size: 1rem;
+      padding: 0.5rem 2.5rem;
+      border-radius: 5px;
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
 
-.input-icon__left {
-    position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    font-size: 1rem;
-    color: rgb(23, 122, 254);
-}
+    .input-icon__left {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      font-size: 1rem;
+      color: rgb(23, 122, 254);
+    }
 
-.input-icon__right {
-    cursor: pointer;
-    position: absolute;
-    top: 0.75rem;
-    right: 1.5rem;
-    font-size: 1rem;
-    color: rgb(23, 122, 254);
-}
+    .input-icon__right {
+      cursor: pointer;
+      position: absolute;
+      top: 0.75rem;
+      right: 1.25rem;
+      font-size: 1rem;
+      color: rgb(23, 122, 254);
+    }
+  }
 
-.form-optional {
+  .form-optional {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
+    padding: 4px 0;
 
-.form-input__check:focus {
-    outline: none;
-    box-shadow: none;
-}
+    .form-input__check:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
 
-.btn-login {
+  .btn-login {
     border: none;
+    width: 100%;
     cursor: pointer;
-    width: 300px;
-    height: 40px;
     font-size: 1rem;
-    padding: 0.5rem;
+    padding: 1rem;
     color: white;
     border-radius: 5px;
     background-color: rgb(23, 122, 254);
+  }
 }
-
-
-input[type='text'],
-input[type='password']
-{
-    .form-input{
-        &__txt ,&__pwd{
-        width: 300px;
-        height: 40px;
-        border-radius: 4px;
-        border:1px solid;
-        // border-color: map-get($colors,primary); 
-      }
-    }
-}
-
-

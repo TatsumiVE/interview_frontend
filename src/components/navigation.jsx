@@ -1,5 +1,6 @@
 import { NavigationLink } from "./navigation.link";
 import Can from "../components/utilites/can";
+
 export const MainNavigation = () => {
   return (
     <nav className="navbar">

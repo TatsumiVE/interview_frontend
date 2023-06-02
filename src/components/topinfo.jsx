@@ -6,19 +6,30 @@ import { getUser } from "../services/userService";
 export const TopInfo = () => {
   const [user, setUser] = useState({});
   const [showDropdown, setShowDropdown] = useState(false);
-  const location = useLocation(); // test
+  const location = useLocation();
   const { token, handleLogout } = useAuth();
 
   useEffect(() => {
-    getUser(token)
-      .then((res) => res.data)
-      .then((data) => setUser(data));
-  }, []);
+    const fetchUser = async () => {
+      try {
+        const response = await getUser(token);
+        setUser(response.data);
+      } catch (error) {
+        // Handle error if needed
+      }
+    };
+
+    fetchUser();
+  }, [token]);
+
+  const toggleDropdown = () => {
+    setShowDropdown((prevState) => !prevState);
+  };
 
   return (
-    <div className="topinfo">
+    <>
       <div className="topinfo-path">
-        {location.pathname.slice(1).toLocaleUpperCase()}
+        {location.pathname.slice(1).toUpperCase()}
       </div>
       <div className="topinfo-userinfo">
         <div>
@@ -29,15 +40,15 @@ export const TopInfo = () => {
           className="userinfo-avatar"
           src={user.avatar}
           alt="avatar"
-          onClick={() => setShowDropdown((p) => !p)}
+          onClick={toggleDropdown}
         />
         {showDropdown && (
           <ul className="userinfo-dropdown">
             <li>Profile</li>
-            <li onClick={() => handleLogout()}>Logout</li>
+            <li onClick={handleLogout}>Logout</li>
           </ul>
         )}
       </div>
-    </div>
+    </>
   );
 };

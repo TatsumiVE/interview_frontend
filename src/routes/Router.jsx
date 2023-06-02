@@ -53,7 +53,6 @@ export const Router = () => {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
-
           <Route path="candidates">
             <Route index element={<Candidate />} />
             <Route path="create" element={<CandidateCreate />} />
@@ -78,7 +77,6 @@ export const Router = () => {
             <Route path="assessment" element={<InterviewAssessment />} />
             <Route path="result" element={<InterviewResult />} />
           </Route>
-
           <Route path="interview">
             <Route index element={<InterviewList />} />
             <Route path="create" element={<InterviewCreate />} />
@@ -113,12 +111,12 @@ export const Router = () => {
           <Route path="rate">
             <Route index element={<RateList />} />
             <Route path="create" element={<RateCreate />} />
-            <Route path="update/:id" element={<RateUpdate/>} />
+            <Route path="update/:id" element={<RateUpdate />} />
           </Route>
           <Route path="topic">
             <Route index element={<TopicList />} />
             <Route path="create" element={<TopicCreate />} />
-            <Route path="update/:id" element={<TopicUpdate/>} />
+            <Route path="update/:id" element={<TopicUpdate />} />
           </Route>
 
           <Route path="devlanguage">
