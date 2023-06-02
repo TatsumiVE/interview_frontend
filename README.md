@@ -14,6 +14,7 @@
 
 - Copy **.env.example** file to **.env** and edit database credentials there(**cp .env.example .env**)
 - Run **composer install**
+- Change **LOG_CHANNEL**  stack to web_daily_error in **.env**
 - Run **php artisan key:generate**
 - Run **php artisan config:clear**
 - Run **php artisan cache:clear**
