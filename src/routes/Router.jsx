@@ -84,8 +84,6 @@ export const Router = () => {
             <Route path="result" element={<InterviewResult />} />
           </Route>
 
-          <Route path="*" element={<NotFound />} />
-
           <Route path="user">
             <Route index element={<UserList />} />
             <Route path="update/:id" element={<UserUpdate />} />
@@ -132,6 +130,8 @@ export const Router = () => {
           <Route path="*" element={<Navigate to="login" replace />} />
         </Route>
       )}
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
