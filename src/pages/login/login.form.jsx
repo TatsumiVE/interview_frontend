@@ -12,17 +12,14 @@ export const LoginForm = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("login");
-    handleLogin(email, password);
-    console.log("login  done");
-  };
 
+    handleLogin(email, password);
+  };
   const handleShowPassword = () => {
     setShowPwd((prev) => !prev);
     let type = inputPwd.current.type;
     inputPwd.current.type = type == "text" ? "password" : "text";
   };
-
   return (
     <form className="login-form" onSubmit={handleFormSubmit}>
       <header className="form-header">Welcome from AcePlus !</header>

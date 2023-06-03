@@ -18,7 +18,6 @@ export const InterviewList = () => {
   const [stageFilter, setStageFilter] = useState(0);
 
   const [candidateList, setCandidateList] = useState([]);
-  const [interviewList, setInterviewList] = useState([]);
 
   const today = new Date();
   const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
@@ -62,17 +61,11 @@ export const InterviewList = () => {
   };
 
   const check = (interview) => {
-    // console.log(candidate);
-    // const interviews = candidate.interviews || [];
-    // console.log(interviews);
     const lastInterview = interview[interview.length - 1] || {};
     const lastStage = lastInterview.interview_stage?.stage_name || 0;
 
-    // const lastAssessment = lastInterview;
     const canCreate = !(lastStage && !lastInterview.interview_result);
-    // const canCreate = !(
-    //   lastStage < 4 && lastInterview.interview_result !== null
-    // );
+
     const canAssessment =
       lastStage &&
       lastInterview.interview_assign.length > 0 &&
@@ -333,9 +326,12 @@ export const InterviewList = () => {
   if (error) return "An error has occurred: " + error.message;
   return (
     <>
-      <button type="button">
-        <Link to="/candidates/create">Create Candidate</Link>
-      </button>
+      <Can permission={"candidateCreate"}>
+        <button type="button">
+          <Link to="/candidates/create">Create Candidate</Link>
+        </button>
+      </Can>
+
       <Dropdown
         labelName="Language"
         options={[{ id: 0, name: "All" }, ...languages]}

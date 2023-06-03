@@ -1,17 +1,20 @@
-import {  useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 
 export const CDetails = () => {
-  const {id}=useParams();
+  const { id } = useParams();
   const { candidate } = useOutletContext();
-  console.log(candidate);
-  console.log(id);
+  const experienceFilter = (experience) => {
+    let month = 0;
+    let year = 0;
+    month = experience % 12;
+    year = experience / 12;
+    return { month, year };
+  };
   return (
     <div className="c-details">
       <div className="info-card">
         <div className="info-header">
           <h2>Basic Information</h2>
-
-         
         </div>
         <div className="info-main">
           <div className="field">
@@ -23,21 +26,29 @@ export const CDetails = () => {
             <p>{candidate?.email}</p>
           </div>
           <div className="field">
-            <p className="label">Candidate ID</p>
-            <p>{candidate?.id}</p>
+            <p className="label">Date of Birth</p>
+            <p>{candidate?.date_of_birth}</p>
+          </div>
+          <div className="field">
+            <p className="label">Gender</p>
+            <p>
+              {candidate?.gender == 1
+                ? "Male"
+                : candidate?.gender == 2
+                ? "Female"
+                : "Non-Binary"}
+            </p>
           </div>
           <div className="field">
             <p className="label">Phone</p>
             <p>{candidate?.phone_number}</p>
           </div>
+
           <div className="field">
-            <p className="label">Agency</p>
-            <p>{candidate?.agency_id}</p>
+            <p className="label">Joined from Agency Company</p>
+            <p>{candidate?.agency.name || "-"}</p>
           </div>
-          <div className="field">
-            <p className="label">Social Link</p>
-            <p>https://www.facebook.com/username</p>
-          </div>
+
           <div className="field">
             <p className="label">Address</p>
             <p>{candidate?.residential_address}</p>
@@ -47,37 +58,40 @@ export const CDetails = () => {
       <div className="info-card">
         <div className="info-header">
           <h2>Professional Details</h2>
-
-         
         </div>
         <div className="info-main">
           <div className="field">
-            <p className="label">Current Job Title</p>
-            <p>{candidate?.position_id}</p>
+            <p className="label">Applied Job Position</p>
+            <p>{candidate?.position.name}</p>
           </div>
           <div className="field">
-            <p className="label">Highest Qualification Hand</p>
-            <p>Pass Grade-4</p>
+            <p className="label">Earliest Starting Date</p>
+            <p>{candidate?.earliest_starting_date || "-"}</p>
           </div>
           <div className="field">
             <p className="label">Expected Salary</p>
             <p>{candidate?.expected_salary || "-"}</p>
           </div>
           <div className="field">
-            <p className="label">Current Salary</p>
+            <p className="label">Last Earned Salary</p>
             <p>{candidate?.last_salary || "-"}</p>
           </div>
           <div className="field">
+            <p className="label">Willingness To Travel</p>
+            <p>{candidate?.willingness_to_travel || "-"}</p>
+          </div>
+
+          <div className="field">
             <p className="label">Experience in Years</p>
-            <p>0</p>
-          </div>
-          <div className="field">
-            <p className="label">Additional info</p>
-            <p>no info available</p>
-          </div>
-          <div className="field">
-            <p className="label">Skills Set</p>
-            <p>no skills exit</p>
+            <p>
+              {" "}
+              {candidate?.specific_languages.map((lan) => {
+                <>
+                  <span>{lan.devlanguage.name}</span>
+                  <span>{experienceFilter(lan.devlanguage.experience)}</span>
+                </>;
+              })}
+            </p>
           </div>
         </div>
       </div>

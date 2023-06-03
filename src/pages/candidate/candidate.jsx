@@ -21,6 +21,7 @@ export const CandidateDetails = () => {
   );
 
   useEffect(() => {
+    console.log(candidateData);
     candidateData && setData(candidateData);
   }, [candidateData]);
 

@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../store/AuthContext";
+import Can from "../components/utilites/can";
 import {
   Dashboard,
   Candidate,
@@ -52,7 +53,14 @@ export const Router = () => {
       {isLogin ? (
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route
+            path="dashboard"
+            element={
+              <Can permission={"dashboardView"}>
+                <Dashboard />
+              </Can>
+            }
+          />
           <Route path="candidates">
             <Route index element={<Candidate />} />
             <Route path="create" element={<CandidateCreate />} />
@@ -102,25 +110,81 @@ export const Router = () => {
           </Route>
           <Route path="position">
             <Route index element={<PositionList />} />
-            <Route path="create" element={<PositionCreate />} />
-            <Route path="update/:id" element={<PositionUpdate />} />
+            <Route
+              path="create"
+              element={
+                <Can permission={"positionCreate"}>
+                  <PositionCreate />
+                </Can>
+              }
+            />
+            <Route
+              path="update/:id"
+              element={
+                <Can permission={"positionUpdate"}>
+                  <PositionUpdate />
+                </Can>
+              }
+            />
           </Route>
 
           <Route path="rate">
             <Route index element={<RateList />} />
-            <Route path="create" element={<RateCreate />} />
-            <Route path="update/:id" element={<RateUpdate />} />
+            <Route
+              path="create"
+              element={
+                <Can permission={"rateCreate"}>
+                  <RateCreate />
+                </Can>
+              }
+            />
+            <Route
+              path="update/:id"
+              element={
+                <Can permission={"rateUpdate"}>
+                  <RateUpdate />
+                </Can>
+              }
+            />
           </Route>
           <Route path="topic">
             <Route index element={<TopicList />} />
-            <Route path="create" element={<TopicCreate />} />
-            <Route path="update/:id" element={<TopicUpdate />} />
+            <Route
+              path="create"
+              element={
+                <Can permission={"topicCreate"}>
+                  <TopicCreate />
+                </Can>
+              }
+            />
+            <Route
+              path="update/:id"
+              element={
+                <Can permission={"topicUpdate"}>
+                  <TopicUpdate />
+                </Can>
+              }
+            />
           </Route>
 
           <Route path="devlanguage">
             <Route index element={<DevLanguageList />} />
-            <Route path="create" element={<DevLanguageCreate />} />
-            <Route path="update/:id" element={<DevLanguageUpdate />} />
+            <Route
+              path="create"
+              element={
+                <Can permission={"languageCreate"}>
+                  <DevLanguageCreate />
+                </Can>
+              }
+            />
+            <Route
+              path="update/:id"
+              element={
+                <Can permission={"languageUpdate"}>
+                  <DevLanguageUpdate />
+                </Can>
+              }
+            />
           </Route>
         </Route>
       ) : (

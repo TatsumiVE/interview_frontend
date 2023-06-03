@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 export const TopicCreate = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [error,setError]= useState([]);
+  const [error, setError] = useState([]);
   const { token } = useAuth();
 
   const config = {
@@ -17,7 +17,6 @@ export const TopicCreate = () => {
       Authorization: `Bearer ${token}`,
     },
   };
-
   const addTopic = async () => {
     try {
       const response = await axios.post(
@@ -31,11 +30,10 @@ export const TopicCreate = () => {
       toast.success(successMessage);
 
       setTimeout(() => {
-        navigate('/topic');
+        navigate("/topic");
       }, 1000);
-
     } catch (error) {
-      setError(error.response.data.err_msg.errors)
+      setError(error.response.data.err_msg.errors);
     }
   };
 
@@ -49,7 +47,8 @@ export const TopicCreate = () => {
       <div className="card-min__header">
         <h2>Create Topic</h2>
       </div>
-      <form className="card-min__form"
+      <form
+        className="card-min__form"
         onSubmit={(e) => {
           e.preventDefault();
           createTopic();
@@ -66,37 +65,20 @@ export const TopicCreate = () => {
         {error && <span className="txt-danger txt-ss">{error.name}</span>}
 
         <div className="button-group--user">
-          <Button type="submit" text="Create" className="txt-light btn-primary" />
-          <ButtonLink type="button" className="btn-default" route={"/topic"} text="Cancel" linkText="txt-light txt-sm" />
+          <Button
+            type="submit"
+            text="Create"
+            className="txt-light btn-primary"
+          />
+          <ButtonLink
+            type="button"
+            className="btn-default"
+            route={"/topic"}
+            text="Cancel"
+            linkText="txt-light txt-sm"
+          />
         </div>
       </form>
     </div>
   );
 };
-
-
-
-
-// export const DepartmentCreate = () => {
-//   return (
-//     <>
-//      Hello
-//     </>
-//   )
-// }
-
-
-
-
-
-
-
-
-
-// export const PositionCreate = () => {
-//   return (
-//     <>
-//     Hello
-//     </>
-//   )
-// }

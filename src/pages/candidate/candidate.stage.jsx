@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useOutletContext, Link } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import Rating from "../../components/utilites/rating";
 
 export const CStages = () => {
@@ -75,23 +75,41 @@ export const CStages = () => {
             <div className="info-main">
               <div className="field">
                 <p className="label">Current Stage</p>
-                <p>{currentStage?.interview_stage.stage_name}</p>
+                <p>
+                  {currentStage.interview_stage.stage_name == 1
+                    ? "First Interview"
+                    : currentStage.interview_stage.stage_name == 2
+                    ? "Technical Interview"
+                    : "Final Interview"}
+                </p>
               </div>
               <div className="field">
                 <p className="label">Result</p>
-                <p>{currentStage?.interview_result}</p>
+                <p>
+                  {currentStage.interview_result ??
+                    "Interview result processing.... "}
+                </p>
               </div>
               <div className="field">
                 <p className="label">Result Date</p>
-                <p>{currentStage?.interview_result_date}</p>
+                <p>
+                  {currentStage.interview_result_date ??
+                    "Interview result date is not defined !"}
+                </p>
               </div>
               <div className="field">
                 <p className="label">Record Path</p>
-                <p>{currentStage?.record_path}</p>
+                <p>
+                  {currentStage.record_path ??
+                    "Interview record is not uploaded !"}
+                </p>
               </div>
               <div className="field">
                 <p className="label">Summary</p>
-                <p>{currentStage?.interview_summarize}</p>
+                <p>
+                  {currentStage.interview_summarize ??
+                    "Interview summary is not defined !"}
+                </p>
               </div>
             </div>
           </div>
@@ -134,7 +152,7 @@ export const CStages = () => {
                   </div>
                   {show.id === i.id && !show.isCollapse && (
                     <div className="info-row-collapse">
-                      {i.remarks[0].grade ? (
+                      {i.remarks[0]?.grade ? (
                         <>
                           <p>
                             <span>GRADE</span>

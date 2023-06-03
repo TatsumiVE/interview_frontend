@@ -111,14 +111,17 @@ export const AgencyList = () => {
             />
           </div>
           <div className="create-content">
-            <ButtonLink
-              type="button"
-              className="btn-primary"
-              route="create"
-              linkText="txt-light txt-sm"
-              text="Create Agency"
-              icon="fa-solid fa-plus"
-            />
+            <Can permission={"agencyCreate"}>
+              {" "}
+              <ButtonLink
+                type="button"
+                className="btn-primary"
+                route="create"
+                linkText="txt-light txt-sm"
+                text="Create Agency"
+                icon="fa-solid fa-plus"
+              />
+            </Can>
           </div>
         </div>
 
