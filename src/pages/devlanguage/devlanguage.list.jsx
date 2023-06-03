@@ -28,7 +28,7 @@ export const DevLanguageList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
-  }, [languages]);
+  }, [languages,successMessage]);
 
   const columns = useMemo(
     () => [
@@ -62,13 +62,14 @@ export const DevLanguageList = () => {
     []
   );
 
-  const data = useMemo(() => devlanguageList || [], [devlanguageList]);
+  const data = useMemo(() => devlanguageList , [devlanguageList]);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
     state,
     setGlobalFilter,
@@ -82,7 +83,7 @@ export const DevLanguageList = () => {
   } = useTable(
     {
       columns,
-      data,
+      data:devlanguageList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -95,7 +96,7 @@ export const DevLanguageList = () => {
   if (languageError) return `An error has occurred: ${languageError.message}`;
   return (
     <>
-    <ToastContainer position="top-right" autoClose={5000} />
+    <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
     <div className="table-wrap">
       <div className="table-wrap__head">
         <div className="search-content">
@@ -133,7 +134,7 @@ export const DevLanguageList = () => {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
+            {page.map((row) => {
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()}>

@@ -16,6 +16,7 @@ import {
   InputCheckbox,
   TextArea,
   Radio,
+  ButtonLink,
 } from "../../components";
 
 export const CandidateUpdate = () => {
@@ -40,6 +41,7 @@ export const CandidateUpdate = () => {
     devlanguage_id: row.devlanguage_id,
   }));
 
+  const [error,setError] = useState("");
   const [position, setPosition] = useState("");
   const [agency, setAgency] = useState("");
   const [languageList, setLanguageList] = useState([]);
@@ -70,7 +72,7 @@ export const CandidateUpdate = () => {
 
       return response.data;
     } catch (error) {
-      console.error(error);
+      setError(error.response.data.data);
     }
   };
 
@@ -81,6 +83,10 @@ export const CandidateUpdate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // if(candidate.name == ''){
+    //   return setError({name:"The name field is required."});
+    // }
 
     handleUpdate();
   };
@@ -153,6 +159,7 @@ export const CandidateUpdate = () => {
 
   return (
     <div className="card">
+      {error && <span className="txt-danger txt-ss">{error}</span>}
       <form onSubmit={handleSubmit} className="card-form">
         <div className="card-wrap">
           <div className="card-left">
@@ -165,7 +172,9 @@ export const CandidateUpdate = () => {
               onChange={(e) =>
                 setCandidate({ ...candidate, name: e.target.value })
               }
+              errorMessage="*"
             />
+            {/* {error.name && <span className="txt-danger txt-ss">{error.name}</span>} */}
             <Input
               labelName="Email"
               type="email"
@@ -175,6 +184,7 @@ export const CandidateUpdate = () => {
               onChange={(e) =>
                 setCandidate({ ...candidate, email: e.target.value })
               }
+              errorMessage="*"
             />
             <Input
               labelName="Phone Number"
@@ -185,6 +195,7 @@ export const CandidateUpdate = () => {
               onChange={(e) =>
                 setCandidate({ ...candidate, phone_number: e.target.value })
               }
+              errorMessage="*"
             />
             <Input
               labelName="Date of Birth"
@@ -195,6 +206,7 @@ export const CandidateUpdate = () => {
               onChange={(e) => {
                 setCandidate({ ...candidate, date_of_birth: e.target.value });
               }}
+              errorMessage="*"
             />
 
             <TextArea
@@ -208,6 +220,7 @@ export const CandidateUpdate = () => {
               }
               placeholder=" Enter Residential Address..."
               text={candidate.residential_address}
+              errorMessage="*"
             />
 
             <InputCheckbox
@@ -252,6 +265,7 @@ export const CandidateUpdate = () => {
                   setCandidate({ ...candidate, gender: e.target.value })
                 }
               />
+              <span className="txt-danger">*</span>
             </div>
           </div>
           <div className="card-right">
@@ -260,12 +274,14 @@ export const CandidateUpdate = () => {
               options={positions}
               selectedValue={candidate.position_id}
               onChange={(e) => setPosition(e.target.value)}
-            ></Dropdown>
+              errorMessage="*"
+            />
             <Dropdown
               labelName="Agency"
               options={agencies}
               selectedValue={candidate.agency_id}
               onChange={(e) => setAgency(e.target.value)}
+              errorMessage="*"
             />
             <Input
               labelName="Expected Salary"
@@ -297,6 +313,7 @@ export const CandidateUpdate = () => {
               onChange={(e) =>
                 setCandidate({ ...candidate, cv_path: e.target.value })
               }
+              errorMessage="*"
             />
 
             <Input
@@ -339,6 +356,7 @@ export const CandidateUpdate = () => {
                     setData(updatedData);
                     console.log(data);
                   }}
+                  errorMessage="*"
                 />
                 <div className="card-btnMinus">
                   {data.length > 1 && (
@@ -352,7 +370,9 @@ export const CandidateUpdate = () => {
                 </div>
               </div>
               <div className="card-experience">
-                <label className="experience-label">Experience</label>
+                <label className="experience-label">
+                  Experience  <span className="txt-danger">*</span>
+                </label>
                 <div className="experience-group">
                   <Input
                     labelName=""
@@ -387,12 +407,19 @@ export const CandidateUpdate = () => {
         </div>
 
         <div className="button-group">
-          <Button
-            type="submit"
-            text="Submit"
-            className="txt-light btn-primary"
-          />
-        </div>
+            <Button
+              type="submit"
+              text="Update"
+              className="txt-light btn-primary"
+            />
+            <ButtonLink
+              type="button"
+              className="btn-default"
+              route={"/candidates"}
+              text="Cancel"
+              linkText="txt-light txt-sm"
+            />
+          </div>       
       </form>
     </div>
   );

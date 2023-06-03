@@ -2,13 +2,17 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, ButtonLink, Input } from "../../components";
+import { toast } from "react-toastify";
 
 export const AgencyUpdate = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const { token } = useAuth();
-
+    const [error, setError] = useState("");
+    const [agency,setAgency] = useState([]);
+ 
 
     const config = {
         headers: {
@@ -16,24 +20,47 @@ export const AgencyUpdate = () => {
         },
     };
 
-    const [agency, setAgency] = useState("");
-    //console.log(agency);
 
-    const updateAgency = useMutation(async () => {
+    const addAgency = async () => {
         try {
-            await axios.put(
+            const response = await axios.put(
                 `http://localhost:8000/api/agencies/${id}`,
                 agency,
                 config
             );
+
+            console.log(response.data.message);
+
+            let successMessage = response.data.message;
+
+            toast.success(successMessage);
+
+            setTimeout(() => {
+                navigate('/agency');
+            }, 1000);
+
         } catch (error) {
-            console.error(error);
+            if (error.response && error.response.data && error.response.data.data) {
+                setError(error.response.data.data);
+            } else {
+                setError([]);
+            }
+            // console.log(error.response.data.data);
         }
+    };
+
+    const { mutate: updateAgency } = useMutation({
+        mutationKey: ["put", "agencies"],
+        mutationFn: addAgency,
     });
 
     const handleUpdate = (event) => {
         event.preventDefault();
-        updateAgency.mutate();
+        if (agency.name == "") {
+            const response = setError({ name: "The name field is required." });
+            return response;
+        }
+        updateAgency();
     };
 
     const getAgency = async () => {
@@ -43,12 +70,13 @@ export const AgencyUpdate = () => {
                 config
             );
             const agencyData = response.data.data;
+
             if (agencyData) {
                 setAgency(agencyData);
             }
             return agencyData;
         } catch (error) {
-            //console.error(error);
+            console.error(error);
         }
     };
 
@@ -69,6 +97,9 @@ export const AgencyUpdate = () => {
                     placeholder=" Enter name..."
                     errorMessage="*"
                 />
+                {error.name && (
+                    <span className="txt-danger txt-ss">{error.name}</span>
+                )}
                 <div className="button-group--user">
                     <Button type="submit" text="Update" className="txt-light btn-primary" />
                     <ButtonLink type="button" className="btn-default" route={"/agency"} text="Cancel" linkText="txt-light txt-sm" />

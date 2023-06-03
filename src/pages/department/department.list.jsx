@@ -29,7 +29,8 @@ export const DepartmentList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
-  }, [departments]);
+
+  }, [departments,successMessage]);
 
   const columns = useMemo(
     () => [
@@ -63,13 +64,14 @@ export const DepartmentList = () => {
     []
   );
 
-  const data = useMemo(() => departmentList || [], [departmentList]);
+  const data = useMemo(() => departmentList , [departmentList]);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
     state,
     setGlobalFilter,
@@ -83,7 +85,7 @@ export const DepartmentList = () => {
   } = useTable(
     {
       columns,
-      data,
+      data:departmentList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -97,7 +99,7 @@ export const DepartmentList = () => {
     return `An error has occurred: ${departmentError.message}`;
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} />
+      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
       <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">
@@ -136,7 +138,7 @@ export const DepartmentList = () => {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
+              {page.map((row) => {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>

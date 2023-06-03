@@ -78,13 +78,17 @@ export const CandidateCreate = () => {
   }));
 
   const addCandidate = async (formData) => {
-    const response = await axios.post(
-      "http://localhost:8000/api/candidates",
-      { ...formData, data: requestData },
-      config
-    );
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/candidates",
+        { ...formData, data: requestData },
+        config
+      );
 
-    return response.data.data.id;
+      return response.data.data.id;
+    } catch (error) {
+      setError(error.response.data);
+    }
   };
 
   const {
@@ -149,6 +153,7 @@ export const CandidateCreate = () => {
   if (agencyError) return `An error has occurred: ${agencyError.message}`;
   return (
     <>
+    {error && <span className="txt-danger txt-ss">{error}</span>}
       <div className="card">
         <form
           onSubmit={handleSubmit}
@@ -275,7 +280,9 @@ export const CandidateCreate = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, gender: e.target.value })
                   }
+                 
                 />
+                 <span className="txt-danger">*</span>
               </div>
             </div>
             <div className="card-right">
@@ -424,7 +431,7 @@ export const CandidateCreate = () => {
           <div className="button-group">
             <Button
               type="submit"
-              text="Submit"
+              text="Create"
               className="txt-light btn-primary"
             />
             <ButtonLink
@@ -440,3 +447,5 @@ export const CandidateCreate = () => {
     </>
   );
 };
+
+

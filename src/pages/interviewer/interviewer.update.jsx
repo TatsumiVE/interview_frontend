@@ -25,13 +25,16 @@ export const InterviewerUpdate = () => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const updateInterviewer = useMutation(async () => {
+  
+  const addInterviewer = async () => {
     try {
-      const response = axios.put(
+      const response = await axios.put(
         `http://localhost:8000/api/interviewers/${id}`,
-        interviewer,
+       interviewer,
         config
       );
+
+      console.log(response.data.message);
 
       let successMessage = response.data.message;
 
@@ -41,22 +44,44 @@ export const InterviewerUpdate = () => {
         navigate("/interviewer");
       }, 1000);
     } catch (error) {
-      // setError(error.response.data.err_msg.errors);
-      setError(error.response.data.data);
-      // console.log(error.response.data.data)
+      if (error.response && error.response.data && error.response.data.data) {
+        setError(error.response.data.data);
+      } else {
+        setError([]);
+      }
+      console.log(error.response.data.data);
     }
+  };
+
+  const { mutate: updateInterviewer } = useMutation({
+    mutationKey: ["put", "interviewers"],
+    mutationFn: addInterviewer,
   });
 
   const handleUpdate = (event) => {
-    event.preventDefault();
-    setError({
-      name: "",
-      email: "",
-      department_id: "",
-      position_id: "",
-    });
-    updateInterviewer.mutate();
-  };
+    event.preventDefault();     
+
+    if(interviewer.name==""){
+      const response = setError({name:"The name field is required."});
+      return response;
+    }
+    if(interviewer.email==""){
+      const response = setError({email:"The email field is required."});
+      return response;
+    }
+
+    if(interviewer.department_id==""){
+      const response = setError({department_id:"The department field is required."});
+      return response;
+    }
+
+    if(interviewer.position_id==""){
+      const response = setError({position_id:"The name position is required."});
+      return response;
+    }
+
+    updateInterviewer();
+};
 
   const getInterviewer = async () => {
     try {
@@ -127,7 +152,9 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error && <span className="txt-danger txt-ss">{error[0]}</span>}
+       {error.name && (
+           <span className="txt-danger txt-ss">{error.name}</span>
+        )}
 
         <Input
           labelName="Email"
@@ -140,8 +167,8 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error.data && (
-          <span className="txt-danger txt-ss">{error.data[1]}</span>
+         {error.email && (
+           <span className="txt-danger txt-ss">{error.email}</span>
         )}
 
         <Dropdown
@@ -153,8 +180,8 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error.data && (
-          <span className="txt-danger txt-ss">{error.data[2]}</span>
+        {error.department_id && (
+           <span className="txt-danger txt-ss">{error.department_id}</span>
         )}
 
         <Dropdown
@@ -166,10 +193,9 @@ export const InterviewerUpdate = () => {
           }
           errorMessage="*"
         />
-        {error.data && (
-          <span className="txt-danger txt-ss">{error.data[3]}</span>
+        {error.position_id && (
+           <span className="txt-danger txt-ss">{error.position_id}</span>
         )}
-
         <div className="button-group--user">
           <Button
             type="submit"
@@ -188,3 +214,5 @@ export const InterviewerUpdate = () => {
     </div>
   );
 };
+
+

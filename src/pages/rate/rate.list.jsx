@@ -28,7 +28,7 @@ export const RateList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
-  }, [rates]);
+  }, [rates,successMessage]);
 
   const columns = useMemo(
     () => [
@@ -62,13 +62,14 @@ export const RateList = () => {
     []
   );
 
-  const data = useMemo(() => RateList || [], [RateList]);
+  const data = useMemo(() => RateList , [RateList]);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
     state,
     setGlobalFilter,
@@ -77,12 +78,11 @@ export const RateList = () => {
     canNextPage,
     canPreviousPage,
     pageOptions,
-    gotoPage,
-    pageCount,
+    
   } = useTable(
     {
       columns,
-      data,
+      data:RateList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -96,17 +96,18 @@ export const RateList = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} />
-      <div className="table-wrap">
-        <div className="table-wrap__head">
-          <div className="search-content">
-            <input
-              type="text"
-              value={globalFilter || ""}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-              placeholder="Search..."
-            />
-          </div>
+    <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
+    <div className="table-wrap">
+      <div className="table-wrap__head">
+        <div className="search-content">
+          <input
+            type="text"
+            value={globalFilter || ""}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder="Search..."
+          />
+        </div>
+              
           <div className="create-content">
             <Can permission={"rateCreate"}>
               <ButtonLink
@@ -134,7 +135,7 @@ export const RateList = () => {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
+              {page.map((row) => {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>

@@ -2,12 +2,16 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
-import { Input,Button,ButtonLink } from "../../components";
+import { useNavigate, useParams } from "react-router-dom";
+import { Input, Button, ButtonLink } from "../../components";
+import { toast } from "react-toastify";
 
 export const TopicUpdate = () => {
   const { id } = useParams();
   const { token } = useAuth();
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [topic, setTopic] = useState([]);
 
   const config = {
     headers: {
@@ -15,26 +19,48 @@ export const TopicUpdate = () => {
     },
   };
 
-  const [topic, setTopic] = useState("");
-  //console.log(agency);
 
-  const updateTopic = useMutation(async () => {
+  const addTopic= async () => {
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:8000/api/topics/${id}`,
         topic,
         config
       );
+
+      console.log(response.data.message);
+
+      let successMessage = response.data.message;
+
+      toast.success(successMessage);
+
+      setTimeout(() => {
+        navigate('/topic');
+      }, 1000);
+
     } catch (error) {
-      console.error(error);
+      if (error.response && error.response.data && error.response.data.data) {
+        setError(error.response.data.data);
+      } else {
+        setError([]);
+      }
+
     }
+  };
+
+  const { mutate: updateTopic } = useMutation({
+    mutationKey: ["put", "rates"],
+    mutationFn: addTopic,
   });
 
   const handleUpdate = (event) => {
     event.preventDefault();
-    updateTopic.mutate();
+    if (topic.name == "") {
+      const response = setError({ name: "The name field is required." });
+      return response;
+    }
+    updateTopic();
   };
-
   const getTopic = async () => {
     try {
       const response = await axios.get(
@@ -68,6 +94,10 @@ export const TopicUpdate = () => {
           placeholder="Enter Name..."
           errorMessage="*"
         />
+        {error.name && (
+          <span className="txt-danger txt-ss">{error.name}</span>
+        )}
+
         <div className="button-group--user">
           <Button type="submit" text="Update" className="txt-light btn-primary" />
           <ButtonLink type="button" className="btn-default" route={"/topic"} text="Cancel" linkText="txt-light txt-sm" />

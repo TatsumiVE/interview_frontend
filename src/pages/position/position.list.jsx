@@ -15,22 +15,6 @@ export const PositionList = () => {
   const location = useLocation();
   const { successMessage } = location.state || {};
 
-  // const {
-  //   data: positions,
-  //   isLoading: isPositionLoading,
-  //   isError: isPositionError,
-  //   isSuccess: isPositionSuccess,
-  //   error: positionError,
-  // } = useQuery(["get", "positions"], () => positionService.getAll(token));
-
-  // useEffect(() => {
-  //   positions && setPositionList(positions);
-
-  //   if (successMessage) {
-  //     toast.success(successMessage);
-  //   }
-
-  // }, [positions]);
 
   const {
     data: positions,
@@ -38,23 +22,25 @@ export const PositionList = () => {
     isError: isPositionError,
     isSuccess: isPositionSuccess,
     error: positionError,
-  } = useQuery(["get", "positions"], () => positionService.getAll(token), {
-    onSuccess: (data) => {
-      setPositionList(data);
-      if (successMessage) {
-        toast.success(successMessage);
-      }
-    },
-  });
+  } = useQuery(["get", "positions"], () => positionService.getAll(token));
 
+  useEffect(() => {
+    positions && setPositionList(positions);
+
+    if (successMessage) {
+      toast.success(successMessage);
+    }
+
+  }, [positions,successMessage]);
+
+ 
   const columns = useMemo(
     () => [
       {
         Header: "No.",
-        accessor: "id",
-        // Cell: ({ row }) => {
-        //   return <div>{row.index + 1}.</div>;
-        // },
+        Cell: ({ row }) => {
+          return <div>{row.index + 1}.</div>;
+        },
       },
       {
         Header: "Name",
@@ -80,13 +66,14 @@ export const PositionList = () => {
     []
   );
 
-  const data = useMemo(() => PositionList || [], [PositionList]);
+  const data = useMemo(() => PositionList , [PositionList]);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
     state,
     setGlobalFilter,
@@ -100,7 +87,7 @@ export const PositionList = () => {
   } = useTable(
     {
       columns,
-      data,
+      data:PositionList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -114,7 +101,7 @@ export const PositionList = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} />
+      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
       <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">
@@ -152,7 +139,7 @@ export const PositionList = () => {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
+              {page.map((row) => {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>

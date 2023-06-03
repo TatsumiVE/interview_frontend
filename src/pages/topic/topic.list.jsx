@@ -28,7 +28,7 @@ export const TopicList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
-  }, [topics]);
+  }, [topics,successMessage]);
 
   const columns = useMemo(
     () => [
@@ -62,13 +62,14 @@ export const TopicList = () => {
     []
   );
 
-  const data = useMemo(() => TopicList || [], [TopicList]);
+  const data = useMemo(() => TopicList , [TopicList]);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
     state,
     setGlobalFilter,
@@ -82,7 +83,7 @@ export const TopicList = () => {
   } = useTable(
     {
       columns,
-      data,
+      data:TopicList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -96,17 +97,18 @@ export const TopicList = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} />
-      <div className="table-wrap">
-        <div className="table-wrap__head">
-          <div className="search-content">
-            <input
-              type="text"
-              value={globalFilter || ""}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-              placeholder="Search..."
-            />
-          </div>
+    <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
+    <div className="table-wrap">
+      <div className="table-wrap__head">
+        <div className="search-content">
+          <input
+            type="text"
+            value={globalFilter || ""}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder="Search..."
+          />
+        </div>
+       
           <div className="create-content">
             <Can permission={"topicCreate"}>
               <ButtonLink
@@ -134,7 +136,7 @@ export const TopicList = () => {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
+              {page.map((row) => {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>
