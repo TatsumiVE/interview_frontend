@@ -64,25 +64,30 @@ export const InterviewList = () => {
     const lastInterview = interview[interview.length - 1] || {};
     const lastStage = lastInterview.interview_stage?.stage_name || 0;
 
+    const assessments = lastInterview.interview_assign.map((assign) => ({
+      userId: assign.interviewer_id,
+      grade: assign.remarks[0]?.grade,
+    }));
+
+    const [assessment] = assessments?.filter((a) => a.userId == user.id);
+    const hasAllGrades = assessments?.reduce(
+      (a, b) => {
+        return a?.grade && b?.grade ? { grade: true } : { grade: false };
+      },
+      {
+        grade: true,
+      }
+    ).grade;
+
     const canCreate = !(
       (lastStage && !lastInterview.interview_result) ||
       lastStage > 2
     );
 
-    const canAssessment =
-      lastStage &&
-      lastInterview.interview_assign.length > 0 &&
-      !lastInterview.interview_result &&
-      !lastInterview.interview_assign.some(
-        (assign) => assign.remarks.length > 0
-      );
+    const canAssessment = lastStage && !assessment.grade;
 
     const canResult =
-      lastStage &&
-      !lastInterview.interview_result &&
-      lastInterview.interview_assign.some(
-        (assign) => assign.remarks.length > 0
-      );
+      lastStage && hasAllGrades && !lastInterview.interview_result;
 
     return {
       canCreate,
@@ -136,7 +141,6 @@ export const InterviewList = () => {
 
   const [a, b] = useState();
   useEffect(() => {
-    console.log(stageFilter, "stagee11111111");
     b(
       (language === "All"
         ? data
@@ -152,7 +156,6 @@ export const InterviewList = () => {
           return startDateFilter <= date && date <= endDateFilter;
         })
         ?.filter(({ interview }) => {
-          console.log(stageFilter, "stageeeeeeeee");
           return stageFilter === 0
             ? true
             : stageFilter ===

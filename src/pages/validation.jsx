@@ -15,8 +15,10 @@ const isValidPhoneNumber = (phoneNumber) => {
 };
 
 const isValidCVPathLink = (path) => {
-  const regex = /^(http|https):\/\/(www\.)?example\.com\/cv\/[a-zA-Z0-9_-]+$/;
-  return regex.test(path);
+  const urlPattern =
+    /^(https?|ftp):\/\/([\w.-]+)(\.[\w]+)+(\/[\w\.-]*)*(\?[\w\.-]+=[\w\.-]+(&[\w\.-]+=[\w\.-]+)*)?$/;
+
+  return urlPattern.test(path);
 };
 
 const isValidAge = (dateOfBirth) => {
