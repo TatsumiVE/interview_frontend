@@ -38,7 +38,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  border-bottom: 4px solid var(--color-2);
+  border-bottom: 4px solid var(--navbar-background);
 }
 
 .c-nav > a.active {
@@ -90,7 +90,7 @@
 }
 
 .nav-item {
-  background-color: var(--color-4);
+  background-color: var(--navbar-background);
   height: 40px;
   display: flex;
   align-items: center;
@@ -126,20 +126,20 @@
 }
 
 .nav-box:before {
-  border-top-color: var(--color-4);
-  border-right-color: var(--color-4);
-  border-bottom-color: var(--color-4);
+  border-top-color: var(--navbar-background);
+  border-right-color: var(--navbar-background);
+  border-bottom-color: var(--navbar-background);
 }
 
 .nav-box:after {
-  border-left-color: var(--color-4);
+  border-left-color: var(--navbar-background);
   border-right: 0;
 }
 
 /* general */
 
 .info-card {
-  background-color: var(--color-2);
+  background-color: var(--navbar-background);
   border-radius: 1rem;
   border: 2px solid var(--color-1);
 }

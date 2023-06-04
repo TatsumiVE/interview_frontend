@@ -6,33 +6,38 @@ input[type="date"],
 input[type="time"],
 input[type="password"],
 input[type="number"],
+textarea,
 .select {
   width: 300px;
-  height: 40px;
-  // color: white;
-  padding: 0 1rem;
-  // background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  padding: 1rem;
+  background-color: rgb(43, 43, 43);
+  font-size: 1rem;
+  color: var(--text-color);
   outline: none;
-  // option {
-  //   width: 100%;
-  //   background: rgba(255, 255, 255, 0.1) !important;
-  // }
+  border: none;
+  box-shadow: 0 0 2px white;
+  border-radius: 0.25rem;
+}
+
+input::placeholder {
+  color: #c1bfbf;
+}
+
+textarea {
+  resize: none;
+}
+
+.input-group > span {
+  position: absolute;
+  left: 0;
+  bottom: -1.2rem;
 }
 
 .input-form {
   display: flex;
   flex-direction: column;
-  margin: 20px 0;
 }
 
-label {
-  margin: 0 0 5px 0px;
-  font-size: map-get($font-size, md);
-}
-
-.input-form {
-  input {
-    padding-left: 5px;
-  }
+.input-form label {
+  padding-left: 4px;
 }

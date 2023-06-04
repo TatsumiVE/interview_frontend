@@ -3,7 +3,6 @@ export const Radio = ({ checked, labelName, value, name, onChange }) => {
   return (
     <div>
       <label>
-        {labelName}
         <input
           type="radio"
           name={name}
@@ -11,6 +10,7 @@ export const Radio = ({ checked, labelName, value, name, onChange }) => {
           checked={checked}
           onChange={onChange}
         />
+        {" " + labelName}
       </label>
     </div>
   );

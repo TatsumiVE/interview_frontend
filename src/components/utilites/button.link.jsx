@@ -7,10 +7,15 @@ export const ButtonLink = ({
   text,
   linkText,
   icon,
+  onClick,
 }) => {
   return (
     <>
-      <button type={type ? type : "button"} className={`btn ${className}`}>
+      <button
+        type={type ? type : "button"}
+        className={`btn ${className}`}
+        onClick={onClick}
+      >
         <Link to={route} className={linkText}>
           <span className="icon">{icon && <i className={icon}></i>}</span>
           {text}

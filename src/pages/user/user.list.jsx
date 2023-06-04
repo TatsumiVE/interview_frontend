@@ -1,16 +1,16 @@
-import React, { useMemo, useEffect, useState } from 'react';
-import { useTable, useGlobalFilter, usePagination } from 'react-table';
-import { useLocation, useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useMemo, useEffect, useState } from "react";
+import { useTable, useGlobalFilter, usePagination } from "react-table";
+import { useLocation, useParams } from "react-router-dom";
+import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
-import { ButtonLink } from '../../components';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Loader from '../../components/loader';
-import Can from '../../components/utilites/can';
-import Switch from '@mui/material/Switch';
-import { FormControlLabel } from '@mui/material';
-import { useMutation } from 'react-query';
+import { ButtonLink } from "../../components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Loader from "../../components/loader";
+import Can from "../../components/utilites/can";
+import Switch from "@mui/material/Switch";
+import { FormControlLabel } from "@mui/material";
+import { useMutation } from "react-query";
 
 export const UserList = () => {
   const { id } = useParams();
@@ -29,10 +29,10 @@ export const UserList = () => {
     try {
       const response = await axios.post(
         `http://localhost:8000/api/user/${userId}`,
-        { status: 0 }, 
+        { status: 0 },
         config
       );
-  
+
       const updatedUsers = users.map((user) => {
         if (user.id === userId) {
           return {
@@ -43,13 +43,12 @@ export const UserList = () => {
         return user;
       });
       setUsers(updatedUsers);
-  
+
       return response;
     } catch (error) {
       console.error(error);
     }
   };
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,7 +87,7 @@ export const UserList = () => {
     };
 
     fetchData();
-  }, [id,successMessage]);
+  }, [id, successMessage]);
 
   const data = useMemo(() => users, [users]);
 
@@ -107,16 +106,17 @@ export const UserList = () => {
         Header: "Status",
         accessor: "status",
         Cell: ({ row }) => (
-          <FormControlLabel
-            control={
-              <Switch               
-                defaultChecked={row.original.status === 1}
-                onChange={() => handleChange(row.original.id)}
-                
-              />
-            }
-            label=""
-          />
+          <Can permission={"userStatus"}>
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={row.original.status === 1}
+                  onChange={() => handleChange(row.original.id)}
+                />
+              }
+              label=""
+            />
+          </Can>
         ),
       },
       {
@@ -168,7 +168,11 @@ export const UserList = () => {
   if (users.length === 0) return <Loader />;
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        className="ToastContainer"
+      />
       <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">

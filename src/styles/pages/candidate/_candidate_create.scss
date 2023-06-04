@@ -1,61 +1,59 @@
 .card {
   width: 700px;
   margin: 0 auto;
-  padding: 20px 20px;
-  color: var(--color-2);
-  background-color: rgb(255, 255, 255);
+  color: white;
+  background-color: var(--navbar-background);
   border-radius: 10px;
-  box-shadow: 0 2px 2px 0px rgb(213, 216, 213), 0 2px 5px 0px rgb(213, 216, 213);
+  box-shadow: 0 0 2px black, 0 0 5px black;
+}
+
+.card > h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--color-1);
 }
 
 .card-form {
-  // padding:20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .card-wrap {
   display: flex;
+  gap: 2rem;
 }
 
-.card-left {
-  width: 100%;
-  padding-left: 17px;
-  // background-color: red;
-}
-
+.card-left,
 .card-right {
-  width: 100%;
-  padding-left: 10px;
-  // background-color: green;
-}
-
-.card-btnPlus {
   display: flex;
-  justify-content: end;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  padding-top: 20px;
+  flex-direction: column;
+  gap: 2rem;
+}
+.input-form {
+  display: flex;
+  gap: 0.5rem;
+}
+.card-btnPlus button {
 }
 
 .radio-group {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-right: 40px;
 }
 
 .card-border {
-  padding-left: 20px;
 }
 
 .card-box {
-  width: 97%;
-  padding: 0 6px;
-  margin: 10px 0;
-  border: 1px solid;
-  border-color: map-get($colors, primary);
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
 }
-
-.card-language {
+. .card-language {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
