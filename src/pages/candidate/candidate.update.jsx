@@ -8,7 +8,7 @@ import languageService from "../../services/languageService";
 import positionService from "../../services/positionService";
 import agencyService from "../../services/agencyService";
 import Loader from "../../components/loader";
-
+import Check from "../validation.jsx";
 import {
   Button,
   Dropdown,
@@ -41,7 +41,7 @@ export const CandidateUpdate = () => {
   const [data, setData] = useState([
     { devlanguage_id: "", year: "", month: "" },
   ]);
-
+  const [formActive, setFormActive] = useState(false);
   const [error, setError] = useState("");
   const [position, setPosition] = useState("");
   const [agency, setAgency] = useState("");
@@ -113,10 +113,7 @@ export const CandidateUpdate = () => {
   useEffect(() => {
     if (isCandidateSuccess && candidateData) {
       setCandidate(candidateData.candidate);
-      console.log(
-        languageFilter(candidateData.candidate.specific_languages),
-        "llllllllllllllll"
-      );
+
       setData(languageFilter(candidateData.candidate.specific_languages));
     }
   }, [candidateData, isCandidateSuccess]);
@@ -173,33 +170,51 @@ export const CandidateUpdate = () => {
 
   return (
     <div className="card">
-      <form onSubmit={handleSubmit} className="card-form">
+      <form
+        onSubmit={handleSubmit}
+        onBlur={() => {
+          setFormActive(true);
+        }}
+        className="card-form"
+      >
         <div className="card-wrap">
           <div className="card-left">
-            {console.log(candidate, "candidate............")}
-            <Input
-              labelName="Name"
-              type="text"
-              name="name"
-              placeholder=" Enter Candidate Name..."
-              value={candidate.name}
-              onChange={(e) =>
-                setCandidate({ ...candidate, name: e.target.value })
-              }
-              errorMessage="*"
-            />
-
-            <Input
-              labelName="Email"
-              type="email"
-              name="email"
-              placeholder=" Enter Email..."
-              value={candidate.email}
-              onChange={(e) =>
-                setCandidate({ ...candidate, email: e.target.value })
-              }
-              errorMessage="*"
-            />
+            <div className="input-group">
+              <Input
+                labelName="Name"
+                type="text"
+                name="name"
+                placeholder=" Enter Candidate Name..."
+                value={candidate.name}
+                onChange={(e) =>
+                  setCandidate({ ...candidate, name: e.target.value })
+                }
+                errorMessage="*"
+              />
+              {!Check.isValidText(candidate.name) && formActive ? (
+                <span className="txt-danger validated-error">
+                  Name must be at least 5 characters !
+                </span>
+              ) : null}
+            </div>
+            <div className="input-group">
+              <Input
+                labelName="Email"
+                type="email"
+                name="email"
+                placeholder=" Enter Email..."
+                value={candidate.email}
+                onChange={(e) =>
+                  setCandidate({ ...candidate, email: e.target.value })
+                }
+                errorMessage="*"
+              />{" "}
+              {!Check.isValidText(candidate.email) && formActive ? (
+                <span className="txt-danger validated-error">
+                  Email format is invalid!
+                </span>
+              ) : null}
+            </div>
             <Input
               labelName="Phone Number"
               type="tel"

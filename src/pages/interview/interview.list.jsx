@@ -84,7 +84,7 @@ export const InterviewList = () => {
       lastStage > 2
     );
 
-    const canAssessment = lastStage && !assessment.grade;
+    const canAssessment = lastStage && !assessment?.grade;
 
     const canResult =
       lastStage && hasAllGrades && !lastInterview.interview_result;

@@ -20,7 +20,6 @@ import {
   CDetails,
   CCv,
   CStages,
-  CInterviews,
   UserList,
   UserUpdate,
   AgencyList,
@@ -86,7 +85,6 @@ export const Router = () => {
                 <Route path="details" element={<CDetails />} />
                 <Route path="cv" element={<CCv />} />
                 <Route path="stages" element={<CStages />} />
-                <Route path="interviews" element={<CInterviews />} />
               </Route>
             </Route>
             <Route path="interviewer">
