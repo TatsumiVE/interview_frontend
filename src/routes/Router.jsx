@@ -64,9 +64,23 @@ export const Router = () => {
               }
             />
             <Route path="candidates">
-              <Route index element={<Candidate />} />
+              <Route
+                index
+                element={
+                  <CanRoute permission={"candidateList"}>
+                    <Candidate />
+                  </CanRoute>
+                }
+              />
               <Route path="create" element={<CandidateCreate />} />
-              <Route path="update/:id" element={<CandidateUpdate />} />
+              <Route
+                path="update/:id"
+                element={
+                  <CanRoute permission={"candidateUpdate"}>
+                    <CandidateUpdate />
+                  </CanRoute>
+                }
+              />
               <Route path=":id" element={<CandidateDetails />}>
                 <Route index element={<Navigate to="details" replace />} />
                 <Route path="details" element={<CDetails />} />

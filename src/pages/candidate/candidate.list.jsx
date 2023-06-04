@@ -107,7 +107,6 @@ export const Candidate = () => {
             {
               Header: "No.",
               Cell: ({ row }) => {
-                console.log("aflksaddasfadsfsa => ", row);
                 return <div>{row.index + 1}.</div>;
               },
             },
@@ -162,7 +161,7 @@ export const Candidate = () => {
               Cell: ({ row }) => {
                 const candidate = row.original.candidate;
                 const interview = row.original.interview;
-                console.log("row=>", row);
+
                 return (
                   <>
                     <Can permission={"candidateShow"}>
@@ -176,7 +175,7 @@ export const Candidate = () => {
                       />
                     </Can>
                     &nbsp;
-                    <Can permission={"candidateDelete"}>
+                    <Can permission={"candidateUpdate"}>
                       <ButtonLink
                         type="button"
                         className="btn-success"

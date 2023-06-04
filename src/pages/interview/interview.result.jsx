@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import { useMutation } from "react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const InterviewResult = () => {
   const [interview_result_date, setInterviewResultDate] = useState(
@@ -20,10 +20,12 @@ export const InterviewResult = () => {
   const [interview_summarize, setInterviewSummarize] = useState("");
   const { token } = useAuth();
   const { state } = useLocation();
-  const { candidateId, stageId, candidateName } = state;
+  const navigate = useNavigate();
+  console.log(state, "stateeeeeeee");
+  const { candidateId, interviewId, candidateName } = state;
   const createInterviewResult = async () => {
     const response = await axios.post(
-      `http://127.0.0.1:8000/api/interview-process/result/${candidateId}/${stageId}`,
+      `http://127.0.0.1:8000/api/interview-process/result/${candidateId}/${interviewId}`,
       {
         interview_result_date,
         interview_result,
@@ -41,6 +43,9 @@ export const InterviewResult = () => {
   const { mutate: interviewResult } = useMutation({
     mutationKey: ["post", "interview-process", "result"],
     mutationFn: createInterviewResult,
+    onSuccess: () => {
+      navigate("/interview");
+    },
   });
 
   const handleSubmit = (e) => {

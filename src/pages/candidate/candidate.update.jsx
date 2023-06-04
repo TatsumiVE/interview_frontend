@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/AuthContext";
 import candidateService from "../../services/candidateService";
@@ -22,6 +22,7 @@ import {
 export const CandidateUpdate = () => {
   const { token } = useAuth();
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const config = {
     headers: {
@@ -29,19 +30,19 @@ export const CandidateUpdate = () => {
     },
   };
 
+  const languageFilter = (specific) => {
+    return specific.map((i) => ({
+      devlanguage_id: i.devlanguage_id,
+      year: Math.floor(i.experience / 12),
+      month: i.experience % 12,
+    }));
+  };
+
   const [data, setData] = useState([
     { devlanguage_id: "", year: "", month: "" },
   ]);
 
-  const requestData = data.map((row) => ({
-    experience: {
-      month: row.month,
-      year: row.year,
-    },
-    devlanguage_id: row.devlanguage_id,
-  }));
-
-  const [error,setError] = useState("");
+  const [error, setError] = useState("");
   const [position, setPosition] = useState("");
   const [agency, setAgency] = useState("");
   const [languageList, setLanguageList] = useState([]);
@@ -63,6 +64,16 @@ export const CandidateUpdate = () => {
   });
 
   const updateCandidate = async () => {
+    const requestData = data.map((row) => {
+      const totalMonths = parseInt(row.year) * 12 + parseInt(row.month);
+
+      return {
+        experience: {
+          month: totalMonths,
+        },
+        devlanguage_id: row.devlanguage_id,
+      };
+    });
     try {
       const response = await axios.put(
         `http://localhost:8000/api/candidates/${id}`,
@@ -79,15 +90,13 @@ export const CandidateUpdate = () => {
   const { mutate: handleUpdate } = useMutation({
     mutationKey: ["put", "candidates"],
     mutationFn: updateCandidate,
+    onSuccess: () => {
+      navigate("/interview");
+    },
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // if(candidate.name == ''){
-    //   return setError({name:"The name field is required."});
-    // }
-
     handleUpdate();
   };
 
@@ -102,9 +111,14 @@ export const CandidateUpdate = () => {
   );
 
   useEffect(() => {
-    isCandidateSuccess &&
-      candidateData &&
+    if (isCandidateSuccess && candidateData) {
       setCandidate(candidateData.candidate);
+      console.log(
+        languageFilter(candidateData.candidate.specific_languages),
+        "llllllllllllllll"
+      );
+      setData(languageFilter(candidateData.candidate.specific_languages));
+    }
   }, [candidateData, isCandidateSuccess]);
 
   const {
@@ -159,10 +173,10 @@ export const CandidateUpdate = () => {
 
   return (
     <div className="card">
-      {error && <span className="txt-danger txt-ss">{error}</span>}
       <form onSubmit={handleSubmit} className="card-form">
         <div className="card-wrap">
           <div className="card-left">
+            {console.log(candidate, "candidate............")}
             <Input
               labelName="Name"
               type="text"
@@ -174,7 +188,7 @@ export const CandidateUpdate = () => {
               }
               errorMessage="*"
             />
-            {/* {error.name && <span className="txt-danger txt-ss">{error.name}</span>} */}
+
             <Input
               labelName="Email"
               type="email"
@@ -333,6 +347,7 @@ export const CandidateUpdate = () => {
         </div>
 
         <div className="card-btnPlus">
+          {console.log(data, "dataaaaaaaaaaa")}
           {data.length < 4 && (
             <Button
               type="button"
@@ -343,13 +358,16 @@ export const CandidateUpdate = () => {
             />
           )}
         </div>
+
         <div className="card-border">
+          {console.log(data, "dataaaaaaa")}
           {data.map((row, index) => (
             <div key={index} className="card-box">
               <div className="card-language">
                 <Dropdown
                   labelName="Language"
                   options={languages}
+                  selectedValue={row.devlanguage_id}
                   onChange={(e) => {
                     const updatedData = [...data];
                     updatedData[index].devlanguage_id = e.target.value;
@@ -371,7 +389,7 @@ export const CandidateUpdate = () => {
               </div>
               <div className="card-experience">
                 <label className="experience-label">
-                  Experience  <span className="txt-danger">*</span>
+                  Experience <span className="txt-danger">*</span>
                 </label>
                 <div className="experience-group">
                   <Input
@@ -384,7 +402,6 @@ export const CandidateUpdate = () => {
                       const updatedData = [...data];
                       updatedData[index].year = e.target.value;
                       setData(updatedData);
-                      console.log(data);
                     }}
                   />
                   <Input
@@ -407,19 +424,19 @@ export const CandidateUpdate = () => {
         </div>
 
         <div className="button-group">
-            <Button
-              type="submit"
-              text="Update"
-              className="txt-light btn-primary"
-            />
-            <ButtonLink
-              type="button"
-              className="btn-default"
-              route={"/candidates"}
-              text="Cancel"
-              linkText="txt-light txt-sm"
-            />
-          </div>       
+          <Button
+            type="submit"
+            text="Update"
+            className="txt-light btn-primary"
+          />
+          <ButtonLink
+            type="button"
+            className="btn-default"
+            route={"/candidates"}
+            text="Cancel"
+            linkText="txt-light txt-sm"
+          />
+        </div>
       </form>
     </div>
   );

@@ -10,7 +10,7 @@ export const CDetails = () => {
     month = experience % 12;
     year = Math.floor(experience / 12);
     return month || (month && year)
-      ? [month ? `${month} month(s)` : null, year ? ` ${year} year(s) ` : null]
+      ? [year ? ` ${year} year(s) ` : null, month ? `${month} month(s)` : null]
       : ["no experience"];
   };
   return (
@@ -89,8 +89,10 @@ export const CDetails = () => {
             {candidate?.specific_languages.map((lan) => {
               return (
                 <>
-                  <span>{lan.devlanguage.name} - </span>
-                  <span>{experienceFilter(lan.experience)} </span>
+                  <p>
+                    {lan.devlanguage.name} {"=>"}{" "}
+                    {experienceFilter(lan.experience)}{" "}
+                  </p>
                 </>
               );
             })}

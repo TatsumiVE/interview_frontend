@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
+import Check from "../validation.jsx";
 import {
   Dropdown,
   Input,
@@ -23,7 +24,7 @@ export const CandidateCreate = () => {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [formActive, setFormActive] = useState(false);
-  const [error, setError] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -50,32 +51,16 @@ export const CandidateCreate = () => {
     { devlanguage_id: "", year: "", month: "" },
   ]);
 
-  const isValidPhoneNumber = (phoneNumber) => {
-    const phonePattern = /^\d{10}$/;
+  const requestData = data.map((row) => {
+    const totalMonths = parseInt(row.year) * 12 + parseInt(row.month);
 
-    return phonePattern.test(phoneNumber);
-  };
-  const isValidEmail = (email) => {
-    // Regular expression pattern for email validation
-    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-
-    return emailPattern.test(email);
-  };
-  // const checkValidate = () => {
-  //   const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-  //   const phonePattern = /^\d{11}$/;
-  //   formData.name.length > 5 &&
-  //     emailPattern.test(formData.email) &&
-  //     phonePattern.test(formData.phone_number);
-  // };
-
-  const requestData = data.map((row) => ({
-    experience: {
-      month: row.month,
-      year: row.year,
-    },
-    devlanguage_id: row.devlanguage_id,
-  }));
+    return {
+      experience: {
+        month: totalMonths,
+      },
+      devlanguage_id: row.devlanguage_id,
+    };
+  });
 
   const addCandidate = async (formData) => {
     const response = await axios.post(
@@ -150,7 +135,6 @@ export const CandidateCreate = () => {
   if (agencyError) return `An error has occurred: ${agencyError.message}`;
   return (
     <>
-      {/* {error && <span className="txt-danger txt-ss">{error}</span>} */}
       <div className="card">
         <h1>Create Candidate</h1>
         <form
@@ -174,9 +158,9 @@ export const CandidateCreate = () => {
                   }
                   errorMessage="*"
                 />
-                {!isValidEmail(formData.email) && formActive ? (
+                {!Check.isValidText(formData.name) && formActive ? (
                   <span className="txt-danger validated-error">
-                    Email format is invalid!
+                    Name must be at least 5 characters !
                   </span>
                 ) : null}
               </div>
@@ -185,157 +169,227 @@ export const CandidateCreate = () => {
                   labelName="Email"
                   type="email"
                   name="email"
-                  placeholder=" Enter Email..."
+                  placeholder=" Enter  example@gmail.com"
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
                   errorMessage="*"
                 />
-                {!isValidEmail(formData.email) && formActive ? (
+                {!Check.isValidEmail(formData.email) && formActive ? (
                   <span className="txt-danger validated-error">
                     Email format is invalid!
                   </span>
                 ) : null}
               </div>
-              <Input
-                labelName="Phone Number"
-                type="tel"
-                name="phoneNumber"
-                placeholder=" Enter Phone Number..."
-                value={formData.phone_number}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone_number: e.target.value })
-                }
-                errorMessage="*"
-              />
-              <Input
-                labelName="CV Path"
-                type="text"
-                name="cv_path"
-                placeholder=" Enter Cv Path..."
-                value={formData.cv_path}
-                onChange={(e) =>
-                  setFormData({ ...formData, cv_path: e.target.value })
-                }
-                errorMessage="*"
-              />
-              <Input
-                labelName="Date of Birth"
-                type="date"
-                name="date_of_birth"
-                placeholder=" Enter Date of Birth..."
-                value={formData.date_of_birth}
-                onChange={(e) =>
-                  setFormData({ ...formData, date_of_birth: e.target.value })
-                }
-                errorMessage="*"
-              />
-
-              <TextArea
-                labelName="Address"
-                name="residential_address"
-                placeholder=" Enter Residential Address..."
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    residential_address: e.target.value,
-                  })
-                }
-                errorMessage="*"
-              />
+              <div className="input-group">
+                <Input
+                  labelName="Phone Number"
+                  type="tel"
+                  name="phoneNumber"
+                  placeholder=" Enter  09*********"
+                  value={formData.phone_number}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone_number: e.target.value })
+                  }
+                  errorMessage="*"
+                />
+                {!Check.isValidPhoneNumber(formData.phone_number) &&
+                formActive ? (
+                  <span className="txt-danger validated-error">
+                    Phone Number format is invalid!
+                  </span>
+                ) : null}
+              </div>
+              <div className="input-group">
+                <Input
+                  labelName="CV Form Path"
+                  type="text"
+                  name="cv_path"
+                  placeholder="https://www.example.com/cv/name "
+                  value={formData.cv_path}
+                  onChange={(e) =>
+                    setFormData({ ...formData, cv_path: e.target.value })
+                  }
+                  errorMessage="*"
+                />
+                {!Check.isValidCVPathLink(formData.cv_path) && formActive ? (
+                  <span className="txt-danger validated-error">
+                    CV form format is invalid!
+                  </span>
+                ) : null}
+              </div>
+              <div className="input-group">
+                <Input
+                  labelName="Date of Birth"
+                  type="date"
+                  name="date_of_birth"
+                  placeholder=" Enter Date of Birth..."
+                  value={formData.date_of_birth}
+                  onChange={(e) =>
+                    setFormData({ ...formData, date_of_birth: e.target.value })
+                  }
+                  errorMessage="*"
+                />
+                {!Check.isValidAge(formData.date_of_birth) && formActive ? (
+                  <span className="txt-danger validated-error">
+                    Age is at least 18 years.
+                  </span>
+                ) : null}
+              </div>
+              <div className="input-group">
+                <TextArea
+                  labelName="Address"
+                  name="residential_address"
+                  placeholder=" "
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      residential_address: e.target.value,
+                    })
+                  }
+                  errorMessage="*"
+                />
+                {!Check.isValidAddress(formData.residential_address) &&
+                formActive ? (
+                  <span className="txt-danger validated-error">
+                    Address format is invalid!
+                  </span>
+                ) : null}
+              </div>
             </div>
             <div className="card-right">
-              <Dropdown
-                labelName="Position"
-                options={positions}
-                selectedValue={formData.position_id}
-                onChange={(e) =>
-                  setFormData({ ...formData, position_id: e.target.value })
-                }
-                errorMessage="*"
-              />
-
-              <Dropdown
-                labelName="Agency"
-                options={agencies}
-                selectedValue={formData.agency_id}
-                onChange={(e) =>
-                  setFormData({ ...formData, agency_id: e.target.value })
-                }
-                errorMessage="*"
-              />
-
-              <Input
-                labelName="Expected Salary"
-                type="number"
-                name="expected_salary"
-                placeholder=" Enter Expected Salary..."
-                value={formData.expected_salary}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    expected_salary: e.target.value,
-                  })
-                }
-              />
-              <Input
-                labelName="Last Salary"
-                type="number"
-                name="last_salary"
-                placeholder=" Enter Last Salary..."
-                value={formData.last_salary}
-                onChange={(e) =>
-                  setFormData({ ...formData, last_salary: e.target.value })
-                }
-              />
-
-              <Input
-                labelName="Earliest Starting Date"
-                type="date"
-                name="earliest_starting_date"
-                placeholder="Enter Earliest Starting Date..."
-                value={formData.earliest_starting_date}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    earliest_starting_date: e.target.value,
-                  })
-                }
-              />
+              <div className="input-group">
+                <Dropdown
+                  labelName="Position"
+                  options={positions}
+                  selectedValue={formData.position_id}
+                  onChange={(e) =>
+                    setFormData({ ...formData, position_id: e.target.value })
+                  }
+                  errorMessage="*"
+                />
+                {!Check.isValidSelect(formData.position_id) && formActive ? (
+                  <span className="txt-danger validated-error">
+                    Position field is required!
+                  </span>
+                ) : null}
+              </div>
+              <div className="input-group">
+                <Dropdown
+                  labelName="Agency"
+                  options={agencies}
+                  selectedValue={formData.agency_id}
+                  onChange={(e) =>
+                    setFormData({ ...formData, agency_id: e.target.value })
+                  }
+                  errorMessage="*"
+                />
+                {!Check.isValidAddress(formData.agency_id) && formActive ? (
+                  <span className="txt-danger validated-error">
+                    Agency field is required!
+                  </span>
+                ) : null}
+              </div>
+              <div className="input-group">
+                <Input
+                  labelName="Expected Salary"
+                  type="number"
+                  name="expected_salary"
+                  placeholder=" Enter Expected Salary..."
+                  value={formData.expected_salary}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      expected_salary: e.target.value,
+                    })
+                  }
+                />
+                {!Check.isValidSalary(formData.expected_salary) &&
+                formActive ? (
+                  <span className="txt-danger validated-error">
+                    Salary amount is invalid!
+                  </span>
+                ) : null}
+              </div>
+              <div className="input-group">
+                <Input
+                  labelName="Last Salary"
+                  type="number"
+                  name="last_salary"
+                  placeholder=" Enter Last Salary..."
+                  value={formData.last_salary}
+                  onChange={(e) =>
+                    setFormData({ ...formData, last_salary: e.target.value })
+                  }
+                />
+                {!Check.isValidSalary(formData.last_salary) && formActive ? (
+                  <span className="txt-danger validated-error">
+                    Salary amount is invalid!
+                  </span>
+                ) : null}
+              </div>
+              <div className="input-group">
+                <Input
+                  labelName="Earliest Starting Date"
+                  type="date"
+                  name="earliest_starting_date"
+                  placeholder="Enter Earliest Starting Date..."
+                  value={formData.earliest_starting_date}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      earliest_starting_date: e.target.value,
+                    })
+                  }
+                />
+                {!Check.isValidStartingDate(formData.earliest_starting_date) &&
+                formActive ? (
+                  <span className="txt-danger validated-error">
+                    Earliest Starting Date is invalid!
+                  </span>
+                ) : null}
+              </div>
 
               <div className="input-form">
                 <label>
                   Gender <span className="txt-danger">*</span>
                 </label>
-                <div className="radio-group">
-                  <Radio
-                    labelName="Male"
-                    value="1"
-                    name="gender"
-                    checked={formData.gender == "1"}
-                    onChange={(e) =>
-                      setFormData({ ...formData, gender: e.target.value })
-                    }
-                  />
-                  <Radio
-                    labelName="Female"
-                    value="2"
-                    name="gender"
-                    checked={formData.gender == "2"}
-                    onChange={(e) =>
-                      setFormData({ ...formData, gender: e.target.value })
-                    }
-                  />
-                  <Radio
-                    labelName="Non-Binary"
-                    value="3"
-                    name="gender"
-                    checked={formData.gender == "3"}
-                    onChange={(e) =>
-                      setFormData({ ...formData, gender: e.target.value })
-                    }
-                  />
+                <div className="input-group">
+                  <div className="radio-group">
+                    <Radio
+                      labelName="Male"
+                      value="1"
+                      name="gender"
+                      checked={formData.gender == "1"}
+                      onChange={(e) =>
+                        setFormData({ ...formData, gender: e.target.value })
+                      }
+                    />
+                    <Radio
+                      labelName="Female"
+                      value="2"
+                      name="gender"
+                      checked={formData.gender == "2"}
+                      onChange={(e) =>
+                        setFormData({ ...formData, gender: e.target.value })
+                      }
+                    />
+                    <Radio
+                      labelName="Non-Binary"
+                      value="3"
+                      name="gender"
+                      checked={formData.gender == "3"}
+                      onChange={(e) =>
+                        setFormData({ ...formData, gender: e.target.value })
+                      }
+                    />
+                  </div>
+                  {!Check.isValidGender(formData.gender) && formActive ? (
+                    <span className="txt-danger validated-error">
+                      Gender field is required
+                    </span>
+                  ) : null}
                 </div>
               </div>
               <InputCheckbox
