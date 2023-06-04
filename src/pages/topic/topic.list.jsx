@@ -28,7 +28,7 @@ export const TopicList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
-  }, [topics,successMessage]);
+  }, [topics, successMessage]);
 
   const columns = useMemo(
     () => [
@@ -62,7 +62,7 @@ export const TopicList = () => {
     []
   );
 
-  const data = useMemo(() => TopicList , [TopicList]);
+  const data = useMemo(() => TopicList, [TopicList]);
 
   const {
     getTableProps,
@@ -83,7 +83,7 @@ export const TopicList = () => {
   } = useTable(
     {
       columns,
-      data:TopicList,
+      data: TopicList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -97,18 +97,22 @@ export const TopicList = () => {
 
   return (
     <>
-    <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
-    <div className="table-wrap">
-      <div className="table-wrap__head">
-        <div className="search-content">
-          <input
-            type="text"
-            value={globalFilter || ""}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="Search..."
-          />
-        </div>
-       
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        className="ToastContainer"
+      />
+      <div className="table-wrap">
+        <div className="table-wrap__head">
+          <div className="search-content">
+            <input
+              type="text"
+              value={globalFilter || ""}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              placeholder="Search..."
+            />
+          </div>
+
           <div className="create-content">
             <Can permission={"topicCreate"}>
               <ButtonLink

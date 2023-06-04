@@ -210,7 +210,6 @@ export const InterviewList = () => {
               Cell: ({ row }) => {
                 const candidate = row.original.candidate;
                 const interview = row.original.interview;
-
                 return (
                   <>
                     <Can permission={"interviewProcessCreate"}>
@@ -433,14 +432,16 @@ export const InterviewList = () => {
             />
           </div>
           <div className="create-content">
-            <ButtonLink
-              type="button"
-              className="btn-primary"
-              route="/candidates/create"
-              linkText="txt-light txt-sm"
-              text="Create Candidate"
-              icon="fa-solid fa-plus"
-            />
+            <Can permission={"candidateCreate"}>
+              <ButtonLink
+                type="button"
+                className="btn-primary"
+                route="/candidates/create"
+                linkText="txt-light txt-sm"
+                text="Create Candidate"
+                icon="fa-solid fa-plus"
+              />
+            </Can>
           </div>
         </div> */}
 
