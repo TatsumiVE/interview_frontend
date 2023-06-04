@@ -62,28 +62,140 @@ export const Router = () => {
             }
           />
           <Route path="candidates">
-            <Route index element={<Candidate />} />
-            <Route path="create" element={<CandidateCreate />} />
-            <Route path="update/:id" element={<CandidateUpdate />} />
-            <Route path=":id" element={<CandidateDetails />}>
+            <Route
+              index
+              element={
+                <Can permission={"candidateList"}>
+                  <Candidate />
+                </Can>
+              }
+            />
+            <Route
+              path="create"
+              element={
+                <Can permission={"candidateCreate"}>
+                  <CandidateCreate />
+                </Can>
+              }
+            />
+            <Route
+              path="update/:id"
+              element={
+                <Can permission={"candidateUpdate"}>
+                  <CandidateUpdate />
+                </Can>
+              }
+            />
+            <Route
+              path=":id"
+              element={
+                <Can permission={"getCandidateById"}>
+                  <CandidateDetails />
+                </Can>
+              }
+            >
               <Route index element={<Navigate to="details" replace />} />
-              <Route path="details" element={<CDetails />} />
-              <Route path="cv" element={<CCv />} />
-              <Route path="stages" element={<CStages />} />
-              <Route path="interviews" element={<CInterviews />} />
+              <Route
+                path="details"
+                element={
+                  <Can permission={""}>
+                    <CDetails />
+                  </Can>
+                }
+              />
+              <Route
+                path="cv"
+                element={
+                  <Can permission={""}>
+                    <CCv />
+                  </Can>
+                }
+              />
+              <Route
+                path="stages"
+                element={
+                  <Can permission={""}>
+                    <CStages />
+                  </Can>
+                }
+              />
+              <Route
+                path="interviews"
+                element={
+                  <Can permission={""}>
+                    <CInterviews />
+                  </Can>
+                }
+              />
             </Route>
           </Route>
           <Route path="interviewer">
-            <Route index element={<Employee />} />
-            <Route path="create" element={<InterviewerCreate />} />
-            <Route path="update/:id" element={<InterviewerUpdate />} />
-            <Route path="user/create/:id" element={<UserCreate />} />
+            <Route
+              index
+              element={
+                <Can permission={"interviewerList"}>
+                  <Employee />
+                </Can>
+              }
+            />
+            <Route
+              path="create"
+              element={
+                <Can permission={"interviewerCreate"}>
+                  <InterviewerCreate />
+                </Can>
+              }
+            />
+            <Route
+              path="update/:id"
+              element={
+                <Can permission={"interviewerUpdate"}>
+                  <InterviewerUpdate />
+                </Can>
+              }
+            />
+            <Route
+              path="user/create/:id"
+              element={
+                <Can permission={"userCreate"}>
+                  <UserCreate />
+                </Can>
+              }
+            />
           </Route>
           <Route path="interview">
-            <Route index element={<InterviewList />} />
-            <Route path="create" element={<InterviewCreate />} />
-            <Route path="assessment" element={<InterviewAssessment />} />
-            <Route path="result" element={<InterviewResult />} />
+            <Route
+              index
+              element={
+                <Can permission={"interviewList"}>
+                  <InterviewList />
+                </Can>
+              }
+            />
+            <Route
+              path="create"
+              element={
+                <Can permission={"interviewProcessCreate"}>
+                  <InterviewCreate />
+                </Can>
+              }
+            />
+            <Route
+              path="assessment"
+              element={
+                <Can permission={"remarkAssessmentCreate"}>
+                  <InterviewAssessment />
+                </Can>
+              }
+            />
+            <Route
+              path="result"
+              element={
+                <Can permission={"interviewSummarize"}>
+                  <InterviewResult />
+                </Can>
+              }
+            />
           </Route>
           <Route path="interview">
             <Route index element={<InterviewList />} />
@@ -93,23 +205,80 @@ export const Router = () => {
           </Route>
 
           <Route path="user">
-            <Route index element={<UserList />} />
-            <Route path="update/:id" element={<UserUpdate />} />
+            <Route
+              index
+              element={
+                <Can permission={"userList"}>
+                  <UserList />
+                </Can>
+              }
+            />
+            <Route
+              path="update/:id"
+              element={
+                <Can permission={"userUpdate"}>
+                  <UserUpdate />
+                </Can>
+              }
+            />
           </Route>
 
           <Route path="agency">
-            <Route index element={<AgencyList />} />
-            <Route path="create" element={<AgencyCreate />} />
-            <Route path="update/:id" element={<AgencyUpdate />} />
+            <Route
+              index
+              element={
+                <Can permission={"agencyList"}>
+                  <AgencyList />
+                </Can>
+              }
+            />
+            <Route
+              path="create"
+              element={
+                <Can permission={"agencyCreate"}>
+                  <AgencyCreate />
+                </Can>
+              }
+            />
+            <Route path="update/:id" element={<agencyUpdate />} />
           </Route>
 
           <Route path="department">
-            <Route index element={<DepartmentList />} />
-            <Route path="create" element={<DepartmentCreate />} />
-            <Route path="update/:id" element={<DepartmentUpdate />} />
+            <Route
+              index
+              element={
+                <Can permission={"departmentList"}>
+                  <DepartmentList />
+                </Can>
+              }
+            />
+
+            <Route
+              path="create"
+              element={
+                <Can permission={"departmentCreate"}>
+                  <DepartmentCreate />
+                </Can>
+              }
+            />
+            <Route
+              path="update/:id"
+              element={
+                <Can permission={"departmentUpdate"}>
+                  <DepartmentUpdate />
+                </Can>
+              }
+            />
           </Route>
           <Route path="position">
-            <Route index element={<PositionList />} />
+            <Route
+              index
+              element={
+                <Can permission={"positionList"}>
+                  <PositionList />
+                </Can>
+              }
+            />
             <Route
               path="create"
               element={
@@ -129,7 +298,14 @@ export const Router = () => {
           </Route>
 
           <Route path="rate">
-            <Route index element={<RateList />} />
+            <Route
+              index
+              element={
+                <Can permission={"rateList"}>
+                  <RateList />
+                </Can>
+              }
+            />
             <Route
               path="create"
               element={
@@ -148,7 +324,14 @@ export const Router = () => {
             />
           </Route>
           <Route path="topic">
-            <Route index element={<TopicList />} />
+            <Route
+              index
+              element={
+                <Can permission={"topicList"}>
+                  <TopicList />
+                </Can>
+              }
+            />
             <Route
               path="create"
               element={
@@ -168,7 +351,14 @@ export const Router = () => {
           </Route>
 
           <Route path="devlanguage">
-            <Route index element={<DevLanguageList />} />
+            <Route
+              index
+              element={
+                <Can permission={"languageList"}>
+                  <DevLanguageList />
+                </Can>
+              }
+            />
             <Route
               path="create"
               element={

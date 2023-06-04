@@ -112,7 +112,11 @@ export const Employee = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        className="ToastContainer"
+      />
 
       <div className="table-wrap">
         <div className="table-wrap__head">
@@ -124,7 +128,7 @@ export const Employee = () => {
               placeholder="Search..."
             />
           </div>
-          <Can permission={"iinterviewerCreate"}>
+          <Can permission={"interviewerCreate"}>
             <div className="create-content">
               <ButtonLink
                 type="button"

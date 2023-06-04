@@ -165,139 +165,138 @@ export const InterviewList = () => {
               Cell: ({ row }) => {
                 return <div>{row.index + 1}.</div>;
               },
-          
-          },
-          {
-            Header: "Name",
-            Cell: ({ row }) => <div>{row.original.candidate.name}</div>,
-          },
-          {
-            Header: "Email",
-            Cell: ({ row }) => <div>{row.original.candidate.email}</div>,
-          },
-          {
-            Header: "Gender",
-            Cell: ({ row }) => <div>{row.original.candidate.gender}</div>,
-          },
-          {
-            Header: "Phone Number",
-            Cell: ({ row }) => (
-              <div>{row.original.candidate.phone_number}</div>
-            ),
-          },
-          {
-            Header: "Interview Date",
-            Cell: ({ row }) =>
-              row.original.interview[0]?.interview_stage?.interview_date ||
-              "-",
-          },
-          {
-            Header: "Applied Position",
-            Cell: ({ row }) => row.original.candidate.position_id,
-          },
-          {
-            Header: "Language",
-            Cell: ({ row }) =>
-              row.original.candidate.specific_languages
-                .map((language) => language.devlanguage.name)
-                .join(", "),
-          },
-          {
-            Header: "Action",
-            Cell: ({ row }) => {
-              const candidate = row.original.candidate;
-              const interview = row.original.interview;
-              return (
-                <>
-                  <Can permission={"interviewProcessCreate"}>
-                    <Link
-                      to={`create`}
-                      state={{
-                        id: candidate.id,
-                        stageId: interview.length,
-                      }}
-                      style={{
-                        pointerEvents: check(interview).canCreate
-                          ? "all"
-                          : "none",
-                        background: check(interview).canCreate
-                          ? "green"
-                          : "red",
-                      }}
-                    >
-                      Interview
-                    </Link>
-                  </Can>
-                  &nbsp;
-                  <Can permission={"remarkAssessmentCreate"}>
-                    <Link
-                      to={`assessment`}
-                      state={{
-                        candidateId: candidate.id,
-                        interviewerId: user.id,
-                      }}
-                      style={{
-                        pointerEvents: check(interview).canAssessment
-                          ? "all"
-                          : "none",
-                        background: check(interview).canAssessment
-                          ? "green"
-                          : "red",
-                      }}
-                    >
-                      Assessment
-                    </Link>
-                  </Can>
-                  <Can permission={"interviewSummarize"}>
-                    <Link
-                      to={`result`}
-                      state={{
-                        candidateId: candidate.id,
-                        stageId: findStageId(candidate.id),
-                        candidateName: candidate.name,
-                      }}
-                      style={{
-                        pointerEvents: check(interview).canResult
-                          ? "all"
-                          : "none",
-                        background: check(interview).canResult
-                          ? "green"
-                          : "red",
-                      }}
-                    >
-                      Result
-                    </Link>
-                  </Can>
-                  <Can permission={"interviewProcessTerminate"}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        handleTerminate(candidate.id);
-                      }}
-                    >
-                      Terminate
-                    </button>
-                  </Can>
-                  <Can permission={"candidateShow"}>
-                    <ButtonLink
-                      type="button"
-                      className="btn-info"
-                      route={`/candidates/${candidate.id}`}
-                      text="View"
-                      linkText="txt-light txt-sm"
-                      icon="fa-solid fa-magnifying-glass"
-                    />
-                  </Can>
-                </>
-              );
             },
-          },
-        ]
+            {
+              Header: "Name",
+              Cell: ({ row }) => <div>{row.original.candidate.name}</div>,
+            },
+            {
+              Header: "Email",
+              Cell: ({ row }) => <div>{row.original.candidate.email}</div>,
+            },
+            {
+              Header: "Gender",
+              Cell: ({ row }) => <div>{row.original.candidate.gender}</div>,
+            },
+            {
+              Header: "Phone Number",
+              Cell: ({ row }) => (
+                <div>{row.original.candidate.phone_number}</div>
+              ),
+            },
+            {
+              Header: "Interview Date",
+              Cell: ({ row }) =>
+                row.original.interview[0]?.interview_stage?.interview_date ||
+                "-",
+            },
+            {
+              Header: "Applied Position",
+              Cell: ({ row }) => row.original.candidate.position_id,
+            },
+            {
+              Header: "Language",
+              Cell: ({ row }) =>
+                row.original.candidate.specific_languages
+                  .map((language) => language.devlanguage.name)
+                  .join(", "),
+            },
+            {
+              Header: "Action",
+              Cell: ({ row }) => {
+                const candidate = row.original.candidate;
+                const interview = row.original.interview;
+                return (
+                  <>
+                    <Can permission={"interviewProcessCreate"}>
+                      <Link
+                        to={`create`}
+                        state={{
+                          id: candidate.id,
+                          stageId: interview.length,
+                        }}
+                        style={{
+                          pointerEvents: check(interview).canCreate
+                            ? "all"
+                            : "none",
+                          background: check(interview).canCreate
+                            ? "green"
+                            : "red",
+                        }}
+                      >
+                        Interview
+                      </Link>
+                    </Can>
+                    &nbsp;
+                    <Can permission={"remarkAssessmentCreate"}>
+                      <Link
+                        to={`assessment`}
+                        state={{
+                          candidateId: candidate.id,
+                          interviewerId: user.id,
+                        }}
+                        style={{
+                          pointerEvents: check(interview).canAssessment
+                            ? "all"
+                            : "none",
+                          background: check(interview).canAssessment
+                            ? "green"
+                            : "red",
+                        }}
+                      >
+                        Assessment
+                      </Link>
+                    </Can>
+                    <Can permission={"interviewSummarize"}>
+                      <Link
+                        to={`result`}
+                        state={{
+                          candidateId: candidate.id,
+                          stageId: findStageId(candidate.id),
+                          candidateName: candidate.name,
+                        }}
+                        style={{
+                          pointerEvents: check(interview).canResult
+                            ? "all"
+                            : "none",
+                          background: check(interview).canResult
+                            ? "green"
+                            : "red",
+                        }}
+                      >
+                        Result
+                      </Link>
+                    </Can>
+                    <Can permission={"interviewProcessTerminate"}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleTerminate(candidate.id);
+                        }}
+                      >
+                        Terminate
+                      </button>
+                    </Can>
+                    <Can permission={"candidateShow"}>
+                      <ButtonLink
+                        type="button"
+                        className="btn-info"
+                        route={`/candidates/${candidate.id}`}
+                        text="View"
+                        linkText="txt-light txt-sm"
+                        icon="fa-solid fa-magnifying-glass"
+                      />
+                    </Can>
+                  </>
+                );
+              },
+            },
+          ]
         : [],
     [a]
   );
 
-   const {
+  const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
@@ -356,7 +355,7 @@ export const InterviewList = () => {
       </button>
       <button type="button" onClick={() => setStageFilter(3)}>
         stage3
-      </button> 
+      </button>
 
       <input
         type="date"
@@ -395,7 +394,7 @@ export const InterviewList = () => {
             }}
             hide={true}
           />
-         
+
           <Input
             labelName="Start Date"
             type="date"
@@ -406,7 +405,7 @@ export const InterviewList = () => {
               setStartDateFilter(e.target.value);
             }}
           />
-       
+
           <Input
             labelName="End Date"
             type="date"
@@ -429,14 +428,16 @@ export const InterviewList = () => {
             /> */}
           </div>
           <div className="create-content">
-            <ButtonLink
-              type="button"
-              className="btn-primary"
-              route="/candidates/create"
-              linkText="txt-light txt-sm"
-              text="Create Candidate"
-              icon="fa-solid fa-plus"
-            />
+            <Can permission={"candidateCreate"}>
+              <ButtonLink
+                type="button"
+                className="btn-primary"
+                route="/candidates/create"
+                linkText="txt-light txt-sm"
+                text="Create Candidate"
+                icon="fa-solid fa-plus"
+              />
+            </Can>
           </div>
         </div>
 
