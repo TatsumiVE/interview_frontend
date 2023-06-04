@@ -244,7 +244,7 @@ export const Router = () => {
               path="update/:id"
               element={
                 <CanRoute permission={"agencyUpdate"}>
-                  <agencyUpdate />
+                  <AgencyUpdate />
                 </CanRoute>
               }
             />
