@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 
-const Rating = ({ value, children }) => {
+const Rating = (props) => {
   let stars = [];
+  let value = 6 - props.value;
   for (let i = 1; i <= 5; i++) {
     const star = (
       <i key={i} className={`fa-${i <= value ? "solid" : "regular"} fa-star`} />
@@ -11,7 +12,7 @@ const Rating = ({ value, children }) => {
 
   return (
     <span className="rating">
-      {stars} <span>{children}</span>
+      {stars} <span>{props.children}</span>
     </span>
   );
 };

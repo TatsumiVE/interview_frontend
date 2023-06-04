@@ -29,7 +29,7 @@ export const CStages = () => {
 
   const grades = ["A", "B", "C"];
 
-  const rates = ["Nill", "UnAcceptable", "Acceptable", "Good", "Well"];
+  const rates = ["Well", "Good", "Acceptable", "UnAcceptable", "Nill"];
 
   const topics = [
     "Language Proficiency",
@@ -157,7 +157,7 @@ export const CStages = () => {
                           <p>
                             <span>GRADE</span>
                             <span style={{ color: "#d7b700" }}>
-                              {grades[i.remarks[0].grade]}
+                              {grades[i.remarks[0].grade - 1]}
                             </span>
                           </p>
                           {i.assessment[0].assessment_result.map((r) => (
