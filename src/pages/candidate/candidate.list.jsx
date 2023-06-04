@@ -147,7 +147,7 @@ export const Candidate = () => {
             },
             {
               Header: "Applied Position",
-              Cell: ({ row }) => row.original.candidate.position_id,
+              Cell: ({ row }) => row.original.candidate.position.name,
             },
             {
               Header: "Language",

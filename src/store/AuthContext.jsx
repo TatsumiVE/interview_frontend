@@ -15,6 +15,10 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(initialUser);
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginName, setLoginName] = useState("");
+  const [loginRole, setLoginRole] = useState("");
+ 
   useEffect(() => {
     const checkTokenValidity = async () => {
       try {
@@ -62,6 +66,10 @@ export const AuthContextProvider = ({ children }) => {
       setToken(response.data.data.token);
       setUser(response.data.data);
 
+      setLoginEmail(response.data.data.email);
+      setLoginName(response.data.data.name);
+      setLoginRole(response.data.data.role);
+
       localStorage.setItem("token", response.data.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.data));
 
@@ -90,7 +98,7 @@ export const AuthContextProvider = ({ children }) => {
         <Loader />
       ) : (
         <AuthContext.Provider
-          value={{ token, isLogin, user, handleLogin, handleLogout, can }}
+          value={{ token, isLogin, user, handleLogin, handleLogout, can, loginName,loginRole}}
         >
           {children}
         </AuthContext.Provider>

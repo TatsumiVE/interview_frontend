@@ -180,7 +180,17 @@ export const InterviewList = () => {
             },
             {
               Header: "Gender",
-              Cell: ({ row }) => <div>{row.original.candidate.gender}</div>,
+              Cell: ({ row }) => (
+                <div>
+                  {row.original.candidate.gender === 1
+                    ? "Male"
+                    : row.original.candidate.gender === 2
+                    ? "Female"
+                    : row.original.candidate.gender === 3
+                    ? "Non-Binary"
+                    : ""}
+                </div>
+              ),
             },
             {
               Header: "Phone Number",
@@ -196,7 +206,7 @@ export const InterviewList = () => {
             },
             {
               Header: "Applied Position",
-              Cell: ({ row }) => row.original.candidate.position_id,
+              Cell: ({ row }) => row.original.candidate.position.name,
             },
             {
               Header: "Language",
