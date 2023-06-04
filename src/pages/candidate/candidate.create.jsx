@@ -285,7 +285,7 @@ export const CandidateCreate = () => {
                   }
                   errorMessage="*"
                 />
-                {!Check.isValidAddress(formData.agency_id) && formActive ? (
+                {!Check.isValidSelect(formData.agency_id) && formActive ? (
                   <span className="txt-danger validated-error">
                     Agency field is required!
                   </span>
