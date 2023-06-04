@@ -4,11 +4,14 @@ export const CDetails = () => {
   const { id } = useParams();
   const { candidate } = useOutletContext();
   const experienceFilter = (experience) => {
+    experience = experience || 0;
     let month = 0;
     let year = 0;
     month = experience % 12;
-    year = experience / 12;
-    return { month, year };
+    year = Math.floor(experience / 12);
+    return month || (month && year)
+      ? [month ? `${month} month(s)` : null, year ? ` ${year} year(s) ` : null]
+      : ["no experience"];
   };
   return (
     <div className="c-details">
@@ -82,16 +85,15 @@ export const CDetails = () => {
           </div>
 
           <div className="field">
-            <p className="label">Experience in Years</p>
-            <p>
-              {" "}
-              {candidate?.specific_languages.map((lan) => {
+            <p className="label">Experience in Years</p>{" "}
+            {candidate?.specific_languages.map((lan) => {
+              return (
                 <>
-                  <span>{lan.devlanguage.name}</span>
-                  <span>{experienceFilter(lan.devlanguage.experience)}</span>
-                </>;
-              })}
-            </p>
+                  <span>{lan.devlanguage.name} - </span>
+                  <span>{experienceFilter(lan.experience)} </span>
+                </>
+              );
+            })}
           </div>
         </div>
       </div>

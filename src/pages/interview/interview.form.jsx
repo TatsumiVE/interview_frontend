@@ -8,9 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 export const InterviewCreate = () => {
   const { state } = useLocation();
-  const { id, stageId } = state;
+  const { id, name, stageId } = state;
   const { successMessage } = state || {};
-
 
   const [data, setData] = useState([{}]);
   const navigate = useNavigate();
@@ -24,6 +23,7 @@ export const InterviewCreate = () => {
   const selectedStageId = parseInt(stageId, 10) + 1;
   const [formData, setFormData] = useState({
     candidate_id: id,
+
     stage_name:
       interviewStages.find((stage) => stage.id === selectedStageId)?.id || "",
     interview_date: "",
@@ -94,7 +94,6 @@ export const InterviewCreate = () => {
         }
       );
       setInterviewers(interviewerResponse.data.data);
-
     } catch (error) {
       return error.message;
     }
@@ -123,12 +122,17 @@ export const InterviewCreate = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer" />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        className="ToastContainer"
+      />
       <div className="card-min">
         <div className="card-min__header">
           <h2>Interview Create</h2>
         </div>
         <form onSubmit={handleSubmit} className="card-min__form">
+          <p>{name}</p>
           <Input
             labelName="Date"
             type="date"

@@ -61,7 +61,6 @@ export const AuthContextProvider = ({ children }) => {
       setUser(response.data.data);
       const { permission } = response.data.data;
       localStorage.setItem("token", response.data.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.data));
 
       navigate("/");
     } catch (error) {
@@ -74,7 +73,7 @@ export const AuthContextProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
+
     setIsLogin(false);
   };
 

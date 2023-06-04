@@ -9,7 +9,7 @@ export const TextArea = ({
   errorMessage,
 }) => {
   return (
-    <div className="textarea-input">
+    <div className="input-form">
       <label>
         {labelName} <span className="txt-danger">{errorMessage}</span>
       </label>
@@ -19,6 +19,7 @@ export const TextArea = ({
         placeholder={placeholder}
         className={className}
         value={text}
+        rows={3}
       ></textarea>
     </div>
   );

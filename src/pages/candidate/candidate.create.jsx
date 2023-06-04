@@ -23,14 +23,14 @@ export const CandidateCreate = () => {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [formActive, setFormActive] = useState(false);
-
+  const [error, setError] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     gender: "",
     phone_number: "",
     residential_address: "",
-    date_of_birth: "",
+    date_of_birth: "2000-01-01",
     cv_path: "",
     willingness_to_travel: "",
     expected_salary: "",
@@ -78,17 +78,12 @@ export const CandidateCreate = () => {
   }));
 
   const addCandidate = async (formData) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/api/candidates",
-        { ...formData, data: requestData },
-        config
-      );
-
-      return response.data.data.id;
-    } catch (error) {
-      setError(error.response.data);
-    }
+    const response = await axios.post(
+      "http://localhost:8000/api/candidates",
+      { ...formData, data: requestData },
+      config
+    );
+    return response.data.data;
   };
 
   const {
@@ -122,14 +117,16 @@ export const CandidateCreate = () => {
   const createCandidate = useMutation({
     mutationKey: ["post", "candidates"],
     mutationFn: addCandidate,
-    onSuccess: (id) => {
+    onSuccess: ({ id, name }) => {
       navigate("/interview/create", {
         state: {
           id: id,
+          name: name,
           stageId: "0",
         },
       });
     },
+    onError: (e) => console.log(e),
   });
 
   const handleSubmit = async (e) => {
@@ -153,8 +150,9 @@ export const CandidateCreate = () => {
   if (agencyError) return `An error has occurred: ${agencyError.message}`;
   return (
     <>
-    {error && <span className="txt-danger txt-ss">{error}</span>}
+      {/* {error && <span className="txt-danger txt-ss">{error}</span>} */}
       <div className="card">
+        <h1>Create Candidate</h1>
         <form
           onSubmit={handleSubmit}
           className="card-form"
@@ -211,13 +209,17 @@ export const CandidateCreate = () => {
                 }
                 errorMessage="*"
               />
-              {/* {isValidPhoneNumber(formData.phone_number) ? (
-                ""
-              ) : (
-                <span className="txt-danger validated-error">
-                  phone number format is invalid
-                </span>
-              )} */}
+              <Input
+                labelName="CV Path"
+                type="text"
+                name="cv_path"
+                placeholder=" Enter Cv Path..."
+                value={formData.cv_path}
+                onChange={(e) =>
+                  setFormData({ ...formData, cv_path: e.target.value })
+                }
+                errorMessage="*"
+              />
               <Input
                 labelName="Date of Birth"
                 type="date"
@@ -229,6 +231,7 @@ export const CandidateCreate = () => {
                 }
                 errorMessage="*"
               />
+
               <TextArea
                 labelName="Address"
                 name="residential_address"
@@ -241,49 +244,6 @@ export const CandidateCreate = () => {
                 }
                 errorMessage="*"
               />
-              <InputCheckbox
-                type="checkbox"
-                name="willingness_to_travel"
-                value={formData.willingness_to_travel}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    willingness_to_travel: e.target.value,
-                  })
-                }
-                labelName="Willingness To Travel"
-              />
-              <div className="radio-group">
-                <Radio
-                  labelName="Male"
-                  value="1"
-                  name="gender"
-                  checked={formData.gender == "1"}
-                  onChange={(e) =>
-                    setFormData({ ...formData, gender: e.target.value })
-                  }
-                />
-                <Radio
-                  labelName="Female"
-                  value="2"
-                  name="gender"
-                  checked={formData.gender == "2"}
-                  onChange={(e) =>
-                    setFormData({ ...formData, gender: e.target.value })
-                  }
-                />
-                <Radio
-                  labelName="Non-Binary"
-                  value="3"
-                  name="gender"
-                  checked={formData.gender == "3"}
-                  onChange={(e) =>
-                    setFormData({ ...formData, gender: e.target.value })
-                  }
-                 
-                />
-                 <span className="txt-danger">*</span>
-              </div>
             </div>
             <div className="card-right">
               <Dropdown
@@ -331,18 +291,6 @@ export const CandidateCreate = () => {
               />
 
               <Input
-                labelName="CV Path"
-                type="text"
-                name="cv_path"
-                placeholder=" Enter Cv Path..."
-                value={formData.cv_path}
-                onChange={(e) =>
-                  setFormData({ ...formData, cv_path: e.target.value })
-                }
-                errorMessage="*"
-              />
-
-              <Input
                 labelName="Earliest Starting Date"
                 type="date"
                 name="earliest_starting_date"
@@ -355,20 +303,70 @@ export const CandidateCreate = () => {
                   })
                 }
               />
+
+              <div className="input-form">
+                <label>
+                  Gender <span className="txt-danger">*</span>
+                </label>
+                <div className="radio-group">
+                  <Radio
+                    labelName="Male"
+                    value="1"
+                    name="gender"
+                    checked={formData.gender == "1"}
+                    onChange={(e) =>
+                      setFormData({ ...formData, gender: e.target.value })
+                    }
+                  />
+                  <Radio
+                    labelName="Female"
+                    value="2"
+                    name="gender"
+                    checked={formData.gender == "2"}
+                    onChange={(e) =>
+                      setFormData({ ...formData, gender: e.target.value })
+                    }
+                  />
+                  <Radio
+                    labelName="Non-Binary"
+                    value="3"
+                    name="gender"
+                    checked={formData.gender == "3"}
+                    onChange={(e) =>
+                      setFormData({ ...formData, gender: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+              <InputCheckbox
+                type="checkbox"
+                name="willingness_to_travel"
+                value={formData.willingness_to_travel}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    willingness_to_travel: e.target.value,
+                  })
+                }
+                labelName="Willingness To Travel"
+              />
+            </div>
+          </div>
+          <div className="input-form">
+            <label>Experience</label>
+            <div className="card-btnPlus">
+              {data.length < 4 && (
+                <Button
+                  type="button"
+                  onClick={handleAdd}
+                  text="+"
+                  btnColor=""
+                  className="txt-light btn-primary btnRight"
+                />
+              )}
             </div>
           </div>
 
-          <div className="card-btnPlus">
-            {data.length < 4 && (
-              <Button
-                type="button"
-                onClick={handleAdd}
-                text="+"
-                btnColor=""
-                className="txt-light btn-primary btnRight"
-              />
-            )}
-          </div>
           <div className="card-border">
             {data.map((row, index) => (
               <div key={index} className="card-box">
@@ -447,5 +445,3 @@ export const CandidateCreate = () => {
     </>
   );
 };
-
-
