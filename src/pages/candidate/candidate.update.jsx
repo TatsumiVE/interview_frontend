@@ -180,7 +180,6 @@ export const CandidateUpdate = () => {
       Check.isValidSelect(candidate.agency_id) &&
       Check.isValidSalary(candidate.expected_salary) &&
       Check.isValidSalary(candidate.last_salary) &&
-     
       Check.isValidGender(candidate.gender) &&
       experienceValid
     );

@@ -1,10 +1,17 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Rating from "../../components/utilites/rating";
-
+import topicService from "../../services/topicService";
+import rateService from "../../services/rateService";
+import { useAuth } from "../../store/AuthContext";
+import { useEffect } from "react";
+import { useQuery } from "react-query";
+import Loader from "../../components/loader";
 export const CStages = () => {
+  const { token } = useAuth();
   const [show, setShow] = useState({ id: null, isCollapse: true });
-
+  const [rates, setRateList] = useState([]);
+  const [topics, setTopicList] = useState([]);
   const { interview } = useOutletContext();
 
   const lastStage = interview.reduce(
@@ -29,16 +36,47 @@ export const CStages = () => {
 
   const grades = ["A", "B", "C"];
 
-  const rates = ["Well", "Good", "Acceptable", "UnAcceptable", "Nill"];
+  // const rates = ["Well", "Good", "Acceptable", "UnAcceptable", "Nill"];
 
-  const topics = [
-    "Language Proficiency",
-    "Interest on Company&Job",
-    "Sociability",
-    "Work Experience",
-    "Self Confidence",
-    "Qualification",
-  ];
+  // const topics = [
+  //   "Language Proficiency",
+  //   "Interest on Company&Job",
+  //   "Sociability",
+  //   "Work Experience",
+  //   "Self Confidence",
+  //   "Qualification",
+  // ];
+  const {
+    data: topic,
+    isLoading: isTopicLoading,
+    isError: isTopicError,
+    isSuccess: istopicSuccess,
+    error: topicError,
+  } = useQuery(["get", "topic"], () => topicService.getAll(token));
+
+  useEffect(() => {
+    topic && setTopicList(topic);
+  }, [topic]);
+
+  const {
+    data: rate,
+    isLoading: isRateLoading,
+    isError: isRateError,
+    isSuccess: isRateSuccess,
+    error: rateError,
+  } = useQuery(["get", "rate"], () => rateService.getAll(token));
+
+  useEffect(() => {
+    rate && setRateList(rate);
+  }, [rate]);
+
+  if (isRateLoading) return <Loader />;
+  if (isRateError) return "Something went wrong...";
+  if (rateError) return `An error has occurred: ${rateError.message}`;
+
+  if (isTopicLoading) return <Loader />;
+  if (isTopicError) return "Something went wrong...";
+  if (topicError) return `An error has occurred: ${topicError.message}`;
 
   return (
     <div className="c-stage">
@@ -155,6 +193,8 @@ export const CStages = () => {
                   </div>
                   {show.id === i.id && !show.isCollapse && (
                     <div className="info-row-collapse">
+                      {console.log(topics, "topiccc")}
+                      {console.log(rates, "rates")}
                       {i.remarks[0]?.grade ? (
                         <>
                           <p>
@@ -165,11 +205,21 @@ export const CStages = () => {
                           </p>
                           {i.assessment[0].assessment_result.map((r) => (
                             <div key={r.id}>
-                              <span>{topics[r.topic_id - 1]}</span>
+                              <span>
+                                {
+                                  topics?.filter((t) => t.id == r.topic_id)[0]
+                                    .name
+                                }
+                              </span>
+                              {/* <span>{topics[r.topic_id - 1]}</span> */}
                               <span>
                                 <Rating value={r.rate_id}>
                                   <span className="label">
-                                    {rates[r.rate_id - 1]}
+                                    {
+                                      rates?.filter(
+                                        (rate) => rate.id == r.rate_id
+                                      )[0].name
+                                    }
                                   </span>
                                 </Rating>
                               </span>
