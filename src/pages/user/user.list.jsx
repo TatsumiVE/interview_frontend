@@ -25,29 +25,35 @@ export const UserList = () => {
     },
   };
 
-  const handleChange = async (userId) => {
+  const changeStatus = async (userId) => {
+    console.log(token, "fgbnhjmk,");
     try {
+      console.log(userId, "userrrrrrrrr");
       const response = await axios.post(
         `http://localhost:8000/api/user/${userId}`,
-        { status: 0 },
+        {},
         config
       );
-
-      const updatedUsers = users.map((user) => {
-        if (user.id === userId) {
-          return {
-            ...user,
-            status: 0,
-          };
-        }
-        return user;
-      });
-      setUsers(updatedUsers);
+      console.log(response, "responseeeeeeee");
+      console.log("here");
 
       return response;
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleChangeMutation = useMutation(changeStatus, {
+    onSuccess: () => {
+      console.log("Success");
+    },
+    onError: (error) => {
+      console.error("Error:", error);
+    },
+  });
+
+  const handleChange = (userId) => {
+    handleChangeMutation.mutate(userId);
   };
 
   useEffect(() => {
