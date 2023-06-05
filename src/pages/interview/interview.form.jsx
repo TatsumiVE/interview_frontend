@@ -163,7 +163,7 @@ export const InterviewCreate = () => {
               }
               errorMessage="*"
             />
-            {errors?.interview_time[0] && (
+            {errors?.interview_time && (
               <span className="txt-danger validated-error">
                 {errors?.interview_time[0]}
               </span>
