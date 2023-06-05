@@ -153,7 +153,9 @@ export const CandidateCreate = () => {
   return (
     <>
       <div className="card">
-        <h1>Create Candidate</h1>
+        <div className="card__header">
+          <h2>Candidate Create Form</h2>
+        </div>
         <form
           onSubmit={handleSubmit}
           className="card-form"
@@ -424,7 +426,6 @@ export const CandidateCreate = () => {
             </div>
           </div>
           <div className="input-form">
-            <label>Experience</label>
             <div className="card-btnPlus">
               {data.length < 4 && (
                 <Button
@@ -475,52 +476,51 @@ export const CandidateCreate = () => {
                     Experience <span className="txt-danger">*</span>
                   </label>
                   {/* <div className="input-group"> */}
-                    <div className="experience-group">
-                      <Input
-                        labelName=""
-                        name="year"
-                        type="number"
-                        placeholder=" Enter Year..."
-                        value={row.year}
-                        onChange={(e) => {
-                          const updatedData = [...data];
-                          updatedData[index].year = e.target.value;
-                          setData(updatedData);
-                          const sum =
-                            parseInt(e.target.value) + parseInt(row.month);
-                          if (sum < 6) {
-                            setExperienceValid(false);
-                          } else {
-                            setExperienceValid(true);
-                          }
-                        }}
-                      />
-                      <Input
-                        labelName=""
-                        name="month"
-                        type="number"
-                        placeholder=" Enter Month..."
-                        value={row.month}
-                        onChange={(e) => {
-                          const updatedData = [...data];
-                          updatedData[index].month = e.target.value;
-                          setData(updatedData);
-                          const sum =
-                            parseInt(row.year) + parseInt(e.target.value);
-                          if (sum <= 6) {
-                            setExperienceValid(false);
-                          } else {
-                            setExperienceValid(true);
-                          }
-                        }}
-                      />
-                      {experienceValid ? null : (
-                        <span className="txt-danger validated-error candidate-error">
-                          experience at least 6 months
-                        </span>
-                      )}
-                    </div>
-                  {/* </div> */}
+                  <div className="experience-group">
+                    <Input
+                      labelName=""
+                      name="year"
+                      type="number"
+                      placeholder=" Enter Year..."
+                      value={row.year}
+                      onChange={(e) => {
+                        const updatedData = [...data];
+                        updatedData[index].year = e.target.value;
+                        setData(updatedData);
+                        const sum =
+                          parseInt(e.target.value) * 12 + parseInt(row.month);
+                        if (sum <= 6) {
+                          setExperienceValid(false);
+                        } else {
+                          setExperienceValid(true);
+                        }
+                      }}
+                    />
+                    <Input
+                      labelName=""
+                      name="month"
+                      type="number"
+                      placeholder=" Enter Month..."
+                      value={row.month}
+                      onChange={(e) => {
+                        const updatedData = [...data];
+                        updatedData[index].month = e.target.value;
+                        setData(updatedData);
+                        const sum =
+                          parseInt(row.year) * 12 + parseInt(e.target.value);
+                        if (sum <= 6) {
+                          setExperienceValid(false);
+                        } else {
+                          setExperienceValid(true);
+                        }
+                      }}
+                    />
+                    {experienceValid ? null : (
+                      <span className="txt-danger validated-error candidate-error">
+                        experience at least 6 months
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}

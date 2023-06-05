@@ -510,9 +510,8 @@ export const CandidateUpdate = () => {
                         updatedData[index].year = e.target.value;
                         setData(updatedData);
                         const sum =
-                          parseInt(e.target.value) + parseInt(row.month);
-                        console.log(sum, "year");
-                        if (sum < 6) {
+                          parseInt(e.target.value) * 12 + parseInt(row.month);
+                        if (sum <= 6) {
                           setExperienceValid(false);
                         } else {
                           setExperienceValid(true);
@@ -530,9 +529,8 @@ export const CandidateUpdate = () => {
                         updatedData[index].month = e.target.value;
                         setData(updatedData);
                         const sum =
-                          parseInt(row.year) + parseInt(e.target.value);
-                        console.log(sum, "month");
-                        if (sum < 6) {
+                          parseInt(row.year) * 12 + parseInt(e.target.value);
+                        if (sum <= 6) {
                           setExperienceValid(false);
                         } else {
                           setExperienceValid(true);

@@ -46,7 +46,7 @@
 .card-box {
   margin-bottom: 1rem;
   border: 1px solid rgb(142, 139, 139);
-  padding: 10px;
+  padding: 30px 10px;
 }
 
 .card-language {
@@ -104,6 +104,12 @@
 .interview_result {
   position: absolute;
   bottom: -0.9rem;
+  left: 0;
+  font-size: 0.9rem;
+}
+.candidate-error {
+  position: absolute;
+  bottom: -1.2rem;
   left: 0;
   font-size: 0.9rem;
 }
