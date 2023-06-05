@@ -248,12 +248,12 @@ export const InterviewCreate = () => {
                       }}
                       errorMessage="*"
                     />
-                    {!Check.isValidSelect(formData.interviewer_id) &&
+                    {/* {!Check.isValidSelect(formData.interviewer_id) &&
                     formActive ? (
                       <div className="txt-danger validated-error error-input">
                         Interviewer field is required!
                       </div>
-                    ) : null}
+                    ) : null} */}
                   </div>
                 </div>
 

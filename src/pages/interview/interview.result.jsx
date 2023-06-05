@@ -11,6 +11,8 @@ import { useAuth } from "../../store/AuthContext";
 import { useMutation } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 
+
+
 export const InterviewResult = () => {
   const [interview_result_date, setInterviewResultDate] = useState(
     new Date().toISOString().slice(0, 10)
@@ -21,8 +23,18 @@ export const InterviewResult = () => {
   const { token } = useAuth();
   const { state } = useLocation();
   const navigate = useNavigate();
-  console.log(state, "stateeeeeeee");
+
+
   const { candidateId, interviewId, candidateName } = state;
+
+  // const [formData, setFormData] = useState({
+  //   interview_result_date:"",
+  //   interview_summarize:"",
+  //   result:"",
+  //   record_path:"",
+  
+  // });
+
   const createInterviewResult = async () => {
     const response = await axios.post(
       `http://127.0.0.1:8000/api/interview-process/result/${candidateId}/${interviewId}`,
@@ -59,7 +71,7 @@ export const InterviewResult = () => {
         <h2>Interview Result Form</h2>
       </div>
       <div className="form-container">
-        <form onSubmit={handleSubmit} className="card-min__form">
+        <form onSubmit={handleSubmit} className="card-min__form"  >
           <div className="input-name">  
             <span className="txt-default">Candidate Name: </span>
             {candidateName}
@@ -73,6 +85,7 @@ export const InterviewResult = () => {
               onChange={(e) => setInterviewResultDate(e.target.value)}
               errorMessage="*"
             />
+           
           </div>
           <div className="input-group">
             <TextArea
@@ -83,6 +96,7 @@ export const InterviewResult = () => {
               onChange={(e) => setInterviewSummarize(e.target.value)}
               errorMessage="*"
             />
+           
           </div>
 
           <div className="radio-group--modify">
@@ -106,7 +120,9 @@ export const InterviewResult = () => {
               />
             </div>
             <span className="txt-danger star">*</span>
+           
           </div>
+         
           <div className="input-group">
             <Input
               labelName="Record Path"
@@ -116,6 +132,7 @@ export const InterviewResult = () => {
               onChange={(e) => setRecordPath(e.target.value)}
               errorMessage="*"
             />
+           
           </div>
 
           <div className="button-group--user">

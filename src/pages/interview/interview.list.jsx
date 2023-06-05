@@ -98,6 +98,14 @@ export const InterviewList = () => {
     };
   };
 
+  const canAssign = (data) => {
+    return data.interview[data.interview.length - 1].interview_assign.filter(
+      (a) => a.interviewer_id == user.id
+    )[0]
+      ? true
+      : false;
+  };
+
   const findStageId = (candidateId) => {
     const candidate = candidateList.find(
       (candidate) => candidate.id === candidateId
@@ -254,56 +262,52 @@ export const InterviewList = () => {
                       </Link>
                     </Can>
                     &nbsp;
-                    {interview?.map((i) => {
-                      return i.interview_assign?.map((assign) => {
-                        return assign.interviewer_id == user.id &&
-                          assign.remarks.length < 1 ? (
-                          <Can permission={"remarkAssessmentCreate"}>
-                            <Link
-                              to={`assessment`}
-                              state={{
-                                candidateId: candidate.id,
-                                interviewerId: user.id,
-                              }}
-                              style={{
-                                pointerEvents: check(interview).canAssessment
-                                  ? "all"
-                                  : "none",
-                                background: check(interview).canAssessment
-                                ? "rgb(4, 96, 4)"
-                                : "rgb(205, 30, 30)",
-                              }}
-                              className="link-process"
-                            >
-                              Assessment
-                            </Link>
-                          </Can>
-                        ) : null;
-                      });
-                    })}
+                    <Can permission={"remarkAssessmentCreate"}>
+                      {canAssign(row.original) ? (
+                        <Link
+                          to={`assessment`}
+                          state={{
+                            candidateId: candidate.id,
+                            interviewerId: user.id,
+                          }}
+                          style={{
+                            pointerEvents: check(interview).canAssessment
+                              ? "all"
+                              : "none",
+                            background: check(interview).canAssessment
+                              ? "rgb(4, 96, 4)"
+                              : "rgb(205, 30, 30)",
+                          }}
+                          className="link-process"
+                        >
+                          Assessment
+                        </Link>
+                      ) : null}
+                    </Can>
                     &nbsp;
                     <Can permission={"interviewSummarize"}>
-                      <Link
-                        to={`result`}
-                        state={{
-                          candidateId: candidate.id,
-                          interviewId: interview[interview.length - 1].id,
-                          candidateName: candidate.name,
-                        }}
-                        style={{
-                          pointerEvents: check(interview).canResult
-                            ? "all"
-                            : "none",
-                          background: check(interview).canResult
-                            ? "rgb(4, 96, 4)"
-                            : "rgb(205, 30, 30)",
-                        }}
-                        className="link-process"
-                      >
-                        Result
-                      </Link>
+                      {canAssign(row.original) ? (
+                        <Link
+                          to={`result`}
+                          state={{
+                            candidateId: candidate.id,
+                            interviewId: interview[interview.length - 1].id,
+                            candidateName: candidate.name,
+                          }}
+                          style={{
+                            pointerEvents: check(interview).canResult
+                              ? "all"
+                              : "none",
+                            background: check(interview).canResult
+                              ? "rgb(4, 96, 4)"
+                              : "rgb(205, 30, 30)",
+                          }}
+                          className="link-process"
+                        >
+                          Result
+                        </Link>
+                      ) : null}
                     </Can>
-                   
                   </>
                 );
               },

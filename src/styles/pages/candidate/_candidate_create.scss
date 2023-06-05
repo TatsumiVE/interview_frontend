@@ -89,7 +89,7 @@
 }
 .input-group {
   position: relative;
-  padding-bottom: 1px;
+  // padding-bottom: 1px;
 
 }
 .validated-error {
@@ -98,3 +98,8 @@
   left: 0;
   font-size: 0.8rem;
 }
+
+// .candidate-error{
+//   position: relative;
+//   padding-top: 60px;
+// }

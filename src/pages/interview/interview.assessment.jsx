@@ -7,6 +7,8 @@ import React from "react";
 import { useAuth } from "../../store/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/loader";
+import Check from "../validation.jsx";
+
 export const InterviewAssessment = () => {
   const { state } = useLocation();
   const { candidateId, interviewerId } = state;
@@ -14,11 +16,18 @@ export const InterviewAssessment = () => {
   const [grade, setGrade] = useState("");
   const { token } = useAuth();
   const navigate = useNavigate();
+  const [formActive, setFormActive] = useState(false);
   const grades = [
     { id: 1, name: "A" },
     { id: 2, name: "B" },
     { id: 3, name: "C" },
   ];
+
+  const [formData, setFormData] = useState({
+   rate_id:"",
+   comment:"",
+   grade:"",
+  });
 
   const getAssessmentInfo = async () => {
     const response = await axios.get(
@@ -141,7 +150,9 @@ export const InterviewAssessment = () => {
       <div className="card__header">
         <h2>Interview Assessment Form</h2>
       </div>
-      <form onSubmit={createInterviewAssessment} className="card__form">
+      <form onSubmit={createInterviewAssessment} className="card__form" onBlur={() => {
+            setFormActive(true);
+          }}>
         <div className="card__txt">
           <div>
             <h3 className="txt-default">Candidate Name</h3>
@@ -196,6 +207,11 @@ export const InterviewAssessment = () => {
                 </div>
               </React.Fragment>
             ))}
+             {!Check.isValidRate(formData.rate_id) && formActive ? (
+              <span className="txt-danger validated-error error-input">
+               Rate field is required !
+              </span>
+            ) : null}
           </div>
         </div>
         <div className="card__txt">
@@ -224,6 +240,11 @@ export const InterviewAssessment = () => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           ></textarea>
+            {!Check.isValidComment(formData.comment) && formActive ? (
+              <span className="txt-danger validated-error error-input">
+               Comment field is required !
+              </span>
+            ) : null}
         </div>
         <div className="input-group">
           <Dropdown
@@ -233,6 +254,11 @@ export const InterviewAssessment = () => {
             onChange={(e) => setGrade(e.target.value)}
             errorMessage="*"
           />
+          {!Check.isValidSelect(formData.grade) && formActive ? (
+              <span className="txt-danger validated-error error-input">
+               Grade field is required !
+              </span>
+            ) : null}
         </div>
 
         <div className="button-group--user">

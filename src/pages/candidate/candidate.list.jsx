@@ -163,29 +163,32 @@ export const Candidate = () => {
                 const interview = row.original.interview;
 
                 return (
-                  <>
-                    <Can permission={"getCandidateById"}>
-                      <ButtonLink
-                        type="button"
-                        className="btn-info"
-                        route={`/candidates/${candidate.id}`}
-                        text="View"
-                        linkText="txt-light txt-sm"
-                        icon="fa-solid fa-magnifying-glass"
-                      />
-                    </Can>
-                    &nbsp;
-                    <Can permission={"candidateUpdate"}>
-                      <ButtonLink
-                        type="button"
-                        className="btn-success"
-                        route={`/candidates/update/${candidate.id}`}
-                        text="Edit"
-                        linkText="txt-light txt-sm"
-                        icon="fa-solid fa-pen-to-square"
-                      />
-                    </Can>
-                  </>
+                  <div className="btn-group">
+                    <div div className="custom-input">
+                      <Can permission={"getCandidateById"}>
+                        <ButtonLink
+                          type="button"
+                          className="btn-info"
+                          route={`/candidates/${candidate.id}`}
+                          text="View"
+                          linkText="txt-light txt-sm"
+                          icon="fa-solid fa-magnifying-glass"
+                        />
+                      </Can>
+                    </div>                  
+                    <div className="custom-input">
+                      <Can permission={"candidateUpdate"}>
+                        <ButtonLink
+                          type="button"
+                          className="btn-success"
+                          route={`/candidates/update/${candidate.id}`}
+                          text="Edit"
+                          linkText="txt-light txt-sm"
+                          icon="fa-solid fa-pen-to-square"
+                        />
+                      </Can>
+                    </div>
+                  </div>
                 );
               },
             },
@@ -283,6 +286,7 @@ export const Candidate = () => {
         </div>
 
         <div className="table-wrap__head">
+          
           <div className="table-wrap__content">
             <div className="custom-stage">
               <Button
@@ -322,7 +326,6 @@ export const Candidate = () => {
               </p>
             </div>
           </div>
-        
         </div>
         <div className="table-wrap__main">
           {page.length > 0 ? (

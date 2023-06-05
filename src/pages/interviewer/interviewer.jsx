@@ -8,10 +8,11 @@ import { ToastContainer, toast } from "react-toastify";
 import Loader from "../../components/loader";
 import Can from "../../components/utilites/can";
 import { getUser } from "../../services/userService";
+import { useRef } from "react";
 
 export const Employee = () => {
   const [interviewers, setInterviewers] = useState([]);
-  const [user, setUser] = useState([]);
+  const user = useRef([]);
   const { token } = useAuth();
   const location = useLocation();
   const { successMessage } = location.state || {};
@@ -42,10 +43,10 @@ export const Employee = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const data = await getUsers();
-      setUser(data);
+      user.current = data;
     };
     fetchUsers();
-  }, []);
+  });
 
   useEffect(() => {
     const fetchInterviewers = async () => {
@@ -76,20 +77,25 @@ export const Employee = () => {
         Header: "Action",
         Cell: ({ row }) => (
           <div>
-            {user?.map((i) => {
-              return i.interviewer_id.id == row.original.id ? null : (
-                <Can permission={"userCreate"}>
-                  <ButtonLink
-                    type="button"
-                    className="btn-info"
-                    route={`user/create/${row.original.id}`}
-                    linkText="txt-light txt-sm"
-                    text="Create Role"
-                    icon="fa-solid fa-plus"
-                  />
-                </Can>
-              );
-            })}
+            <Can permission={"userCreate"}>
+              {/* {console.log(
+                "user=> ",
+                row.original.id,
+                user.filter((u) => console.log(u.interviewer_id.id))
+              )} */}
+              {user.current.filter(
+                (u) => u.interviewer_id.id == row.original.id
+              )[0] ? null : (
+                <ButtonLink
+                  type="button"
+                  className="btn-info"
+                  route={`user/create/${row.original.id}`}
+                  linkText="txt-light txt-sm"
+                  text="Create Role"
+                  icon="fa-solid fa-plus"
+                />
+              )}
+            </Can>
             &nbsp;
             <Can permission={"interviewerUpdate"}>
               <ButtonLink
@@ -133,7 +139,7 @@ export const Employee = () => {
   if (interviewers.length === 0) return <Loader />;
 
   const { globalFilter, pageIndex } = state;
-
+  console.log("render....");
   return (
     <>
       <ToastContainer

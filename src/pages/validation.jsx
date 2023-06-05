@@ -64,8 +64,22 @@ const isValidTime = (time) => {
   const timeRegex = /^([01]\d|2[0-3]):?([0-5]\d)$/;
   return timeRegex.test(time);
 }
+const isValidComment= (comment) => {
+  return comment.length >= 10;
+};
+
+const isValidRate= (rate) => {
+  return rate !== "";
+};
+
+const isValidResult =(result) => {
+  return result !== "";
+};
 
 
+const isValidRecordPath =(path) => {
+  return path !== "";
+};
 
 export default {
   isValidEmail,
@@ -80,4 +94,8 @@ export default {
   isValidSelect,
   isValidDate,
   isValidTime,
+  isValidComment,
+  isValidRate,
+  isValidResult,
+  isValidRecordPath,
 };

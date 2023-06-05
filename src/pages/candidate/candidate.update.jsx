@@ -45,6 +45,7 @@ export const CandidateUpdate = () => {
   const [error, setError] = useState("");
   const [position, setPosition] = useState("");
   const [agency, setAgency] = useState("");
+  const [experienceValid, setExperienceValid] = useState(false);
   const [languageList, setLanguageList] = useState([]);
   const [candidate, setCandidate] = useState({
     name: "",
@@ -166,6 +167,23 @@ export const CandidateUpdate = () => {
     const list = [...data];
     list.splice(index, 1);
     setData(list);
+  };
+  const isAllValid = () => {
+    return (
+      Check.isValidText(candidate.name) &&
+      Check.isValidEmail(candidate.email) &&
+      Check.isValidPhoneNumber(candidate.phone_number) &&
+      Check.isValidCVPathLink(candidate.cv_path) &&
+      Check.isValidAge(candidate.date_of_birth) &&
+      Check.isValidAddress(candidate.residential_address) &&
+      Check.isValidSelect(candidate.position_id) &&
+      Check.isValidSelect(candidate.agency_id) &&
+      Check.isValidSalary(candidate.expected_salary) &&
+      Check.isValidSalary(candidate.last_salary) &&
+     
+      Check.isValidGender(candidate.gender) &&
+      experienceValid
+    );
   };
 
   return (
@@ -444,24 +462,28 @@ export const CandidateUpdate = () => {
         </div>
 
         <div className="card-border">
-          {console.log(data, "dataaaaaaa")}
           {data.map((row, index) => (
             <div key={index} className="card-box">
               <div className="card-language">
                 <div className="input-group">
                   <Dropdown
                     labelName="Language"
-                    options={languages}
+                    options={languages.map((lan) => ({
+                      ...lan,
+                      disabled: !!data.filter(
+                        (d) => d.devlanguage_id == lan.id
+                      )[0],
+                    }))}
                     selectedValue={row.devlanguage_id}
                     onChange={(e) => {
                       const updatedData = [...data];
                       updatedData[index].devlanguage_id = e.target.value;
                       setData(updatedData);
-                      console.log(data);
                     }}
                     errorMessage="*"
                   />
                 </div>
+
                 <div className="card-btnMinus">
                   {data.length > 1 && (
                     <Button
@@ -478,31 +500,53 @@ export const CandidateUpdate = () => {
                   Experience <span className="txt-danger">*</span>
                 </label>
                 <div className="experience-group">
-                  <Input
-                    labelName=""
-                    name="year"
-                    type="number"
-                    placeholder=" Enter Year..."
-                    value={row.year}
-                    onChange={(e) => {
-                      const updatedData = [...data];
-                      updatedData[index].year = e.target.value;
-                      setData(updatedData);
-                    }}
-                  />
-                  <Input
-                    labelName=""
-                    name="month"
-                    type="number"
-                    placeholder=" Enter Month..."
-                    value={row.month}
-                    onChange={(e) => {
-                      const updatedData = [...data];
-                      updatedData[index].month = e.target.value;
-                      setData(updatedData);
-                      console.log(data);
-                    }}
-                  />
+                  <div className="input-group">
+                    <Input
+                      labelName=""
+                      name="year"
+                      type="number"
+                      placeholder=" Enter Year..."
+                      value={row.year}
+                      onChange={(e) => {
+                        const updatedData = [...data];
+                        updatedData[index].year = e.target.value;
+                        setData(updatedData);
+                        const sum =
+                          parseInt(e.target.value) + parseInt(row.month);
+                        console.log(sum, "year");
+                        if (sum < 6) {
+                          setExperienceValid(false);
+                        } else {
+                          setExperienceValid(true);
+                        }
+                      }}
+                    />
+                    <Input
+                      labelName=""
+                      name="month"
+                      type="number"
+                      placeholder=" Enter Month..."
+                      value={row.month}
+                      onChange={(e) => {
+                        const updatedData = [...data];
+                        updatedData[index].month = e.target.value;
+                        setData(updatedData);
+                        const sum =
+                          parseInt(row.year) + parseInt(e.target.value);
+                        console.log(sum, "month");
+                        if (sum < 6) {
+                          setExperienceValid(false);
+                        } else {
+                          setExperienceValid(true);
+                        }
+                      }}
+                    />
+                    {experienceValid ? null : (
+                      <span className="txt-danger validated-error">
+                        experience at least 6 months
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -513,6 +557,7 @@ export const CandidateUpdate = () => {
           <Button
             type="submit"
             text="Update"
+            disabled={!isAllValid()}
             className="txt-light btn-primary"
           />
           <ButtonLink
