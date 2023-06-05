@@ -9,7 +9,8 @@ import languageService from "../../services/languageService";
 
 import Loader from "../../components/loader";
 import { useEffect, useState } from "react";
-import { Dropdown, ButtonLink, Input } from "../../components";
+import { TableContainer } from "@mui/material";
+import { Dropdown, ButtonLink, Input, Button } from "../../components";
 
 export const InterviewList = () => {
   const { token, user } = useAuth();
@@ -216,7 +217,7 @@ export const InterviewList = () => {
                   .join(", "),
             },
             {
-              Header: "Action",
+              Header: "Process",
               Cell: ({ row }) => {
                 const candidate = row.original.candidate;
                 const interview = row.original.interview;
@@ -234,9 +235,10 @@ export const InterviewList = () => {
                             ? "all"
                             : "none",
                           background: check(interview).canCreate
-                            ? "green"
-                            : "red",
+                            ? "rgb(4, 96, 4)"
+                            : "rgb(205, 30, 30)",
                         }}
+                        className="link-process"
                       >
                         Interview
                       </Link>
@@ -254,13 +256,15 @@ export const InterviewList = () => {
                             ? "all"
                             : "none",
                           background: check(interview).canAssessment
-                            ? "green"
-                            : "red",
+                            ? "rgb(4, 96, 4)"
+                            : "rgb(205, 30, 30)",
                         }}
+                        className="link-process"
                       >
                         Assessment
                       </Link>
                     </Can>
+                    &nbsp;
                     <Can permission={"interviewSummarize"}>
                       <Link
                         to={`result`}
@@ -274,34 +278,51 @@ export const InterviewList = () => {
                             ? "all"
                             : "none",
                           background: check(interview).canResult
-                            ? "green"
-                            : "red",
+                            ? "rgb(4, 96, 4)"
+                            : "rgb(205, 30, 30)",
                         }}
+                        className="link-process"
                       >
                         Result
                       </Link>
                     </Can>
-                    <Can permission={"interviewProcessTerminate"}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          handleTerminate(candidate.id);
-                        }}
-                      >
-                        Terminate
-                      </button>
-                    </Can>
-                    <Can permission={"candidateShow"}>
-                      <ButtonLink
-                        type="button"
-                        className="btn-info"
-                        route={`/candidates/${candidate.id}`}
-                        text="View"
-                        linkText="txt-light txt-sm"
-                        icon="fa-solid fa-magnifying-glass"
-                      />
-                    </Can>
                   </>
+                );
+              },
+            },
+            {
+              Header: "Action",
+              Cell: ({ row }) => {
+                const candidate = row.original.candidate;
+                const interview = row.original.interview;
+                return (
+                  <div className="btn-group">
+                    <div className="custom-input">
+                      <Can permission={"interviewProcessTerminate"}>
+                        <Button
+                          text="Teminate"
+                          type="button"
+                          className="btn-warning txt-light"
+                          // icon="fa-solid ban"
+                          onClick={() => {
+                            handleTerminate(candidate.id);
+                          }}
+                        />
+                      </Can>
+                    </div>
+                    <div className="custom-input">
+                      <Can permission={"candidateShow"}>
+                        <ButtonLink
+                          type="button"
+                          className="btn-info"
+                          route={`/candidates/${candidate.id}`}
+                          text="View"
+                          linkText="txt-light txt-sm"
+                          icon="fa-solid fa-eye"
+                        />
+                      </Can>
+                    </div>
+                  </div>
                 );
               },
             },
@@ -340,66 +361,12 @@ export const InterviewList = () => {
   if (error) return "An error has occurred: " + error.message;
   return (
     <>
-      <Can permission={"candidateCreate"}>
-        <button type="button">
-          <Link to="/candidates/create">Create Candidate</Link>
-        </button>
-      </Can>
-
-      <Dropdown
-        labelName="Language"
-        options={[{ id: 0, name: "All" }, ...languages]}
-        onChange={(e) => {
-          setLanguage(
-            [{ id: 0, name: "All" }, ...languages].filter(
-              (lan) => lan.id == e.target.value
-            )[0].name
-          );
-        }}
-        hide={true}
-      />
-      <button type="button" onClick={() => setStageFilter(0)}>
-        All
-      </button>
-      <button type="button" onClick={() => setStageFilter(1)}>
-        stage1
-      </button>
-      <button type="button" onClick={() => setStageFilter(2)}>
-        stage2
-      </button>
-      <button type="button" onClick={() => setStageFilter(3)}>
-        stage3
-      </button>
-
-      <input
-        type="date"
-        value={startDateFilter}
-        onChange={(e) => {
-          if (e.target.value > endDateFilter)
-            return alert("start-date can't greater than end-date");
-          setStartDateFilter(e.target.value);
-        }}
-      />
-      <input
-        type="date"
-        value={endDateFilter}
-        onChange={(e) => {
-          setEndDateFilter(e.target.value);
-        }}
-      />
-      <span>Count: {a?.length}</span>
       <div className="table-wrap">
         <div className="table-wrap__content">
-          {/* <Dropdown
+          <Dropdown
             labelName="Language"
             options={[{ id: 0, name: "All" }, ...languages]}
             onChange={(e) => {
-              console.log("id ", e.target.value);
-              console.log(
-                [{ id: 0, name: "All" }, ...languages].filter(
-                  (lan) => lan.id == e.target.value
-                )[0].name
-              );
               setLanguage(
                 [{ id: 0, name: "All" }, ...languages].filter(
                   (lan) => lan.id == e.target.value
@@ -407,88 +374,124 @@ export const InterviewList = () => {
               );
             }}
             hide={true}
-          /> */}
-
-          {/* <Input
-            labelName="Start Date"
-            type="date"
-            value={startDateFilter}
-            onChange={(e) => {
-              if (e.target.value > endDateFilter)
-                return alert("start-date can't greater than end-date");
-              setStartDateFilter(e.target.value);
-            }}
-          /> */}
-
-          <Input
-            labelName="End Date"
-            type="date"
-            value={endDateFilter}
-            onChange={(e) => {
-              setEndDateFilter(e.target.value);
-            }}
           />
         </div>
-        {/* <div className="table-wrap__content">
-          <span>Candidate Count: {candidateList.length}</span>
-        </div> */}
-        {/* <div className="table-wrap__head">
-          <div className="search-content">
-            <input
-              type="text"
-              value={globalFilter || ""}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-              placeholder="  Search..."
+        <div className="table-wrap__content">
+          <div className="custom-input">
+            <Input
+              labelName="Start Date"
+              type="date"
+              value={startDateFilter}
+              onChange={(e) => {
+                if (e.target.value > endDateFilter)
+                  return alert("start-date can't greater than end-date");
+                setStartDateFilter(e.target.value);
+              }}
             />
           </div>
-          <div className="create-content">
-            <Can permission={"candidateCreate"}>
+          <div className="custom-input">
+            <Input
+              labelName="End Date"
+              type="date"
+              value={endDateFilter}
+              onChange={(e) => {
+                setEndDateFilter(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="table-wrap__head">
+          <div className="table-wrap__content">
+            <div className="custom-stage">
+              <Button
+                type="button"
+                onClick={() => setStageFilter(0)}
+                className="btn-primary txt-light"
+                text="All"
+              />
+            </div>
+            <div className="custom-stage">
+              <Button
+                type="button"
+                onClick={() => setStageFilter(1)}
+                className="btn-primary txt-light"
+                text="Stage One"
+              />
+            </div>
+            <div className="custom-stage">
+              <Button
+                type="button"
+                onClick={() => setStageFilter(2)}
+                className="btn-primary txt-light"
+                text="Stage Two"
+              />
+            </div>
+            <div className="custom-stage">
+              <Button
+                type="button"
+                onClick={() => setStageFilter(3)}
+                className="btn-primary txt-light"
+                text="Stage Three"
+              />
+            </div>
+            <div className="custom-input">
+              <p>
+                Candidate Count: <span className="badge">{a?.length}</span>
+              </p>
+            </div>
+          </div>
+
+          <Can permission={"candidateCreate"}>
+            <div className="create-content">
               <ButtonLink
                 type="button"
-                className="btn-primary"
                 route="/candidates/create"
-                linkText="txt-light txt-sm"
                 text="Create Candidate"
+                linkText="txt-light"
                 icon="fa-solid fa-plus"
+                className="btn-primary"
               />
-            </Can>
-          </div>
-        </div> */}
+            </div>
+          </Can>
+        </div>
 
-        <div className="table-wrap__main">
-          {page.length > 0 ? (
-            <table {...getTableProps()} className="custom-table">
-              <thead>
-                {headerGroups.map((headerGroup, index) => (
-                  <tr {...headerGroup.getHeaderGroupProps()} key={index}>
-                    {headerGroup.headers.map((column, columnIndex) => (
-                      <th {...column.getHeaderProps()} key={columnIndex}>
-                        {column.render("Header")}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-
-              <tbody {...getTableBodyProps()}>
-                {page.map((row) => {
-                  prepareRow(row);
-                  return (
-                    <tr {...row.getRowProps()} key={row.id}>
-                      {row.cells.map((cell) => (
-                        <td {...cell.getCellProps()} key={cell.column.id}>
-                          {cell.render("Cell")}
-                        </td>
+        <TableContainer className="custom-scrollbar-x ">
+          <div className="table-wrap__main">
+            {page.length > 0 ? (
+              <table {...getTableProps()} className="custom-table">
+                <thead>
+                  {headerGroups.map((headerGroup, index) => (
+                    <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+                      {headerGroup.headers.map((column, columnIndex) => (
+                        <th {...column.getHeaderProps()} key={columnIndex}>
+                          {column.render("Header")}
+                        </th>
                       ))}
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          ) : (
-            <div>No Candidate Found</div>
-          )}
-        </div>
+                  ))}
+                </thead>
+
+                <tbody {...getTableBodyProps()}>
+                  {page.map((row) => {
+                    prepareRow(row);
+                    return (
+                      <tr {...row.getRowProps()} key={row.id}>
+                        {row.cells.map((cell) => (
+                          <td {...cell.getCellProps()} key={cell.column.id}>
+                            {cell.render("Cell")}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <div className="c-notfound">No Candidate Found.</div>
+            )}
+          </div>
+        </TableContainer>
         <div className="table-wrap__pagination">
           <button
             onClick={() => previousPage()}

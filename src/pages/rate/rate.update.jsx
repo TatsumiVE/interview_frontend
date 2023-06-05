@@ -21,37 +21,34 @@ export const RateUpdate = () => {
 
   const addRate = async () => {
     try {
-        const response = await axios.put(
-            `http://localhost:8000/api/rates/${id}`,
-            rate,
-            config
-        );
+      const response = await axios.put(
+        `http://localhost:8000/api/rates/${id}`,
+        rate,
+        config
+      );
 
-        console.log(response.data.message);
+      console.log(response.data.message);
 
-        let successMessage = response.data.message;
+      let successMessage = response.data.message;
 
-        toast.success(successMessage);
+      toast.success(successMessage);
 
-        setTimeout(() => {
-            navigate('/rate');
-        }, 1000);
-
+      setTimeout(() => {
+        navigate("/rate");
+      }, 1000);
     } catch (error) {
-        if (error.response && error.response.data && error.response.data.data) {
-            setError(error.response.data.data);
-        } else {
-            setError([]);
-        }
-       
+      if (error.response && error.response.data && error.response.data.data) {
+        setError(error.response.data.data);
+      } else {
+        setError([]);
+      }
     }
-};
+  };
 
-const { mutate: updateRate} = useMutation({
+  const { mutate: updateRate } = useMutation({
     mutationKey: ["put", "rates"],
     mutationFn: addRate,
-});
-
+  });
 
   const handleUpdate = (event) => {
     event.preventDefault();
@@ -86,22 +83,33 @@ const { mutate: updateRate} = useMutation({
         <h2>Update Rate</h2>
       </div>
       <form onSubmit={handleUpdate} className="card-min__form">
-        <Input
-          labelName="Name"
-          type="text"
-          name="name"
-          value={rate.name}
-          onChange={(e) => setRate({ ...rate, name: e.target.value })}
-          placeholder="Enter Name..."
-          errorMessage="*"
-        />
-        {error.name && (
-          <span className="txt-danger txt-ss">{error.name}</span>
-        )}
-
+        <div className="input-group">
+          <Input
+            labelName="Name"
+            type="text"
+            name="name"
+            value={rate.name}
+            onChange={(e) => setRate({ ...rate, name: e.target.value })}
+            placeholder="Enter Name..."
+            errorMessage="*"
+          />
+          {error.name && (
+            <span className="txt-danger txt-ss">{error.name}</span>
+          )}
+        </div>
         <div className="button-group--user">
-          <Button type="submit" text="Update" className="txt-light btn-primary" />
-          <ButtonLink type="button" className="btn-default" route={"/rate"} text="Cancel" linkText="txt-light txt-sm" />
+          <Button
+            type="submit"
+            text="Update"
+            className="txt-light btn-primary"
+          />
+          <ButtonLink
+            type="button"
+            className="btn-default cancel"
+            route={"/rate"}
+            text="Cancel"
+            linkText="txt-light txt-sm"
+          />
         </div>
       </form>
     </div>

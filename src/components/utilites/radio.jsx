@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 export const Radio = ({ checked, labelName, value, name, onChange }) => {
   return (
-    <div>
+    <div className="checkbox-input">
       <label>
         <input
           type="radio"
@@ -11,7 +11,7 @@ export const Radio = ({ checked, labelName, value, name, onChange }) => {
           onChange={onChange}
         />
         {" " + labelName}
-      </label>
+      </label>u
     </div>
   );
 };

@@ -5,9 +5,15 @@
 .radio-group {
     &--modify {
         display: flex;
-        flex-direction: row;  
+        flex-direction: row; 
+        margin: 15px 0; 
         .radio-fail{
             padding-left:40px;
-        }             
+        } 
+        .star{
+            margin-top: 5px ;
+            margin-left: 10px;
+        }
+                    
     }
 }

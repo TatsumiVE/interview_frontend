@@ -33,7 +33,6 @@ export const LoginForm = () => {
     setEmailError("");
     setPasswordError("");
 
-
     let isValid = true;
     if (!email) {
       setEmailError("Please enter your email.");

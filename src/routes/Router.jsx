@@ -52,7 +52,7 @@ export const Router = () => {
     <Routes>
       {isLogin ? (
         <>
-          <Route path="/notfound" element={<NotFound />} />
+          {/* <Route path="/notfound" element={<NotFound />} /> */}
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<Navigate to="dashboard" replace />} />
             <Route

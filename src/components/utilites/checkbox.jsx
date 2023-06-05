@@ -10,15 +10,17 @@ export const InputCheckbox = ({
 }) => {
   return (
     <div className="checkbox-input">
-      <input
-        type={type}
-        name={name}
-        value={value}
-        checked={checked}
-        onChange={onChange}
-      />
-      &nbsp;
-      <label>{labelName}</label>
+      <label> 
+      {" " + labelName}      
+        <input
+          type={type}
+          name={name}
+          value={value}
+          checked={checked}
+          onChange={onChange}
+        />  
+        
+      </label>
     </div>
   );
 };

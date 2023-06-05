@@ -17,8 +17,7 @@ export const ButtonLink = ({
         onClick={onClick}
       >
         <Link to={route} className={linkText}>
-          <span className="icon">{icon && <i className={icon}></i>}</span>
-          {text}
+          <span className="icon">{icon && <i className={icon}></i>}&nbsp;<span>{text}</span> </span>               
         </Link>
       </button>
     </>

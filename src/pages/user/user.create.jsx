@@ -134,7 +134,8 @@ export const UserCreate = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="card-min__form">
-        <div>
+        
+        <div className="input-group">
           <Input
             labelName="Name"
             type="text"
@@ -142,7 +143,8 @@ export const UserCreate = () => {
             placeholder=" Enter Name..."
             value={interviewers.name}
           />
-
+ </div>
+        <div className="input-group">
           <Input
             labelName="Email"
             type="email"
@@ -150,7 +152,8 @@ export const UserCreate = () => {
             placeholder=" Enter Email..."
             value={interviewers.email}
           />
-
+ </div>
+        <div className="input-group">
           <Input
             labelName="Password"
             type="password"
@@ -160,7 +163,8 @@ export const UserCreate = () => {
             errorMessage="*"
           />
           {error.password && <span className="txt-danger txt-ss">{error.password}</span>}
-
+          </div>
+        <div className="input-group">
           <Input
             labelName="Confirm Password"
             type="password"
@@ -170,7 +174,8 @@ export const UserCreate = () => {
             errorMessage="*"
           />
           {error.password_confirmation && <span className="txt-danger txt-ss">{error.password_confirmation}</span>}
-
+          </div>
+        <div className="input-group">
           <Dropdown
             labelName="Role"
             options={roles}
@@ -179,10 +184,11 @@ export const UserCreate = () => {
             errorMessage="*"
           />
           {error.role && <span className="txt-danger txt-ss">{error.role}</span>}
-
+          </div>
+        <div className="input-group">
           <div className="button-group--user">
             <Button type="submit" text="Create" className="txt-light btn-primary" />
-            <ButtonLink type="button" className="btn-default" route={"/interviewer"} text="Cancel" linkText="txt-light txt-sm" />
+            <ButtonLink type="button" className="btn-default cancel" route={"/interviewer"} text="Cancel" linkText="txt-light txt-sm" />
           </div>
         </div>
       </form>

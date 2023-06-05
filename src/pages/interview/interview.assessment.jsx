@@ -123,7 +123,7 @@ export const InterviewAssessment = () => {
 
   const renderRateOptions = (topicId) => {
     return rates.map((rate) => (
-      <>
+      <div className="rate-input">
         <InputCheckbox
           type="radio"
           name={`rate-${topicId}`}
@@ -131,7 +131,7 @@ export const InterviewAssessment = () => {
           placeholder=""
           labelName={rate.name}
         />
-      </>
+      </div>
     ));
   };
 
@@ -212,24 +212,27 @@ export const InterviewAssessment = () => {
           </div>
         </div>
 
-        <label className="comment-label">
-          Comment <span className="txt-danger">*</span>
-        </label>
-        <textarea
-          name="comment"
-          className="comment-box"
-          placeholder=" Enter Your Comment..."
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        ></textarea>
-
-        <Dropdown
-          labelName="Grade"
-          options={grades}
-          selectedValue={grade}
-          onChange={(e) => setGrade(e.target.value)}
-          errorMessage="*"
-        />
+        <div className="comment-box">
+          <label className="comment-label">
+            Comment <span className="txt-danger">*</span>
+          </label>
+          <textarea
+            name="comment"
+            className="comment-box"
+            placeholder=" Enter Your Comment..."
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          ></textarea>
+        </div>
+        <div className="input-group">
+          <Dropdown
+            labelName="Grade"
+            options={grades}
+            selectedValue={grade}
+            onChange={(e) => setGrade(e.target.value)}
+            errorMessage="*"
+          />
+        </div>
 
         <div className="button-group--user">
           <Button
@@ -239,7 +242,7 @@ export const InterviewAssessment = () => {
           />
           <ButtonLink
             type="button"
-            className="btn-default"
+            className="btn-default cancel"
             route={"/interview"}
             text="Cancel"
             linkText="txt-light txt-sm"

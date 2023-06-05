@@ -19,8 +19,7 @@ export const TopicUpdate = () => {
     },
   };
 
-
-  const addTopic= async () => {
+  const addTopic = async () => {
     try {
       const response = await axios.put(
         `http://localhost:8000/api/topics/${id}`,
@@ -35,16 +34,14 @@ export const TopicUpdate = () => {
       toast.success(successMessage);
 
       setTimeout(() => {
-        navigate('/topic');
+        navigate("/topic");
       }, 1000);
-
     } catch (error) {
       if (error.response && error.response.data && error.response.data.data) {
         setError(error.response.data.data);
       } else {
         setError([]);
       }
-
     }
   };
 
@@ -85,28 +82,38 @@ export const TopicUpdate = () => {
         <h2>Update Topic</h2>
       </div>
       <form onSubmit={handleUpdate} className="card-min__form">
-        <Input
-          labelName="Name"
-          type="text"
-          name="name"
-          value={topic.name}
-          onChange={(e) => setTopic({ ...topic, name: e.target.value })}
-          placeholder="Enter Name..."
-          errorMessage="*"
-        />
-        {error.name && (
-          <span className="txt-danger txt-ss">{error.name}</span>
-        )}
-
+        <div className="input-group">
+          <Input
+            labelName="Name"
+            type="text"
+            name="name"
+            value={topic.name}
+            onChange={(e) => setTopic({ ...topic, name: e.target.value })}
+            placeholder="Enter Name..."
+            errorMessage="*"
+          />
+          {error.name && (
+            <span className="txt-danger txt-ss">{error.name}</span>
+          )}
+        </div>
         <div className="button-group--user">
-          <Button type="submit" text="Update" className="txt-light btn-primary" />
-          <ButtonLink type="button" className="btn-default" route={"/topic"} text="Cancel" linkText="txt-light txt-sm" />
+          <Button
+            type="submit"
+            text="Update"
+            className="txt-light btn-primary"
+          />
+          <ButtonLink
+            type="button"
+            className="btn-default cancel"
+            route={"/topic"}
+            text="Cancel"
+            linkText="txt-light txt-sm"
+          />
         </div>
       </form>
     </div>
   );
 };
-
 
 // export const PositionUpdate = () => {
 //   return(

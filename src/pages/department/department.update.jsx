@@ -7,12 +7,11 @@ import { Button, ButtonLink, Input } from "../../components";
 import { toast } from "react-toastify";
 
 export const DepartmentUpdate = () => {
-    const { id } = useParams();
-    const { token } = useAuth();
-    const navigate = useNavigate();
-    const [error, setError] = useState("");
-    const [department, setDepartment] = useState([]);
- 
+  const { id } = useParams();
+  const { token } = useAuth();
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [department, setDepartment] = useState([]);
 
   const config = {
     headers: {
@@ -20,95 +19,105 @@ export const DepartmentUpdate = () => {
     },
   };
 
+  const addDepartment = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/departments/${id}`,
+        department,
+        config
+      );
 
-    const addDepartment = async () => {
-        try {
-            const response = await axios.put(
-                `http://localhost:8000/api/departments/${id}`,
-                department,
-                config
-            );
+      console.log(response.data.message);
 
-            console.log(response.data.message);
+      let successMessage = response.data.message;
 
-            let successMessage = response.data.message;
+      toast.success(successMessage);
 
-            toast.success(successMessage);
+      setTimeout(() => {
+        navigate("/department");
+      }, 1000);
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.data) {
+        setError(error.response.data.data);
+      } else {
+        setError([]);
+      }
+    }
+  };
 
-            setTimeout(() => {
-                navigate('/department');
-            }, 1000);
+  const { mutate: updateDepartment } = useMutation({
+    mutationKey: ["put", "departments"],
+    mutationFn: addDepartment,
+  });
 
-        } catch (error) {
-            if (error.response && error.response.data && error.response.data.data) {
-                setError(error.response.data.data);
-            } else {
-                setError([]);
-            }
-           
-        }
-    };
+  const handleUpdate = (event) => {
+    event.preventDefault();
+    if (department.name == "") {
+      const response = setError({ name: "The name field is required." });
+      return response;
+    }
+    updateDepartment();
+  };
 
-    const { mutate: updateDepartment} = useMutation({
-        mutationKey: ["put", "departments"],
-        mutationFn: addDepartment,
-    });
-
-   
-    const handleUpdate = (event) => {
-        event.preventDefault();
-        if (department.name == "") {
-            const response = setError({ name: "The name field is required." });
-            return response;
-        }
-        updateDepartment();
-    };
-
-    const getDepartment = async () => {
-        try {
-            const response = await axios.get(
-                `http://localhost:8000/api/departments/${id}`,
-                config
-            );
-            const departmentData = response.data.data;
-            if (departmentData) {
-                setDepartment(departmentData);
-            }
-            return departmentData;
-        } catch (error) {
-            console.error(error);
-        }
-    };
+  const getDepartment = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/departments/${id}`,
+        config
+      );
+      const departmentData = response.data.data;
+      if (departmentData) {
+        setDepartment(departmentData);
+      }
+      return departmentData;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const { data: departmentData } = useQuery(
     ["departmentData", id],
     getDepartment
   );
 
-    return (        
-        <div className="card-min">
-            <div className="card-min__header">
-                <h2>Update Department</h2>
-            </div>
-            <form onSubmit={handleUpdate}>
-                <Input
-                    labelName="Name"
-                    type="text"
-                    name="name"
-                    value={department.name}
-                    onChange={(e) => setDepartment({ ...department, name: e.target.value })}
-                    placeholder="Enter Name..."
-                    errorMessage="*"
-                />
-                 {error.name && (
-                    <span className="txt-danger txt-ss">{error.name}</span>
-                )}
-                <div className="button-group--user">
-                    <Button type="submit" text="Update" className="txt-light btn-primary" />
-                    <ButtonLink type="button" className="btn-default" route={"/department"} text="Cancel" linkText="txt-light txt-sm" />
-                </div>
-            </form>
+  return (
+    <div className="card-min">
+      <div className="card-min__header">
+        <h2>Update Department</h2>
+      </div>
+      <form onSubmit={handleUpdate}>
+        <div className="input-type">
+          <Input
+            labelName="Name"
+            type="text"
+            name="name"
+            value={department.name}
+            onChange={(e) =>
+              setDepartment({ ...department, name: e.target.value })
+            }
+            placeholder="Enter Name..."
+            errorMessage="*"
+          />
+          {error.name && (
+            <span className="txt-danger txt-ss">{error.name}</span>
+          )}
         </div>
-      
+
+        <div className="button-group--user">
+          <Button
+            type="submit"
+            text="Update"
+            className="txt-light btn-primary"
+          />
+          <ButtonLink
+            type="button"
+            className="btn-default cancel"
+            route={"/department"}
+            text="Cancel"
+            linkText="txt-light txt-sm"
+          />
+        </div>
+      </form>
+    </div>
   );
 };

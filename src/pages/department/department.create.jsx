@@ -54,14 +54,20 @@ export const DepartmentCreate = () => {
           createDepartment();
         }}
       >
-        <Input
-          labelName="Name"
-          type="text"
-          name="name"
-          onChange={(e) => setName(e.target.value)}
-          placeholder=" Enter name..."
-          errorMessage="*"
-        />
+        <div className="input-group">
+          <Input
+            labelName="Name"
+            type="text"
+            name="name"
+            onChange={(e) => setName(e.target.value)}
+            placeholder=" Enter name..."
+            errorMessage="*"
+          />
+          {error.name && (
+            <span className="txt-danger txt-ss">{error.name}</span>
+          )}
+        </div>
+
         <div className="button-group--user">
           <Button
             type="submit"
@@ -70,7 +76,7 @@ export const DepartmentCreate = () => {
           />
           <ButtonLink
             type="button"
-            className="btn-default"
+            className="btn-default cancel"
             route={"/department"}
             text="Cancel"
             linkText="txt-light txt-sm"

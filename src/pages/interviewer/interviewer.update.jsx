@@ -25,12 +25,12 @@ export const InterviewerUpdate = () => {
       Authorization: `Bearer ${token}`,
     },
   };
-  
+
   const addInterviewer = async () => {
     try {
       const response = await axios.put(
         `http://localhost:8000/api/interviewers/${id}`,
-       interviewer,
+        interviewer,
         config
       );
 
@@ -59,29 +59,33 @@ export const InterviewerUpdate = () => {
   });
 
   const handleUpdate = (event) => {
-    event.preventDefault();     
+    event.preventDefault();
 
-    if(interviewer.name==""){
-      const response = setError({name:"The name field is required."});
+    if (interviewer.name == "") {
+      const response = setError({ name: "The name field is required." });
       return response;
     }
-    if(interviewer.email==""){
-      const response = setError({email:"The email field is required."});
-      return response;
-    }
-
-    if(interviewer.department_id==""){
-      const response = setError({department_id:"The department field is required."});
+    if (interviewer.email == "") {
+      const response = setError({ email: "The email field is required." });
       return response;
     }
 
-    if(interviewer.position_id==""){
-      const response = setError({position_id:"The name position is required."});
+    if (interviewer.department_id == "") {
+      const response = setError({
+        department_id: "The department field is required.",
+      });
+      return response;
+    }
+
+    if (interviewer.position_id == "") {
+      const response = setError({
+        position_id: "The name position is required.",
+      });
       return response;
     }
 
     updateInterviewer();
-};
+  };
 
   const getInterviewer = async () => {
     try {
@@ -141,61 +145,67 @@ export const InterviewerUpdate = () => {
         <h2>Update Interviewer</h2>
       </div>
       <form onSubmit={handleUpdate} className="card-min__form">
-        <Input
-          labelName="Name"
-          type="text"
-          name="name"
-          placeholder="Enter Name..."
-          value={interviewer.name}
-          onChange={(e) =>
-            setInterviewer({ ...interviewer, name: e.target.value })
-          }
-          errorMessage="*"
-        />
-       {error.name && (
-           <span className="txt-danger txt-ss">{error.name}</span>
-        )}
+        <div className="input-group">
+          <Input
+            labelName="Name"
+            type="text"
+            name="name"
+            placeholder="Enter Name..."
+            value={interviewer.name}
+            onChange={(e) =>
+              setInterviewer({ ...interviewer, name: e.target.value })
+            }
+            errorMessage="*"
+          />
 
-        <Input
-          labelName="Email"
-          type="email"
-          name="email"
-          placeholder="Enter Email..."
-          value={interviewer.email}
-          onChange={(e) =>
-            setInterviewer({ ...interviewer, email: e.target.value })
-          }
-          errorMessage="*"
-        />
-         {error.email && (
-           <span className="txt-danger txt-ss">{error.email}</span>
-        )}
-
-        <Dropdown
-          labelName="Department"
-          options={departments}
-          selectedValue={interviewer.department_id}
-          onChange={(e) =>
-            setInterviewer({ ...interviewer, department_id: e.target.value })
-          }
-          errorMessage="*"
-        />
-        {error.department_id && (
-           <span className="txt-danger txt-ss">{error.department_id}</span>
-        )}
-
-        <Dropdown
-          labelName="Position"
-          options={positions}
-          selectedValue={interviewer.position_id}
-          onChange={(e) =>
-            setInterviewer({ ...interviewer, position_id: e.target.value })
-          }
-          errorMessage="*"
-        />
-        {error.position_id && (
-           <span className="txt-danger txt-ss">{error.position_id}</span>
-        )}
+          {error.name && (
+            <span className="txt-danger txt-ss">{error.name}</span>
+          )}
+        </div>
+        <div className="input-group">
+          <Input
+            labelName="Email"
+            type="email"
+            name="email"
+            placeholder="Enter Email..."
+            value={interviewer.email}
+            onChange={(e) =>
+              setInterviewer({ ...interviewer, email: e.target.value })
+            }
+            errorMessage="*"
+          />
+          {error.email && (
+            <span className="txt-danger txt-ss">{error.email}</span>
+          )}
+        </div>
+        <div className="input-group">
+          <Dropdown
+            labelName="Department"
+            options={departments}
+            selectedValue={interviewer.department_id}
+            onChange={(e) =>
+              setInterviewer({ ...interviewer, department_id: e.target.value })
+            }
+            errorMessage="*"
+          />
+          {error.department_id && (
+            <span className="txt-danger txt-ss">{error.department_id}</span>
+          )}
+        </div>
+        <div className="input-group">
+          <Dropdown
+            labelName="Position"
+            options={positions}
+            selectedValue={interviewer.position_id}
+            onChange={(e) =>
+              setInterviewer({ ...interviewer, position_id: e.target.value })
+            }
+            errorMessage="*"
+          />
+          {error.position_id && (
+            <span className="txt-danger txt-ss">{error.position_id}</span>
+          )}
+        </div>
         <div className="button-group--user">
           <Button
             type="submit"
@@ -204,7 +214,7 @@ export const InterviewerUpdate = () => {
           />
           <ButtonLink
             type="button"
-            className="btn-default"
+            className="btn-default cancel"
             route={"/interviewer"}
             text="Cancel"
             linkText="txt-light txt-sm"
@@ -214,5 +224,3 @@ export const InterviewerUpdate = () => {
     </div>
   );
 };
-
-

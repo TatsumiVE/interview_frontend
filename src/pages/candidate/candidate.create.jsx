@@ -136,7 +136,9 @@ export const CandidateCreate = () => {
   return (
     <>
       <div className="card">
-        <h1>Create Candidate</h1>
+        <div className="card__header">
+          <h2>Candidate Create Form</h2>
+        </div>
         <form
           onSubmit={handleSubmit}
           className="card-form"
@@ -392,6 +394,7 @@ export const CandidateCreate = () => {
                   ) : null}
                 </div>
               </div>
+
               <InputCheckbox
                 type="checkbox"
                 name="willingness_to_travel"
@@ -407,7 +410,6 @@ export const CandidateCreate = () => {
             </div>
           </div>
           <div className="input-form">
-            <label>Experience</label>
             <div className="card-btnPlus">
               {data.length < 4 && (
                 <Button
@@ -425,16 +427,19 @@ export const CandidateCreate = () => {
             {data.map((row, index) => (
               <div key={index} className="card-box">
                 <div className="card-language">
-                  <Dropdown
-                    labelName="Language"
-                    options={languageList}
-                    onChange={(e) => {
-                      const updatedData = [...data];
-                      updatedData[index].devlanguage_id = e.target.value;
-                      setData(updatedData);
-                    }}
-                    errorMessage="*"
-                  />
+                  <div className="input-group">
+                    <Dropdown
+                      labelName="Language"
+                      options={languageList}
+                      onChange={(e) => {
+                        const updatedData = [...data];
+                        updatedData[index].devlanguage_id = e.target.value;
+                        setData(updatedData);
+                      }}
+                      errorMessage="*"
+                    />
+                  </div>
+
                   <div className="card-btnMinus">
                     {data.length > 1 && (
                       <Button
@@ -446,41 +451,47 @@ export const CandidateCreate = () => {
                     )}
                   </div>
                 </div>
+
                 <div className="card-experience">
                   <label className="experience-label">
                     Experience <span className="txt-danger">*</span>
                   </label>
+
                   <div className="experience-group">
-                    <Input
-                      labelName=""
-                      name="year"
-                      type="number"
-                      placeholder=" Enter Year..."
-                      value={row.year}
-                      onChange={(e) => {
-                        const updatedData = [...data];
-                        updatedData[index].year = e.target.value;
-                        setData(updatedData);
-                      }}
-                    />
-                    <Input
-                      labelName=""
-                      name="month"
-                      type="number"
-                      placeholder=" Enter Month..."
-                      value={row.month}
-                      onChange={(e) => {
-                        const updatedData = [...data];
-                        updatedData[index].month = e.target.value;
-                        setData(updatedData);
-                      }}
-                    />
+                    <div className="input-group">
+                      <Input
+                        labelName=""
+                        name="year"
+                        type="number"
+                        placeholder=" Enter Year..."
+                        value={row.year}
+                        onChange={(e) => {
+                          const updatedData = [...data];
+                          updatedData[index].year = e.target.value;
+                          setData(updatedData);
+                        }}
+                      />
+                    </div>
+                    <div className="input-group">
+                      <Input
+                        labelName=""
+                        name="month"
+                        type="number"
+                        placeholder=" Enter Month..."
+                        value={row.month}
+                        onChange={(e) => {
+                          const updatedData = [...data];
+                          updatedData[index].month = e.target.value;
+                          setData(updatedData);
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          <div className="button-group">
+          <div className="button-group--user">
             <Button
               type="submit"
               text="Create"
@@ -488,7 +499,7 @@ export const CandidateCreate = () => {
             />
             <ButtonLink
               type="button"
-              className="btn-default"
+              className="btn-default cancel"
               route={"/interview"}
               text="Cancel"
               linkText="txt-light txt-sm"

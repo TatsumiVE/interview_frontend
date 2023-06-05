@@ -54,15 +54,17 @@ export const TopicCreate = () => {
           createTopic();
         }}
       >
-        <Input
-          labelName="Name"
-          type="text"
-          name="name"
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Enter name..."
-          errorMessage="*"
-        />
-        {error && <span className="txt-danger txt-ss">{error.name}</span>}
+        <div className="input-group">
+          <Input
+            labelName="Name"
+            type="text"
+            name="name"
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter name..."
+            errorMessage="*"
+          />
+          {error && <span className="txt-danger txt-ss">{error.name}</span>}
+        </div>
 
         <div className="button-group--user">
           <Button
@@ -72,7 +74,7 @@ export const TopicCreate = () => {
           />
           <ButtonLink
             type="button"
-            className="btn-default"
+            className="btn-default cancel"
             route={"/topic"}
             text="Cancel"
             linkText="txt-light txt-sm"

@@ -58,6 +58,7 @@ export const RateList = () => {
           </Can>
         ),
       },
+    
     ],
     []
   );

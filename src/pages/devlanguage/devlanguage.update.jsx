@@ -13,47 +13,42 @@ export const DevLanguageUpdate = () => {
   const [error, setError] = useState("");
   const [devlanguage, setDevlanguage] = useState([]);
 
-
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
 
-
-
   const addDevlanguage = async () => {
     try {
-        const response = await axios.put(
-            `http://localhost:8000/api/dev-languages/${id}`,
-            devlanguage,
-            config
-        );
+      const response = await axios.put(
+        `http://localhost:8000/api/dev-languages/${id}`,
+        devlanguage,
+        config
+      );
 
-        console.log(response.data.message);
+      console.log(response.data.message);
 
-        let successMessage = response.data.message;
+      let successMessage = response.data.message;
 
-        toast.success(successMessage);
+      toast.success(successMessage);
 
-        setTimeout(() => {
-            navigate('/devlanguage');
-        }, 1000);
-
+      setTimeout(() => {
+        navigate("/devlanguage");
+      }, 1000);
     } catch (error) {
-        if (error.response && error.response.data && error.response.data.data) {
-            setError(error.response.data.data);
-        } else {
-            setError([]);
-        }
-       
+      if (error.response && error.response.data && error.response.data.data) {
+        setError(error.response.data.data);
+      } else {
+        setError([]);
+      }
     }
-};
+  };
 
-const { mutate: updateDevlanguage} = useMutation({
+  const { mutate: updateDevlanguage } = useMutation({
     mutationKey: ["put", "departments"],
     mutationFn: addDevlanguage,
-});
+  });
 
   const getDevlanguage = async () => {
     try {
@@ -71,16 +66,14 @@ const { mutate: updateDevlanguage} = useMutation({
     }
   };
 
-   
   const handleUpdate = (event) => {
     event.preventDefault();
     if (devlanguage.name == "") {
-        const response = setError({ name: "The name field is required." });
-        return response;
+      const response = setError({ name: "The name field is required." });
+      return response;
     }
     updateDevlanguage();
-};
-
+  };
 
   const { data: devlanguageData } = useQuery(
     ["devlanguageData", id],
@@ -92,22 +85,24 @@ const { mutate: updateDevlanguage} = useMutation({
       <div className="card-min__header">
         <h2>Update Language</h2>
       </div>
-      <form onSubmit={handleUpdate}>
-        <Input
-          labelName="Name"
-          type="text"
-          name="name"
-          value={devlanguage.name}
-          onChange={(e) =>
-            setDevlanguage({ ...devlanguage, name: e.target.value })
-          }
-          placeholder="Enter Name..."
-          errorMessage="*"
-        />
+      <form onSubmit={handleUpdate} className="card-min__form">
+        <div className="input-group">
+          <Input
+            labelName="Name"
+            type="text"
+            name="name"
+            value={devlanguage.name}
+            onChange={(e) =>
+              setDevlanguage({ ...devlanguage, name: e.target.value })
+            }
+            placeholder="Enter Name..."
+            errorMessage="*"
+          />
+          {error.name && (
+            <span className="txt-danger txt-ss">{error.name}</span>
+          )}
+        </div>
 
-        {error.name && (
-          <span className="txt-danger txt-ss">{error.name}</span>
-        )}
         <div className="button-group--user">
           <Button
             type="submit"
@@ -116,7 +111,7 @@ const { mutate: updateDevlanguage} = useMutation({
           />
           <ButtonLink
             type="button"
-            className="btn-default"
+            className="btn-default cancel"
             route={"/devlanguage"}
             text="Cancel"
             linkText="txt-light txt-sm"
@@ -126,14 +121,3 @@ const { mutate: updateDevlanguage} = useMutation({
     </div>
   );
 };
-
-
-
-
-// export const DevLanguageUpdate = () => {
-//   return(
-//     <>
-//     Hello
-//     </>
-//   )
-// }

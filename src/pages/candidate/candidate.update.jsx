@@ -8,7 +8,7 @@ import languageService from "../../services/languageService";
 import positionService from "../../services/positionService";
 import agencyService from "../../services/agencyService";
 import Loader from "../../components/loader";
-
+import Check from "../validation.jsx";
 import {
   Button,
   Dropdown,
@@ -41,7 +41,7 @@ export const CandidateUpdate = () => {
   const [data, setData] = useState([
     { devlanguage_id: "", year: "", month: "" },
   ]);
-
+  const [formActive, setFormActive] = useState(false);
   const [error, setError] = useState("");
   const [position, setPosition] = useState("");
   const [agency, setAgency] = useState("");
@@ -91,7 +91,7 @@ export const CandidateUpdate = () => {
     mutationKey: ["put", "candidates"],
     mutationFn: updateCandidate,
     onSuccess: () => {
-      navigate("/interview");
+      navigate("/candidates");
     },
   });
 
@@ -113,10 +113,7 @@ export const CandidateUpdate = () => {
   useEffect(() => {
     if (isCandidateSuccess && candidateData) {
       setCandidate(candidateData.candidate);
-      console.log(
-        languageFilter(candidateData.candidate.specific_languages),
-        "llllllllllllllll"
-      );
+
       setData(languageFilter(candidateData.candidate.specific_languages));
     }
   }, [candidateData, isCandidateSuccess]);
@@ -173,69 +170,112 @@ export const CandidateUpdate = () => {
 
   return (
     <div className="card">
-      <form onSubmit={handleSubmit} className="card-form">
+      <div className="card__header">
+        <h2>Candidate Edit Form</h2>
+      </div>
+      <form
+        onSubmit={handleSubmit}
+        onBlur={() => {
+          setFormActive(true);
+        }}
+        className="card-form"
+      >
         <div className="card-wrap">
           <div className="card-left">
-            {console.log(candidate, "candidate............")}
-            <Input
-              labelName="Name"
-              type="text"
-              name="name"
-              placeholder=" Enter Candidate Name..."
-              value={candidate.name}
-              onChange={(e) =>
-                setCandidate({ ...candidate, name: e.target.value })
-              }
-              errorMessage="*"
-            />
-
-            <Input
-              labelName="Email"
-              type="email"
-              name="email"
-              placeholder=" Enter Email..."
-              value={candidate.email}
-              onChange={(e) =>
-                setCandidate({ ...candidate, email: e.target.value })
-              }
-              errorMessage="*"
-            />
-            <Input
-              labelName="Phone Number"
-              type="tel"
-              name="phone_number"
-              placeholder=" Enter Phone Number..."
-              value={candidate.phone_number}
-              onChange={(e) =>
-                setCandidate({ ...candidate, phone_number: e.target.value })
-              }
-              errorMessage="*"
-            />
-            <Input
-              labelName="Date of Birth"
-              type="date"
-              name="date_of_birth"
-              placeholder=" Enter Date of Birth"
-              value={candidate.date_of_birth}
-              onChange={(e) => {
-                setCandidate({ ...candidate, date_of_birth: e.target.value });
-              }}
-              errorMessage="*"
-            />
-
-            <TextArea
-              labelName="Address"
-              name="residential_address"
-              onChange={(e) =>
-                setCandidate({
-                  ...candidate,
-                  residential_address: e.target.value,
-                })
-              }
-              placeholder=" Enter Residential Address..."
-              text={candidate.residential_address}
-              errorMessage="*"
-            />
+            <div className="input-group">
+              <Input
+                labelName="Name"
+                type="text"
+                name="name"
+                placeholder=" Enter Candidate Name..."
+                value={candidate.name}
+                onChange={(e) =>
+                  setCandidate({ ...candidate, name: e.target.value })
+                }
+                errorMessage="*"
+              />
+              {!Check.isValidText(candidate.name) && formActive ? (
+                <span className="txt-danger validated-error">
+                  Name must be at least 5 characters !
+                </span>
+              ) : null}
+            </div>
+            <div className="input-group">
+              <Input
+                labelName="Email"
+                type="email"
+                name="email"
+                placeholder=" Enter Email..."
+                value={candidate.email}
+                onChange={(e) =>
+                  setCandidate({ ...candidate, email: e.target.value })
+                }
+                errorMessage="*"
+              />{" "}
+              {!Check.isValidText(candidate.email) && formActive ? (
+                <span className="txt-danger validated-error">
+                  Email format is invalid!
+                </span>
+              ) : null}
+            </div>
+            <div className="input-group">
+              <Input
+                labelName="Phone Number"
+                type="tel"
+                name="phone_number"
+                placeholder=" Enter Phone Number..."
+                value={candidate.phone_number}
+                onChange={(e) =>
+                  setCandidate({ ...candidate, phone_number: e.target.value })
+                }
+                errorMessage="*"
+              />
+              {!Check.isValidPhoneNumber(candidate.phone_number) &&
+              formActive ? (
+                <span className="txt-danger validated-error">
+                  Phone Number format is invalid!
+                </span>
+              ) : null}
+            </div>
+            <div className="input-group">
+              <Input
+                labelName="Date of Birth"
+                type="date"
+                name="date_of_birth"
+                placeholder=" Enter Date of Birth"
+                value={candidate.date_of_birth}
+                onChange={(e) => {
+                  setCandidate({ ...candidate, date_of_birth: e.target.value });
+                }}
+                errorMessage="*"
+              />
+              {!Check.isValidAge(candidate.date_of_birth) && formActive ? (
+                <span className="txt-danger validated-error">
+                  Age is at least 18 years.
+                </span>
+              ) : null}
+            </div>
+            <div className="input-group">
+              <TextArea
+                labelName="Address"
+                name="residential_address"
+                onChange={(e) =>
+                  setCandidate({
+                    ...candidate,
+                    residential_address: e.target.value,
+                  })
+                }
+                placeholder=" Enter Residential Address..."
+                text={candidate.residential_address}
+                errorMessage="*"
+              />
+              {!Check.isValidAddress(candidate.residential_address) &&
+              formActive ? (
+                <span className="txt-danger validated-error">
+                  Address format is invalid!
+                </span>
+              ) : null}
+            </div>
 
             <InputCheckbox
               type="checkbox"
@@ -251,73 +291,110 @@ export const CandidateUpdate = () => {
               labelName="Willingness To Travel"
             />
 
-            <div className="radio-group">
-              <Radio
-                labelName="Male"
-                value="1"
-                name="gender"
-                checked={candidate.gender == "1"}
-                onChange={(e) =>
-                  setCandidate({ ...candidate, gender: e.target.value })
-                }
-              />
-              <Radio
-                labelName="Female"
-                value="2"
-                name="gender"
-                checked={candidate.gender == "2"}
-                onChange={(e) =>
-                  setCandidate({ ...candidate, gender: e.target.value })
-                }
-              />
-              <Radio
-                labelName="Non-Binary"
-                value="3"
-                name="gender"
-                checked={candidate.gender == "3"}
-                onChange={(e) =>
-                  setCandidate({ ...candidate, gender: e.target.value })
-                }
-              />
-              <span className="txt-danger">*</span>
+            <div className="input-group">
+              <div className="radio-group">
+                <Radio
+                  labelName="Male"
+                  value="1"
+                  name="gender"
+                  checked={candidate.gender == "1"}
+                  onChange={(e) =>
+                    setCandidate({ ...candidate, gender: e.target.value })
+                  }
+                />
+                <Radio
+                  labelName="Female"
+                  value="2"
+                  name="gender"
+                  checked={candidate.gender == "2"}
+                  onChange={(e) =>
+                    setCandidate({ ...candidate, gender: e.target.value })
+                  }
+                />
+                <Radio
+                  labelName="Non-Binary"
+                  value="3"
+                  name="gender"
+                  checked={candidate.gender == "3"}
+                  onChange={(e) =>
+                    setCandidate({ ...candidate, gender: e.target.value })
+                  }
+                />
+                <span className="txt-danger">*</span>
+              </div>
+              {!Check.isValidGender(candidate.gender) && formActive ? (
+                <span className="txt-danger validated-error">
+                  Gender field is required
+                </span>
+              ) : null}
             </div>
           </div>
           <div className="card-right">
-            <Dropdown
-              labelName="Position"
-              options={positions}
-              selectedValue={candidate.position_id}
-              onChange={(e) => setPosition(e.target.value)}
-              errorMessage="*"
-            />
-            <Dropdown
-              labelName="Agency"
-              options={agencies}
-              selectedValue={candidate.agency_id}
-              onChange={(e) => setAgency(e.target.value)}
-              errorMessage="*"
-            />
-            <Input
-              labelName="Expected Salary"
-              type="number"
-              name="expected_salary"
-              placeholder=" Enter Expected Salary..."
-              value={candidate.expected_salary ?? "0"}
-              onChange={(e) =>
-                setCandidate({ ...candidate, expected_salary: e.target.value })
-              }
-            />
-            <Input
-              labelName="Last Salary"
-              type="number"
-              name="last_salary"
-              placeholder=" Enter Last Salary..."
-              value={candidate.last_salary ?? "0"}
-              onChange={(e) =>
-                setCandidate({ ...candidate, last_salary: e.target.value })
-              }
-            />
-
+            <div className="input-group">
+              <Dropdown
+                labelName="Position"
+                options={positions}
+                selectedValue={candidate.position_id}
+                onChange={(e) => setPosition(e.target.value)}
+                errorMessage="*"
+              />
+              {!Check.isValidSelect(candidate.position_id) && formActive ? (
+                <span className="txt-danger validated-error">
+                  Position field is required!
+                </span>
+              ) : null}
+            </div>
+            <div className="input-group">
+              <Dropdown
+                labelName="Agency"
+                options={agencies}
+                selectedValue={candidate.agency_id}
+                onChange={(e) => setAgency(e.target.value)}
+                errorMessage="*"
+              />
+              {!Check.isValidSelect(candidate.agency_id) && formActive ? (
+                <span className="txt-danger validated-error">
+                  Agency field is required!
+                </span>
+              ) : null}
+            </div>
+            <div className="input-group">
+              <Input
+                labelName="Expected Salary"
+                type="number"
+                name="expected_salary"
+                placeholder=" Enter Expected Salary..."
+                value={candidate.expected_salary ?? "0"}
+                onChange={(e) =>
+                  setCandidate({
+                    ...candidate,
+                    expected_salary: e.target.value,
+                  })
+                }
+              />
+              {!Check.isValidSalary(candidate.expected_salary) && formActive ? (
+                <span className="txt-danger validated-error">
+                  Salary amount is invalid!
+                </span>
+              ) : null}
+            </div>
+            <div className="input-group">
+              <Input
+                labelName="Last Salary"
+                type="number"
+                name="last_salary"
+                placeholder=" Enter Last Salary..."
+                value={candidate.last_salary ?? "0"}
+                onChange={(e) =>
+                  setCandidate({ ...candidate, last_salary: e.target.value })
+                }
+              />
+              {!Check.isValidSalary(candidate.last_salary) && formActive ? (
+                <span className="txt-danger validated-error">
+                  Salary amount is invalid!
+                </span>
+              ) : null}
+            </div>
             <Input
               labelName="CV Path"
               type="text"
@@ -329,20 +406,27 @@ export const CandidateUpdate = () => {
               }
               errorMessage="*"
             />
-
-            <Input
-              labelName="Earliest Starting Date"
-              type="date"
-              name="earliest_starting_date"
-              placeholder="Enter Earliest Starting Date..."
-              value={candidate.earliest_starting_date}
-              onChange={(e) =>
-                setCandidate({
-                  ...candidate,
-                  earliest_starting_date: e.target.value,
-                })
-              }
-            />
+            <div className="input-group">
+              <Input
+                labelName="Earliest Starting Date"
+                type="date"
+                name="earliest_starting_date"
+                placeholder="Enter Earliest Starting Date..."
+                value={candidate.earliest_starting_date}
+                onChange={(e) =>
+                  setCandidate({
+                    ...candidate,
+                    earliest_starting_date: e.target.value,
+                  })
+                }
+              />
+              {!Check.isValidStartingDate(candidate.earliest_starting_date) &&
+              formActive ? (
+                <span className="txt-danger validated-error">
+                  Earliest Starting Date is invalid!
+                </span>
+              ) : null}
+            </div>
           </div>
         </div>
 
@@ -364,18 +448,20 @@ export const CandidateUpdate = () => {
           {data.map((row, index) => (
             <div key={index} className="card-box">
               <div className="card-language">
-                <Dropdown
-                  labelName="Language"
-                  options={languages}
-                  selectedValue={row.devlanguage_id}
-                  onChange={(e) => {
-                    const updatedData = [...data];
-                    updatedData[index].devlanguage_id = e.target.value;
-                    setData(updatedData);
-                    console.log(data);
-                  }}
-                  errorMessage="*"
-                />
+                <div className="input-group">
+                  <Dropdown
+                    labelName="Language"
+                    options={languages}
+                    selectedValue={row.devlanguage_id}
+                    onChange={(e) => {
+                      const updatedData = [...data];
+                      updatedData[index].devlanguage_id = e.target.value;
+                      setData(updatedData);
+                      console.log(data);
+                    }}
+                    errorMessage="*"
+                  />
+                </div>
                 <div className="card-btnMinus">
                   {data.length > 1 && (
                     <Button
@@ -423,7 +509,7 @@ export const CandidateUpdate = () => {
           ))}
         </div>
 
-        <div className="button-group">
+        <div className="button-group--user">
           <Button
             type="submit"
             text="Update"
@@ -431,7 +517,7 @@ export const CandidateUpdate = () => {
           />
           <ButtonLink
             type="button"
-            className="btn-default"
+            className="btn-default cancel"
             route={"/candidates"}
             text="Cancel"
             linkText="txt-light txt-sm"

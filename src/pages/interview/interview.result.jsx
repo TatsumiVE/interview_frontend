@@ -60,25 +60,30 @@ export const InterviewResult = () => {
       </div>
       <div className="form-container">
         <form onSubmit={handleSubmit} className="card-min__form">
-          <p>
+          <div className="input-name">  
             <span className="txt-default">Candidate Name: </span>
             {candidateName}
-          </p>
-          <Input
-            labelName="Interview Result Date"
-            type="date"
-            name="interview_result_date"
-            value={interview_result_date}
-            onChange={(e) => setInterviewResultDate(e.target.value)}
-          />
-
-          <TextArea
-            labelName="Interview Summarize"
-            name="interview_summarize"
-            value={interview_summarize}
-            placeholder=" Enter interview summarize..."
-            onChange={(e) => setInterviewSummarize(e.target.value)}
-          />
+          </div>
+          <div className="input-group">
+            <Input
+              labelName="Interview Result Date"
+              type="date"
+              name="interview_result_date"
+              value={interview_result_date}
+              onChange={(e) => setInterviewResultDate(e.target.value)}
+              errorMessage="*"
+            />
+          </div>
+          <div className="input-group">
+            <TextArea
+              labelName="Interview Summarize"
+              name="interview_summarize"
+              value={interview_summarize}
+              placeholder=" Enter interview summarize..."
+              onChange={(e) => setInterviewSummarize(e.target.value)}
+              errorMessage="*"
+            />
+          </div>
 
           <div className="radio-group--modify">
             <InputCheckbox
@@ -88,6 +93,7 @@ export const InterviewResult = () => {
               placeholder=""
               value="1"
               onChange={(e) => setResult(e.target.value)}
+            
             />
             <div className="radio-fail">
               <InputCheckbox
@@ -96,18 +102,21 @@ export const InterviewResult = () => {
                 name="result"
                 placeholder=""
                 value="0"
-                onChange={(e) => setResult(e.target.value)}
+                onChange={(e) => setResult(e.target.value)}               
               />
             </div>
+            <span className="txt-danger star">*</span>
           </div>
-
-          <Input
-            labelName="Record Path"
-            type="text"
-            name="record_path"
-            placeholder="Enter Record Path"
-            onChange={(e) => setRecordPath(e.target.value)}
-          />
+          <div className="input-group">
+            <Input
+              labelName="Record Path"
+              type="text"
+              name="record_path"
+              placeholder="Enter Record Path"
+              onChange={(e) => setRecordPath(e.target.value)}
+              errorMessage="*"
+            />
+          </div>
 
           <div className="button-group--user">
             <Button
@@ -117,7 +126,7 @@ export const InterviewResult = () => {
             />
             <ButtonLink
               type="button"
-              className="btn-default"
+              className="btn-default cancel"
               route={"/interview"}
               text="Cancel"
               linkText="txt-light txt-sm"

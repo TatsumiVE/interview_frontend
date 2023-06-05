@@ -18,7 +18,7 @@
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .card-wrap {
@@ -36,8 +36,6 @@
   display: flex;
   gap: 0.5rem;
 }
-.card-btnPlus button {
-}
 
 .radio-group {
   display: flex;
@@ -45,18 +43,28 @@
   justify-content: space-between;
 }
 
-.card-border {
-}
 
 .card-box {
-  display: flex;
-  gap: 2rem;
   margin-bottom: 1rem;
+  border: 1px solid rgb(142, 139, 139);
+  padding: 10px;
 }
+
 .card-language {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  .input-group{
+    margin-bottom: 15px;
+  }
+  
+}
+
+.card-btnPlus{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+ 
 }
 
 .card-btnMinus {
@@ -78,9 +86,6 @@
   .btn {
     margin: 0 5px;
   }
-}
-.star {
-  margin-top: 12px;
 }
 .input-group {
   position: relative;

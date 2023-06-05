@@ -129,55 +129,66 @@ export const InterviewCreate = () => {
       />
       <div className="card-min">
         <div className="card-min__header">
-          <h2>Interview Create</h2>
+          <h2>Interview Create Form</h2>
         </div>
         <form onSubmit={handleSubmit} className="card-min__form">
-          <p>{name}</p>
-          <Input
-            labelName="Date"
-            type="date"
-            name="interview_date"
-            value={formData.interview_date}
-            onChange={(e) =>
-              setFormData({ ...formData, interview_date: e.target.value })
-            }
-            errorMessage="*"
-          />
+          <div className="input-name">
+            <span className="txt-default">Candidate Name: </span>
+            {name}
+          </div>
+        
+          <div className="input-group">
+            <Input
+              labelName="Date"
+              type="date"
+              name="interview_date"
+              value={formData.interview_date}
+              onChange={(e) =>
+                setFormData({ ...formData, interview_date: e.target.value })
+              }
+              errorMessage="*"
+            />
+          </div>
+          <div className="input-group">
+            <Input
+              labelName="Time"
+              type="time"
+              name="time"
+              value={formData.interview_time}
+              onChange={(e) =>
+                setFormData({ ...formData, interview_time: e.target.value })
+              }
+              errorMessage="*"
+            />
+          </div>
 
-          <Input
-            labelName="Time"
-            type="time"
-            name="time"
-            value={formData.interview_time}
-            onChange={(e) =>
-              setFormData({ ...formData, interview_time: e.target.value })
-            }
-            errorMessage="*"
-          />
-          <Dropdown
-            labelName="Interview Stages"
-            options={interviewStages.map((stage) => ({
-              id: stage.id,
-              name: stage.name,
-              selected: stage.id == selectedStageId,
-              disabled: stage.id != selectedStageId,
-            }))}
-            hide={true}
-            selectedValue={selectedStageId.toString()}
-            className="custom-dropdown"
-            errorMessage="*"
-          />
+          <div className="input-group">
+            <Dropdown
+              labelName="Interview Stages"
+              options={interviewStages.map((stage) => ({
+                id: stage.id,
+                name: stage.name,
+                selected: stage.id == selectedStageId,
+                disabled: stage.id != selectedStageId,
+              }))}
+              hide={true}
+              selectedValue={selectedStageId.toString()}
+              className="custom-dropdown"
+              errorMessage="*"
+            />
+          </div>
 
-          <Dropdown
-            labelName="Location"
-            options={location}
-            selectedValue={formData.location.toString()}
-            onChange={(e) =>
-              setFormData({ ...formData, location: e.target.value })
-            }
-            errorMessage="*"
-          />
-
+          <div className="input-group">
+            <Dropdown
+              labelName="Location"
+              options={location}
+              selectedValue={formData.location.toString()}
+              onChange={(e) =>
+                setFormData({ ...formData, location: e.target.value })
+              }
+              errorMessage="*"
+            />
+          </div>
           <div className="btn-plus">
             {data.length < 4 && (
               <Button
@@ -203,9 +214,10 @@ export const InterviewCreate = () => {
                       updatedData[index].interviewer_id = e.target.value;
                       setData(updatedData);
                     }}
+                    errorMessage="*"
                   />
                 </div>
-                <div className="card-input--btnMinus">
+                <div className="btn-minus">
                   {data.length > 1 && (
                     <Button
                       type="button"
@@ -218,7 +230,7 @@ export const InterviewCreate = () => {
               </div>
             </div>
           ))}
-          <div className="button-group--user">
+          <div className="button-group--item">
             <Button
               type="submit"
               text="Create"
@@ -226,7 +238,7 @@ export const InterviewCreate = () => {
             ></Button>
             <ButtonLink
               type="button"
-              className="btn-default"
+              className="btn-default cancel"
               route={"/interview"}
               text="Cancel"
               linkText="txt-light txt-sm"

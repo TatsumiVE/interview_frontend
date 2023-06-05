@@ -35,9 +35,8 @@ export const UserUpdate = () => {
       toast.success(successMessage);
 
       setTimeout(() => {
-        navigate('/user');
+        navigate("/user");
       }, 1000);
-
     } catch (error) {
       if (error.response && error.response.data && error.response.data.data) {
         setError(error.response.data.data);
@@ -55,8 +54,8 @@ export const UserUpdate = () => {
 
   const handleUpdate = (event) => {
     event.preventDefault();
-    if(user.role ==""){
-      const response = setError({role:"The role field is required."});
+    if (user.role == "") {
+      const response = setError({ role: "The role field is required." });
       return response;
     }
     updateUser();
@@ -116,32 +115,36 @@ export const UserUpdate = () => {
           <h2>Update User</h2>
         </div>
         <form onSubmit={handleUpdate} className="card-min__form">
-          <Input
-            labelName="Name"
-            type="text"
-            name="name"
-            placeholder="Enter Name"
-            value={user.interviewer_id.name}
-          />
-
-          <Input
-            labelName="Email"
-            type="email"
-            name="email"
-            placeholder=" Enter Email"
-            value={user.interviewer_id.email}
-          />
-
-          <Dropdown
-            labelName="Role"
-            options={roles}
-            selectedValue={user.role[0].id}
-            onChange={(e) => setUser({ ...user, role: e.target.value })}
-            errorMessage="*"
-          />
-          {error.role && (
-            <span className="txt-danger txt-ss">{error.role}</span>
-          )}
+          <div className="input-group">
+            <Input
+              labelName="Name"
+              type="text"
+              name="name"
+              placeholder="Enter Name"
+              value={user.interviewer_id.name}
+            />
+          </div>
+          <div className="input-group">
+            <Input
+              labelName="Email"
+              type="email"
+              name="email"
+              placeholder=" Enter Email"
+              value={user.interviewer_id.email}
+            />
+          </div>
+          <div className="input-group">
+            <Dropdown
+              labelName="Role"
+              options={roles}
+              selectedValue={user.role[0].id}
+              onChange={(e) => setUser({ ...user, role: e.target.value })}
+              errorMessage="*"
+            />
+            {error.role && (
+              <span className="txt-danger txt-ss">{error.role}</span>
+            )}
+          </div>
 
           <div className="button-group--user">
             <Can permission={"userUpdate"}>
@@ -154,7 +157,7 @@ export const UserUpdate = () => {
 
             <ButtonLink
               type="button"
-              className="btn-default"
+              className="btn-default cancel"
               route={"/user"}
               text="Cancel"
               linkText="txt-light txt-sm"

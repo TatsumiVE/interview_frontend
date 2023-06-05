@@ -10,7 +10,7 @@ export const PositionUpdate = () => {
   const { id } = useParams();
   const { token } = useAuth();
   const navigate = useNavigate();
-  const [error, setError] = useState("");  
+  const [error, setError] = useState("");
   const [position, setPosition] = useState([]);
 
   const config = {
@@ -19,40 +19,36 @@ export const PositionUpdate = () => {
     },
   };
 
-
   const addPosition = async () => {
     try {
-        const response = await axios.put(
-            `http://localhost:8000/api/positions/${id}`,
-            position,
-            config
-        );
+      const response = await axios.put(
+        `http://localhost:8000/api/positions/${id}`,
+        position,
+        config
+      );
 
-        console.log(response.data.message);
+      console.log(response.data.message);
 
-        let successMessage = response.data.message;
+      let successMessage = response.data.message;
 
-        toast.success(successMessage);
+      toast.success(successMessage);
 
-        setTimeout(() => {
-            navigate('/position');
-        }, 1000);
-
+      setTimeout(() => {
+        navigate("/position");
+      }, 1000);
     } catch (error) {
-        if (error.response && error.response.data && error.response.data.data) {
-            setError(error.response.data.data);
-        } else {
-            setError([]);
-        }
-       
+      if (error.response && error.response.data && error.response.data.data) {
+        setError(error.response.data.data);
+      } else {
+        setError([]);
+      }
     }
-};
+  };
 
-const { mutate: updatePosition} = useMutation({
+  const { mutate: updatePosition } = useMutation({
     mutationKey: ["put", "positions"],
     mutationFn: addPosition,
-});
-
+  });
 
   const getPosition = async () => {
     try {
@@ -70,15 +66,14 @@ const { mutate: updatePosition} = useMutation({
     }
   };
 
-  
   const handleUpdate = (event) => {
     event.preventDefault();
     if (position.name == "") {
-        const response = setError({ name: "The name field is required." });
-        return response;
+      const response = setError({ name: "The name field is required." });
+      return response;
     }
     updatePosition();
-};
+  };
   const { data: positionData } = useQuery(["positionData", id], getPosition);
 
   return (
@@ -87,19 +82,20 @@ const { mutate: updatePosition} = useMutation({
         <h2>Update Position</h2>
       </div>
       <form onSubmit={handleUpdate} className="card-min__form">
-        <Input
-          labelName="Name"
-          type="text"
-          name="name"
-          value={position.name}
-          onChange={(e) => setPosition({ ...position, name: e.target.value })}
-          placeholder="Enter Name..."
-          errorMessage="*"
-        />
-        {error.name && (
-          <span className="txt-danger txt-ss">{error.name}</span>
-        )}
-
+        <div className="input-group">
+          <Input
+            labelName="Name"
+            type="text"
+            name="name"
+            value={position.name}
+            onChange={(e) => setPosition({ ...position, name: e.target.value })}
+            placeholder="Enter Name..."
+            errorMessage="*"
+          />
+          {error.name && (
+            <span className="txt-danger txt-ss">{error.name}</span>
+          )}
+        </div>
         <div className="button-group--user">
           <Button
             type="submit"
@@ -108,7 +104,7 @@ const { mutate: updatePosition} = useMutation({
           />
           <ButtonLink
             type="button"
-            className="btn-default"
+            className="btn-default cancel"
             route={"/position"}
             text="Cancel"
             linkText="txt-light txt-sm"

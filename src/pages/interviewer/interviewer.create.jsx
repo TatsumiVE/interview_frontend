@@ -66,9 +66,8 @@ export const InterviewerCreate = () => {
       toast.success(successMessage);
 
       setTimeout(() => {
-        navigate('/interviewer');
+        navigate("/interviewer");
       }, 1000);
-
     } catch (error) {
       setError(error.response.data.err_msg.errors);
     }
@@ -87,59 +86,78 @@ export const InterviewerCreate = () => {
       <div className="card-min__header">
         <h2>Create Interviewer</h2>
       </div>
-      <form className="card-min__form"
+      <form
+        className="card-min__form"
         onSubmit={(e) => {
           e.preventDefault();
           createInterviewer();
         }}
       >
-        <Input
-          labelName="Name"
-          type="text"
-          name="name"
-          onChange={(e) => setName(e.target.value)}
-          placeholder=" Enter Name..."
-          errorMessage="*"
-        />
-        {error.name && <span className="txt-danger txt-ss">{error.name}</span>}
-        <Input
-          labelName="Email"
-          type="email"
-          name="email"
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder=" Enter Email..."
-          errorMessage="*"
-        />
-        {error.email && <span className="txt-danger txt-ss">{error.email}</span>}
-
-        <Dropdown
-          labelName="Department"
-          options={departments}
-          selectedValue={department_id}
-          onChange={(e) => setDepartment(e.target.value)}
-          errorMessage="*"
-        />
-        {error.department_id && <span className="txt-danger txt-ss">{error.department_id}</span>}
-
-        <Dropdown
-          labelName="Position"
-          options={positions}
-          selectedValue={position_id}
-          onChange={(e) => setPosition(e.target.value)}
-          errorMessage="*"
-        />
-        {error.position_id && <span className="txt-danger txt-ss">{error.position_id}</span>}
-
+        <div className="input-group">
+          <Input
+            labelName="Name"
+            type="text"
+            name="name"
+            onChange={(e) => setName(e.target.value)}
+            placeholder=" Enter Name..."
+            errorMessage="*"
+          />
+          {error.name && (
+            <span className="txt-danger txt-ss">{error.name}</span>
+          )}
+        </div>
+        <div className="input-group">
+          <Input
+            labelName="Email"
+            type="email"
+            name="email"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder=" Enter Email..."
+            errorMessage="*"
+          />
+          {error.email && (
+            <span className="txt-danger txt-ss">{error.email}</span>
+          )}
+        </div>
+        <div className="input-group">
+          <Dropdown
+            labelName="Department"
+            options={departments}
+            selectedValue={department_id}
+            onChange={(e) => setDepartment(e.target.value)}
+            errorMessage="*"
+          />
+          {error.department_id && (
+            <span className="txt-danger txt-ss">{error.department_id}</span>
+          )}
+        </div>
+        <div className="input-group">
+          <Dropdown
+            labelName="Position"
+            options={positions}
+            selectedValue={position_id}
+            onChange={(e) => setPosition(e.target.value)}
+            errorMessage="*"
+          />
+          {error.position_id && (
+            <span className="txt-danger txt-ss">{error.position_id}</span>
+          )}
+        </div>
         <div className="button-group--user">
-          <Button type="submit" text="Create" className="txt-light btn-primary" />
-          <ButtonLink type="button" className="btn-default" route={"/interviewer"} text="Cancel" linkText="txt-light txt-sm" />
+          <Button
+            type="submit"
+            text="Create"
+            className="txt-light btn-primary"
+          />
+          <ButtonLink
+            type="button"
+            className="btn-default cancel"
+            route={"/interviewer"}
+            text="Cancel"
+            linkText="txt-light txt-sm"
+          />
         </div>
       </form>
     </div>
   );
 };
-
-
-
-
-

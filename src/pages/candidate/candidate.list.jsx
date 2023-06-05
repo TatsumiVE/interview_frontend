@@ -9,7 +9,7 @@ import languageService from "../../services/languageService";
 
 import Loader from "../../components/loader";
 import { useEffect, useState } from "react";
-import { Dropdown, ButtonLink } from "../../components";
+import { Dropdown, ButtonLink, Input, Button } from "../../components";
 
 export const Candidate = () => {
   const { token } = useAuth();
@@ -163,29 +163,32 @@ export const Candidate = () => {
                 const interview = row.original.interview;
 
                 return (
-                  <>
-                    <Can permission={"candidateShow"}>
-                      <ButtonLink
-                        type="button"
-                        className="btn-info"
-                        route={`/candidates/${candidate.id}`}
-                        text="View"
-                        linkText="txt-light txt-sm"
-                        icon="fa-solid fa-magnifying-glass"
-                      />
-                    </Can>
-                    &nbsp;
-                    <Can permission={"candidateUpdate"}>
-                      <ButtonLink
-                        type="button"
-                        className="btn-success"
-                        route={`/candidates/update/${candidate.id}`}
-                        text="Edit"
-                        linkText="txt-light txt-sm"
-                        icon="fa-solid fa-pen-to-square"
-                      />
-                    </Can>
-                  </>
+                  <div className="btn-group">
+                    <div className="custom-input">
+                      <Can permission={"candidateShow"}>
+                        <ButtonLink
+                          type="button"
+                          className="btn-info"
+                          route={`/candidates/${candidate.id}`}
+                          text="View"
+                          linkText="txt-light txt-sm"
+                          icon="fa-solid fa-eye"
+                        />
+                      </Can>
+                    </div>
+                    <div className="custom-input">
+                      <Can permission={"candidateUpdate"}>
+                        <ButtonLink
+                          type="button"
+                          className="btn-success"
+                          route={`/candidates/update/${candidate.id}`}
+                          text="Edit"
+                          linkText="txt-light txt-sm"
+                          icon="fa-solid fa-pen-to-square"
+                        />
+                      </Can>
+                    </div>
+                  </div>
                 );
               },
             },
@@ -224,72 +227,105 @@ export const Candidate = () => {
   if (error) return "An error has occurred: " + error.message;
   return (
     <>
-      <Dropdown
-        labelName="Language"
-        options={[{ id: 0, name: "All" }, ...languages]}
-        onChange={(e) => {
-          console.log("id ", e.target.value);
-          console.log(
-            [{ id: 0, name: "All" }, ...languages].filter(
-              (lan) => lan.id == e.target.value
-            )[0].name
-          );
-          setLanguage(
-            [{ id: 0, name: "All" }, ...languages].filter(
-              (lan) => lan.id == e.target.value
-            )[0].name
-          );
-        }}
-        hide={true}
-      />
-      <button type="button" onClick={() => setStageFilter(0)}>
-        All
-      </button>
-      <button type="button" onClick={() => setStageFilter(1)}>
-        stage1
-      </button>
-      <button type="button" onClick={() => setStageFilter(2)}>
-        stage2
-      </button>
-      <button type="button" onClick={() => setStageFilter(3)}>
-        stage3
-      </button>
-      <Dropdown
-        labelName="Remark"
-        options={remark}
-        onChange={(e) => {
-          setRemarkFilter(e.target.value);
-        }}
-        hide={true}
-      />
-
-      <input
-        type="date"
-        value={startDateFilter}
-        onChange={(e) => {
-          if (e.target.value > endDateFilter)
-            return alert("start-date can't greater than end-date");
-          setStartDateFilter(e.target.value);
-        }}
-      />
-      <input
-        type="date"
-        value={endDateFilter}
-        onChange={(e) => {
-          setEndDateFilter(e.target.value);
-        }}
-      />
-      <span>Count: {a?.length}</span>
       <div className="table-wrap">
-        <div className="table-wrap__head">
-          <div className="search-content">
-            {/* <input
-              type="text"
-              value={globalFilter || ""}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-              placeholder="  Search..."
-            /> */}
+        <div className="table-wrap__content">
+          <div className="custom-input">
+            <Dropdown
+              labelName="Language"
+              options={[{ id: 0, name: "All" }, ...languages]}
+              onChange={(e) => {
+                console.log("id ", e.target.value);
+                console.log(
+                  [{ id: 0, name: "All" }, ...languages].filter(
+                    (lan) => lan.id == e.target.value
+                  )[0].name
+                );
+                setLanguage(
+                  [{ id: 0, name: "All" }, ...languages].filter(
+                    (lan) => lan.id == e.target.value
+                  )[0].name
+                );
+              }}
+              hide={true}
+            />
           </div>
+          <div className="custom-input">
+            <Dropdown
+              labelName="Remark"
+              options={remark}
+              onChange={(e) => {
+                setRemarkFilter(e.target.value);
+              }}
+              hide={true}
+            />
+          </div>
+        </div>
+        <div className="table-wrap__content">
+          <div className="custom-input">
+            <Input
+              labelName="Start Date"
+              type="date"
+              value={startDateFilter}
+              onChange={(e) => {
+                if (e.target.value > endDateFilter)
+                  return alert("start-date can't greater than end-date");
+                setStartDateFilter(e.target.value);
+              }}
+            />
+          </div>
+          <div className="custom-input">
+            <Input
+              labelName="End Date"
+              type="date"
+              value={endDateFilter}
+              onChange={(e) => {
+                setEndDateFilter(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="table-wrap__head">
+          <div className="table-wrap__content">
+            <div className="custom-stage">
+              <Button
+                type="button"
+                onClick={() => setStageFilter(0)}
+                className="btn-primary txt-light"
+                text="All"
+              />
+            </div>
+            <div className="custom-stage">
+              <Button
+                type="button"
+                onClick={() => setStageFilter(1)}
+                className="btn-primary txt-light"
+                text="Stage One"
+              />
+            </div>
+            <div className="custom-stage">
+              <Button
+                type="button"
+                onClick={() => setStageFilter(2)}
+                className="btn-primary txt-light"
+                text="Stage Two"
+              />
+            </div>
+            <div className="custom-stage">
+              <Button
+                type="button"
+                onClick={() => setStageFilter(3)}
+                className="btn-primary txt-light"
+                text="Stage Three"
+              />
+            </div>
+            <div className="custom-input">
+              <p>
+                Candidate Count: <span className="badge">{a?.length}</span>
+              </p>
+            </div>
+          </div>
+        
         </div>
         <div className="table-wrap__main">
           {page.length > 0 ? (
@@ -322,7 +358,7 @@ export const Candidate = () => {
               </tbody>
             </table>
           ) : (
-            <div>No Candidate Found</div>
+            <div className="c-notfound">No Candidate Found.</div>
           )}
         </div>
         <div className="table-wrap__pagination">

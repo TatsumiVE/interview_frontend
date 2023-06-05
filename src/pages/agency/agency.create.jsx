@@ -55,6 +55,7 @@ export const AgencyCreate = () => {
                     createAgency();
                 }}
             >
+                <div className="input-group">
                 <Input
                     labelName="Name"
                     type="text"
@@ -64,10 +65,10 @@ export const AgencyCreate = () => {
                     errorMessage="*"
                 />
                 {error.name && <span className="txt-danger txt-ss">{error.name}</span>}
-                
+                </div>
                 <div className="button-group--user">
                     <Button type="submit" text="Create" className="txt-light btn-primary" />
-                    <ButtonLink type="button" className="btn-default" route={"/agency"} text="Cancel" linkText="txt-light txt-sm" />
+                    <ButtonLink type="button" className="btn-default cancel" route={"/agency"} text="Cancel" linkText="txt-light txt-sm" />
                 </div>
             </form>
         </div>

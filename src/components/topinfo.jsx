@@ -30,7 +30,7 @@ export const TopInfo = () => {
   return (
     <>
       <div className="topinfo-path">
-        <h1>Interview Management System</h1>
+        <h1>INTERVIEW MANAGEMENT SYSTEM</h1>
       </div>
       <div className="topinfo-userinfo">
         <div>
