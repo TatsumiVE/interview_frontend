@@ -11,7 +11,7 @@ export const Radio = ({ checked, labelName, value, name, onChange }) => {
           onChange={onChange}
         />
         {" " + labelName}
-      </label>u
+      </label>
     </div>
   );
 };

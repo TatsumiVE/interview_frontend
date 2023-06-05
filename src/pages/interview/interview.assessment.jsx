@@ -6,6 +6,7 @@ import { useState } from "react";
 import React from "react";
 import { useAuth } from "../../store/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/loader";
 export const InterviewAssessment = () => {
   const { state } = useLocation();
   const { candidateId, interviewerId } = state;
@@ -97,7 +98,7 @@ export const InterviewAssessment = () => {
   });
 
   if (assessmentIsLoading || topicsIsLoading || ratesIsLoading)
-    return "Loading...";
+    return <Loader />;
   if (assessmentIsError || topicsIsError || ratesIsError)
     return "Something went wrong";
   if (!assessment || !topics || !rates) return null;

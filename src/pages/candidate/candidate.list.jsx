@@ -163,32 +163,29 @@ export const Candidate = () => {
                 const interview = row.original.interview;
 
                 return (
-                  <div className="btn-group">
-                    <div className="custom-input">
-                      <Can permission={"candidateShow"}>
-                        <ButtonLink
-                          type="button"
-                          className="btn-info"
-                          route={`/candidates/${candidate.id}`}
-                          text="View"
-                          linkText="txt-light txt-sm"
-                          icon="fa-solid fa-eye"
-                        />
-                      </Can>
-                    </div>
-                    <div className="custom-input">
-                      <Can permission={"candidateUpdate"}>
-                        <ButtonLink
-                          type="button"
-                          className="btn-success"
-                          route={`/candidates/update/${candidate.id}`}
-                          text="Edit"
-                          linkText="txt-light txt-sm"
-                          icon="fa-solid fa-pen-to-square"
-                        />
-                      </Can>
-                    </div>
-                  </div>
+                  <>
+                    <Can permission={"getCandidateById"}>
+                      <ButtonLink
+                        type="button"
+                        className="btn-info"
+                        route={`/candidates/${candidate.id}`}
+                        text="View"
+                        linkText="txt-light txt-sm"
+                        icon="fa-solid fa-magnifying-glass"
+                      />
+                    </Can>
+                    &nbsp;
+                    <Can permission={"candidateUpdate"}>
+                      <ButtonLink
+                        type="button"
+                        className="btn-success"
+                        route={`/candidates/update/${candidate.id}`}
+                        text="Edit"
+                        linkText="txt-light txt-sm"
+                        icon="fa-solid fa-pen-to-square"
+                      />
+                    </Can>
+                  </>
                 );
               },
             },

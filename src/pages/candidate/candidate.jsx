@@ -50,9 +50,6 @@ export const CandidateDetails = () => {
           <NavLink to="stages" className={activeClassName}>
             STAGES
           </NavLink>
-          <NavLink to="interviews" className={activeClassName}>
-            INTERVIEWS
-          </NavLink>
         </div>
         <div className="c-main">
           <Outlet context={data} />

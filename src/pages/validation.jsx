@@ -15,8 +15,10 @@ const isValidPhoneNumber = (phoneNumber) => {
 };
 
 const isValidCVPathLink = (path) => {
-  const regex = /^(http|https):\/\/(www\.)?example\.com\/cv\/[a-zA-Z0-9_-]+$/;
-  return regex.test(path);
+  const urlPattern =
+    /^(https?|ftp):\/\/([\w.-]+)(\.[\w]+)+(\/[\w\.-]*)*(\?[\w\.-]+=[\w\.-]+(&[\w\.-]+=[\w\.-]+)*)?$/;
+
+  return urlPattern.test(path);
 };
 
 const isValidAge = (dateOfBirth) => {
@@ -52,6 +54,19 @@ const isValidGender = (gender) => {
   return gender !== "";
 };
 
+const isValidDate = (date) => {
+  const providedDate = new Date(date);
+
+  return !isNaN(providedDate.getTime());
+};
+
+const isValidTime = (time) => {
+  const timeRegex = /^([01]\d|2[0-3]):?([0-5]\d)$/;
+  return timeRegex.test(time);
+}
+
+
+
 export default {
   isValidEmail,
   isValidPhoneNumber,
@@ -63,4 +78,6 @@ export default {
   isValidStartingDate,
   isValidGender,
   isValidSelect,
+  isValidDate,
+  isValidTime,
 };

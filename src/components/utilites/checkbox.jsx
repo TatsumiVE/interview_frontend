@@ -11,7 +11,7 @@ export const InputCheckbox = ({
   return (
     <div className="checkbox-input">
       <label> 
-      {" " + labelName}      
+         
         <input
           type={type}
           name={name}
@@ -19,7 +19,7 @@ export const InputCheckbox = ({
           checked={checked}
           onChange={onChange}
         />  
-        
+         {" " + labelName}  
       </label>
     </div>
   );

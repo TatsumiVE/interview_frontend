@@ -6,15 +6,20 @@ import { Dropdown, Button, Input, ButtonLink } from "../../components";
 import { useAuth } from "../../store/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Check from "../validation.jsx";
+
 export const InterviewCreate = () => {
   const { state } = useLocation();
   const { id, name, stageId } = state;
   const { successMessage } = state || {};
 
+  const [formActive, setFormActive] = useState(false);
   const [data, setData] = useState([{}]);
   const navigate = useNavigate();
   const [interviewer_id, setInterviewers] = useState([]);
   const { token } = useAuth();
+
+
   const interviewStages = [
     { id: 1, name: "First Interview" },
     { id: 2, name: "Technical Interview" },
@@ -29,6 +34,7 @@ export const InterviewCreate = () => {
     interview_date: "",
     interview_time: "",
     location: "",
+    interviewer_id: "",
   });
 
   // useEffect(() => {
@@ -38,6 +44,7 @@ export const InterviewCreate = () => {
   // }, [successMessage]);
 
   const createInterview = async (formData) => {
+ 
     const response = await axios.post(
       "http://localhost:8000/api/interview-process",
       {
@@ -51,6 +58,7 @@ export const InterviewCreate = () => {
       }
     );
     return response;
+   
   };
 
   const interviewProcess = useMutation({
@@ -59,6 +67,7 @@ export const InterviewCreate = () => {
     onSuccess: () => {
       navigate("/interview");
     },
+   
   });
 
   const handleSubmit = (e) => {
@@ -131,12 +140,18 @@ export const InterviewCreate = () => {
         <div className="card-min__header">
           <h2>Interview Create Form</h2>
         </div>
-        <form onSubmit={handleSubmit} className="card-min__form">
+        <form
+          onSubmit={handleSubmit}
+          className="card-min__form"
+          onBlur={() => {
+            setFormActive(true);
+          }}
+        >
           <div className="input-name">
             <span className="txt-default">Candidate Name: </span>
             {name}
           </div>
-        
+
           <div className="input-group">
             <Input
               labelName="Date"
@@ -148,6 +163,12 @@ export const InterviewCreate = () => {
               }
               errorMessage="*"
             />
+            
+            {!Check.isValidDate(formData.interview_date) && formActive ? (
+              <span className="txt-danger validated-error">
+                Date format is invalid !
+              </span>
+            ) : null}
           </div>
           <div className="input-group">
             <Input
@@ -160,6 +181,11 @@ export const InterviewCreate = () => {
               }
               errorMessage="*"
             />
+            {!Check.isValidTime(formData.interview_time) && formActive ? (
+              <span className="txt-danger validated-error">
+                Time format is invalid !
+              </span>
+            ) : null}
           </div>
 
           <div className="input-group">
@@ -188,6 +214,11 @@ export const InterviewCreate = () => {
               }
               errorMessage="*"
             />
+            {!Check.isValidSelect(formData.location) && formActive ? (
+              <span className="txt-danger validated-error">
+                Location field is required!
+              </span>
+            ) : null}
           </div>
           <div className="btn-plus">
             {data.length < 4 && (
@@ -205,18 +236,27 @@ export const InterviewCreate = () => {
             <div key={index} className="card-input--box">
               <div className="card-input--first">
                 <div className="card-input--language">
-                  <Dropdown
-                    labelName="Interviewers"
-                    options={interviewer_id}
-                    selectedValue={formData.interviewerId}
-                    onChange={(e) => {
-                      const updatedData = [...data];
-                      updatedData[index].interviewer_id = e.target.value;
-                      setData(updatedData);
-                    }}
-                    errorMessage="*"
-                  />
+                  <div className="input-group">
+                    <Dropdown
+                      labelName="Interviewers"
+                      options={interviewer_id}
+                      selectedValue={formData.interviewerId}
+                      onChange={(e) => {
+                        const updatedData = [...data];
+                        updatedData[index].interviewer_id = e.target.value;
+                        setData(updatedData);
+                      }}
+                      errorMessage="*"
+                    />
+                    {!Check.isValidSelect(formData.interviewer_id) &&
+                    formActive ? (
+                      <div className="txt-danger validated-error error-input">
+                        Interviewer field is required!
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
+
                 <div className="btn-minus">
                   {data.length > 1 && (
                     <Button

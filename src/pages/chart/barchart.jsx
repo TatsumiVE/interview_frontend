@@ -86,7 +86,10 @@ export const BarChart = () => {
     },
   };
 
-  return (   
-      <Bar data={data} options={options} />   
+  return (
+    <>
+      <Bar data={data} options={options} />
+      <h2 className="txt-primary barchart">Candidates List By Languages</h2>
+    </>
   );
 };

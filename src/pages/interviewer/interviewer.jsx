@@ -7,9 +7,11 @@ import { ButtonLink } from "../../components";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../../components/loader";
 import Can from "../../components/utilites/can";
+import { getUser } from "../../services/userService";
 
 export const Employee = () => {
   const [interviewers, setInterviewers] = useState([]);
+  const [user, setUser] = useState([]);
   const { token } = useAuth();
   const location = useLocation();
   const { successMessage } = location.state || {};
@@ -26,6 +28,24 @@ export const Employee = () => {
     );
     return response.data.data;
   };
+
+  const getUsers = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.get("http://localhost:8000/api/users", config);
+    return response.data.data;
+  };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const data = await getUsers();
+      setUser(data);
+    };
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     const fetchInterviewers = async () => {
@@ -56,16 +76,20 @@ export const Employee = () => {
         Header: "Action",
         Cell: ({ row }) => (
           <div>
-            <Can permission={"userCreate"}>
-              <ButtonLink
-                type="button"
-                className="btn-info"
-                route={`user/create/${row.original.id}`}
-                linkText="txt-light txt-sm"
-                text="Create Role"
-                icon="fa-solid fa-plus"
-              />
-            </Can>
+            {user?.map((i) => {
+              return i.interviewer_id.id == row.original.id ? null : (
+                <Can permission={"userCreate"}>
+                  <ButtonLink
+                    type="button"
+                    className="btn-info"
+                    route={`user/create/${row.original.id}`}
+                    linkText="txt-light txt-sm"
+                    text="Create Role"
+                    icon="fa-solid fa-plus"
+                  />
+                </Can>
+              );
+            })}
             &nbsp;
             <Can permission={"interviewerUpdate"}>
               <ButtonLink
@@ -117,7 +141,6 @@ export const Employee = () => {
         autoClose={5000}
         className="ToastContainer"
       />
-
       <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">
@@ -128,6 +151,7 @@ export const Employee = () => {
               placeholder="Search..."
             />
           </div>
+
           <Can permission={"interviewerCreate"}>
             <div className="create-content">
               <ButtonLink

@@ -65,25 +65,30 @@ export const InterviewList = () => {
     const lastInterview = interview[interview.length - 1] || {};
     const lastStage = lastInterview.interview_stage?.stage_name || 0;
 
+    const assessments = lastInterview.interview_assign.map((assign) => ({
+      userId: assign.interviewer_id,
+      grade: assign.remarks[0]?.grade,
+    }));
+
+    const [assessment] = assessments?.filter((a) => a.userId == user.id);
+    const hasAllGrades = assessments?.reduce(
+      (a, b) => {
+        return a?.grade && b?.grade ? { grade: true } : { grade: false };
+      },
+      {
+        grade: true,
+      }
+    ).grade;
+
     const canCreate = !(
       (lastStage && !lastInterview.interview_result) ||
       lastStage > 2
     );
 
-    const canAssessment =
-      lastStage &&
-      lastInterview.interview_assign.length > 0 &&
-      !lastInterview.interview_result &&
-      !lastInterview.interview_assign.some(
-        (assign) => assign.remarks.length > 0
-      );
+    const canAssessment = lastStage && !assessment?.grade;
 
     const canResult =
-      lastStage &&
-      !lastInterview.interview_result &&
-      lastInterview.interview_assign.some(
-        (assign) => assign.remarks.length > 0
-      );
+      lastStage && hasAllGrades && !lastInterview.interview_result;
 
     return {
       canCreate,
@@ -137,7 +142,6 @@ export const InterviewList = () => {
 
   const [a, b] = useState();
   useEffect(() => {
-    console.log(stageFilter, "stagee11111111");
     b(
       (language === "All"
         ? data
@@ -153,7 +157,6 @@ export const InterviewList = () => {
           return startDateFilter <= date && date <= endDateFilter;
         })
         ?.filter(({ interview }) => {
-          console.log(stageFilter, "stageeeeeeeee");
           return stageFilter === 0
             ? true
             : stageFilter ===
@@ -206,6 +209,12 @@ export const InterviewList = () => {
                 "-",
             },
             {
+              Header: "Interview Time",
+              Cell: ({ row }) =>
+                row.original.interview[0]?.interview_stage?.interview_time ||
+                "-",
+            },
+            {
               Header: "Applied Position",
               Cell: ({ row }) => row.original.candidate.position.name,
             },
@@ -221,6 +230,7 @@ export const InterviewList = () => {
               Cell: ({ row }) => {
                 const candidate = row.original.candidate;
                 const interview = row.original.interview;
+
                 return (
                   <>
                     <Can permission={"interviewProcessCreate"}>
@@ -244,26 +254,33 @@ export const InterviewList = () => {
                       </Link>
                     </Can>
                     &nbsp;
-                    <Can permission={"remarkAssessmentCreate"}>
-                      <Link
-                        to={`assessment`}
-                        state={{
-                          candidateId: candidate.id,
-                          interviewerId: user.id,
-                        }}
-                        style={{
-                          pointerEvents: check(interview).canAssessment
-                            ? "all"
-                            : "none",
-                          background: check(interview).canAssessment
-                            ? "rgb(4, 96, 4)"
-                            : "rgb(205, 30, 30)",
-                        }}
-                        className="link-process"
-                      >
-                        Assessment
-                      </Link>
-                    </Can>
+                    {interview?.map((i) => {
+                      return i.interview_assign?.map((assign) => {
+                        return assign.interviewer_id == user.id &&
+                          assign.remarks.length < 1 ? (
+                          <Can permission={"remarkAssessmentCreate"}>
+                            <Link
+                              to={`assessment`}
+                              state={{
+                                candidateId: candidate.id,
+                                interviewerId: user.id,
+                              }}
+                              style={{
+                                pointerEvents: check(interview).canAssessment
+                                  ? "all"
+                                  : "none",
+                                background: check(interview).canAssessment
+                                ? "rgb(4, 96, 4)"
+                                : "rgb(205, 30, 30)",
+                              }}
+                              className="link-process"
+                            >
+                              Assessment
+                            </Link>
+                          </Can>
+                        ) : null;
+                      });
+                    })}
                     &nbsp;
                     <Can permission={"interviewSummarize"}>
                       <Link
@@ -286,6 +303,7 @@ export const InterviewList = () => {
                         Result
                       </Link>
                     </Can>
+                   
                   </>
                 );
               },

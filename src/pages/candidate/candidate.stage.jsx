@@ -86,8 +86,11 @@ export const CStages = () => {
               <div className="field">
                 <p className="label">Result</p>
                 <p>
-                  {currentStage.interview_result ??
-                    "Interview result processing.... "}
+                 
+                  { currentStage.interview_result == 1
+                    ? "Pass"
+                    : "Fail"
+                   }
                 </p>
               </div>
               <div className="field">
