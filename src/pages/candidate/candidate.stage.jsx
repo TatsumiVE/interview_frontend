@@ -124,11 +124,11 @@ export const CStages = () => {
               <div className="field">
                 <p className="label">Result</p>
                 <p>
-                 
-                  { currentStage.interview_result == 1
+                  {currentStage.interview_result == 1
                     ? "Pass"
-                    : "Fail"
-                   }
+                    : currentStage.interview_result == 2
+                    ? "Fail"
+                    : "Pending.."}
                 </p>
               </div>
               <div className="field">

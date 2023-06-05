@@ -1,21 +1,19 @@
-.btn-plus{    
-    display: flex;
-    justify-content: end;
-   }
-
-.interviewer-group{
-    display: flex;
-    flex-direction: row;
-   
-}
-.btn-minus{   
-    button{
-        margin: 10px 0;     
-    }      
-   
+.btn-plus {
+  display: flex;
+  justify-content: end;
 }
 
-.error-input{
-    position: relative;
-    margin-top:10px;
+.interviewer-group {
+  display: flex;
+  flex-direction: row;
+}
+.btn-minus {
+  button {
+    margin: 10px 0;
+  }
+}
+
+.error-input {
+  position: relative;
+  margin-top: 10px;
 }

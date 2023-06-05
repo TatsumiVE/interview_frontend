@@ -82,7 +82,7 @@ export const InterviewResult = () => {
             />
             {errors?.interview_result_date && (
               <span className="txt-danger validated-error">
-                {errors?.interview_result_date[0]}
+                {errors?.interview_result_date}
               </span>
             )}
           </div>
@@ -95,9 +95,9 @@ export const InterviewResult = () => {
               onChange={(e) => setInterviewSummarize(e.target.value)}
               errorMessage="*"
             />
-            {errors?.interview_summarize[0] && (
+            {errors?.interview_summarize && (
               <span className="txt-danger validated-error">
-                {errors?.interview_summarize[0]}
+                {errors?.interview_summarize}
               </span>
             )}
           </div>
@@ -124,9 +124,9 @@ export const InterviewResult = () => {
 
             <span className="txt-danger star">*</span>
 
-            {errors?.interview_result[0] && (
-              <span className="txt-danger validated-error">
-                {errors?.interview_result[0]}
+            {errors?.interview_result && (
+              <span className="txt-danger validated-error interview_result">
+                {errors?.interview_result}
               </span>
             )}
           </div>
@@ -140,9 +140,9 @@ export const InterviewResult = () => {
               onChange={(e) => setRecordPath(e.target.value)}
               errorMessage="*"
             />
-            {errors?.record_path[0] && (
+            {errors?.record_path && (
               <span className="txt-danger validated-error">
-                {errors?.record_path[0]}
+                {errors?.record_path}
               </span>
             )}
           </div>

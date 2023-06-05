@@ -129,10 +129,9 @@ export const InterviewCreate = () => {
       />
       <div className="card-min">
         <div className="card-min__header">
-          <h2>Interview Create</h2>
+          <h2>Interview Create Form</h2>
         </div>
         <form onSubmit={handleSubmit} className="card-min__form">
-          <p>Name : {name}</p>
           <br />
           <div className="input-group">
             <Input
@@ -146,9 +145,9 @@ export const InterviewCreate = () => {
               errorMessage="*"
             />
 
-            {errors?.interview_date[0] && (
+            {errors?.interview_date && (
               <span className="txt-danger validated-error">
-                {errors?.interview_date[0]}
+                {errors?.interview_date}
               </span>
             )}
           </div>
@@ -165,7 +164,7 @@ export const InterviewCreate = () => {
             />
             {errors?.interview_time && (
               <span className="txt-danger validated-error">
-                {errors?.interview_time[0]}
+                {errors?.interview_time}
               </span>
             )}
           </div>
@@ -194,9 +193,9 @@ export const InterviewCreate = () => {
               }
               errorMessage="*"
             />
-            {errors?.location[0] && (
+            {errors?.location && (
               <span className="txt-danger validated-error">
-                {errors?.location[0]}
+                {errors?.location}
               </span>
             )}
           </div>
@@ -227,9 +226,9 @@ export const InterviewCreate = () => {
                         setData(updatedData);
                       }}
                     />
-                    {errors?.interviewer_id[0] && (
-                      <span className="txt-danger validated-error">
-                        {errors?.interviewer_id[0]}
+                    {errors?.interviewer_id && (
+                      <span className="txt-danger validated-error interviewer">
+                        {errors?.interviewer_id}
                       </span>
                     )}
                   </div>
@@ -255,7 +254,7 @@ export const InterviewCreate = () => {
             ></Button>
             <ButtonLink
               type="button"
-              className="btn-default"
+              className="btn-default cancel"
               route={"/interview"}
               text="Cancel"
               linkText="txt-light txt-sm"

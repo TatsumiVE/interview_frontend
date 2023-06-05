@@ -15,6 +15,7 @@ export const InterviewAssessment = () => {
   const [comment, setComment] = useState("");
   const [grade, setGrade] = useState("");
   const { token } = useAuth();
+  const [errors, setErrors] = useState();
   const navigate = useNavigate();
   const [formActive, setFormActive] = useState(false);
   const grades = [
@@ -24,9 +25,9 @@ export const InterviewAssessment = () => {
   ];
 
   const [formData, setFormData] = useState({
-   rate_id:"",
-   comment:"",
-   grade:"",
+    rate_id: "",
+    comment: "",
+    grade: "",
   });
 
   const getAssessmentInfo = async () => {
@@ -104,6 +105,11 @@ export const InterviewAssessment = () => {
     onSuccess: () => {
       navigate("/interview");
     },
+    onError: (error) => {
+      const { response } = error;
+      console.log(response.data.data);
+      setErrors(response.data.data);
+    },
   });
 
   if (assessmentIsLoading || topicsIsLoading || ratesIsLoading)
@@ -150,9 +156,13 @@ export const InterviewAssessment = () => {
       <div className="card__header">
         <h2>Interview Assessment Form</h2>
       </div>
-      <form onSubmit={createInterviewAssessment} className="card__form" onBlur={() => {
-            setFormActive(true);
-          }}>
+      <form
+        onSubmit={createInterviewAssessment}
+        className="card__form"
+        onBlur={() => {
+          setFormActive(true);
+        }}
+      >
         <div className="card__txt">
           <div>
             <h3 className="txt-default">Candidate Name</h3>
@@ -207,11 +217,9 @@ export const InterviewAssessment = () => {
                 </div>
               </React.Fragment>
             ))}
-             {!Check.isValidRate(formData.rate_id) && formActive ? (
-              <span className="txt-danger validated-error error-input">
-               Rate field is required !
-              </span>
-            ) : null}
+            {errors?.data && (
+              <span className="txt-danger validated-error">{errors?.data}</span>
+            )}
           </div>
         </div>
         <div className="card__txt">
@@ -230,21 +238,23 @@ export const InterviewAssessment = () => {
         </div>
 
         <div className="comment-box">
-          <label className="comment-label">
-            Comment <span className="txt-danger">*</span>
-          </label>
-          <textarea
-            name="comment"
-            className="comment-box"
-            placeholder=" Enter Your Comment..."
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          ></textarea>
-            {!Check.isValidComment(formData.comment) && formActive ? (
-              <span className="txt-danger validated-error error-input">
-               Comment field is required !
+          <div className="input-group">
+            <label className="comment-label">
+              Comment <span className="txt-danger">*</span>
+            </label>
+            <textarea
+              name="comment"
+              className="comment-box"
+              placeholder=" Enter Your Comment..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            ></textarea>
+            {errors?.comment && (
+              <span className="txt-danger validated-error">
+                {errors?.comment}
               </span>
-            ) : null}
+            )}
+          </div>
         </div>
         <div className="input-group">
           <Dropdown
@@ -254,11 +264,9 @@ export const InterviewAssessment = () => {
             onChange={(e) => setGrade(e.target.value)}
             errorMessage="*"
           />
-          {!Check.isValidSelect(formData.grade) && formActive ? (
-              <span className="txt-danger validated-error error-input">
-               Grade field is required !
-              </span>
-            ) : null}
+          {errors?.grade && (
+            <span className="txt-danger validated-error">{errors?.grade}</span>
+          )}
         </div>
 
         <div className="button-group--user">
