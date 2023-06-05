@@ -24,6 +24,7 @@ export const CandidateCreate = () => {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [formActive, setFormActive] = useState(false);
+  const [experienceValid, setExperienceValid] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -133,6 +134,23 @@ export const CandidateCreate = () => {
   if (positionError) return `An error has occurred: ${positionError.message}`;
   if (isAgencyError) return "Something went wrong...";
   if (agencyError) return `An error has occurred: ${agencyError.message}`;
+  const isAllValid = () => {
+    return (
+      Check.isValidText(formData.name) &&
+      Check.isValidEmail(formData.email) &&
+      Check.isValidPhoneNumber(formData.phone_number) &&
+      Check.isValidCVPathLink(formData.cv_path) &&
+      Check.isValidAge(formData.date_of_birth) &&
+      Check.isValidAddress(formData.residential_address) &&
+      Check.isValidSelect(formData.position_id) &&
+      Check.isValidSelect(formData.agency_id) &&
+      Check.isValidSalary(formData.expected_salary) &&
+      Check.isValidSalary(formData.last_salary) &&
+      Check.isValidStartingDate(formData.earliest_starting_date) &&
+      Check.isValidGender(formData.gender) &&
+      experienceValid
+    );
+  };
   return (
     <>
       <div className="card">
@@ -427,7 +445,12 @@ export const CandidateCreate = () => {
                 <div className="card-language">
                   <Dropdown
                     labelName="Language"
-                    options={languageList}
+                    options={languageList.map((lan) => ({
+                      ...lan,
+                      disabled: !!data.filter(
+                        (d) => d.devlanguage_id == lan.id
+                      )[0],
+                    }))}
                     onChange={(e) => {
                       const updatedData = [...data];
                       updatedData[index].devlanguage_id = e.target.value;
@@ -451,30 +474,51 @@ export const CandidateCreate = () => {
                     Experience <span className="txt-danger">*</span>
                   </label>
                   <div className="experience-group">
-                    <Input
-                      labelName=""
-                      name="year"
-                      type="number"
-                      placeholder=" Enter Year..."
-                      value={row.year}
-                      onChange={(e) => {
-                        const updatedData = [...data];
-                        updatedData[index].year = e.target.value;
-                        setData(updatedData);
-                      }}
-                    />
-                    <Input
-                      labelName=""
-                      name="month"
-                      type="number"
-                      placeholder=" Enter Month..."
-                      value={row.month}
-                      onChange={(e) => {
-                        const updatedData = [...data];
-                        updatedData[index].month = e.target.value;
-                        setData(updatedData);
-                      }}
-                    />
+                    <div className="input-group">
+                      <Input
+                        labelName=""
+                        name="year"
+                        type="number"
+                        placeholder=" Enter Year..."
+                        value={row.year}
+                        onChange={(e) => {
+                          const updatedData = [...data];
+                          updatedData[index].year = e.target.value;
+                          setData(updatedData);
+                          const sum =
+                            parseInt(e.target.value) + parseInt(row.month);
+                          if (sum < 6) {
+                            setExperienceValid(false);
+                          } else {
+                            setExperienceValid(true);
+                          }
+                        }}
+                      />
+                      <Input
+                        labelName=""
+                        name="month"
+                        type="number"
+                        placeholder=" Enter Month..."
+                        value={row.month}
+                        onChange={(e) => {
+                          const updatedData = [...data];
+                          updatedData[index].month = e.target.value;
+                          setData(updatedData);
+                          const sum =
+                            parseInt(row.year) + parseInt(e.target.value);
+                          if (sum <= 6) {
+                            setExperienceValid(false);
+                          } else {
+                            setExperienceValid(true);
+                          }
+                        }}
+                      />
+                      {experienceValid ? null : (
+                        <span className="txt-danger validated-error">
+                          experience at least 6 months
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -484,6 +528,7 @@ export const CandidateCreate = () => {
             <Button
               type="submit"
               text="Create"
+              disabled={!isAllValid()}
               className="txt-light btn-primary"
             />
             <ButtonLink

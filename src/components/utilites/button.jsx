@@ -1,16 +1,17 @@
 import PropTypes from "prop-types";
 
-export const Button = ({ type, className, onClick, text}) => {
+export const Button = ({ type, className, onClick, text, disabled }) => {
   return (
     <>
-    <button
-      type={type ? type : "button"}
-      className={`btn ${className}`}
-      onClick={onClick}
-    >
-      {text}
-    </button>
-  </>
+      <button
+        type={type ? type : "button"}
+        className={`btn ${className}`}
+        onClick={onClick}
+        disabled={disabled}
+      >
+        {text}
+      </button>
+    </>
   );
 };
 
