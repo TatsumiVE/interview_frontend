@@ -15,6 +15,7 @@
 - Copy **.env.example** file to **.env** and edit database credentials there(**cp .env.example .env**)
 - Run **composer install**
 - Change **LOG_CHANNEL**  stack to web_daily_error in **.env**
+- Change **DB_DATABASE** name to your database name where you wish to migrate tables 
 - Run **php artisan key:generate**
 - Run **php artisan config:clear**
 - Run **php artisan cache:clear**
