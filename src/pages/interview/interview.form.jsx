@@ -10,7 +10,7 @@ export const InterviewCreate = () => {
   const { state } = useLocation();
   const { id, name, stageId } = state;
   const { successMessage } = state || {};
-
+  const [errors, setErrors] = useState();
   const [data, setData] = useState([{}]);
   const navigate = useNavigate();
   const [interviewer_id, setInterviewers] = useState([]);
@@ -30,12 +30,6 @@ export const InterviewCreate = () => {
     interview_time: "",
     location: "",
   });
-
-  // useEffect(() => {
-  //   if (successMessage) {
-  //     toast.success(successMessage);
-  //   }
-  // }, [successMessage]);
 
   const createInterview = async (formData) => {
     const response = await axios.post(
@@ -58,6 +52,12 @@ export const InterviewCreate = () => {
     mutationFn: createInterview,
     onSuccess: () => {
       navigate("/interview");
+    },
+    onError: (error) => {
+      const { response } = error;
+      console.log(response.data.data.interview_date[0]);
+
+      setErrors(response.data.data);
     },
   });
 
@@ -133,51 +133,64 @@ export const InterviewCreate = () => {
         </div>
         <form onSubmit={handleSubmit} className="card-min__form">
           <p>{name}</p>
-          <Input
-            labelName="Date"
-            type="date"
-            name="interview_date"
-            value={formData.interview_date}
-            onChange={(e) =>
-              setFormData({ ...formData, interview_date: e.target.value })
-            }
-            errorMessage="*"
-          />
+          <div className="input-group">
+            <Input
+              labelName="Date"
+              type="date"
+              name="interview_date"
+              value={formData.interview_date}
+              onChange={(e) =>
+                setFormData({ ...formData, interview_date: e.target.value })
+              }
+              errorMessage="*"
+            />
 
-          <Input
-            labelName="Time"
-            type="time"
-            name="time"
-            value={formData.interview_time}
-            onChange={(e) =>
-              setFormData({ ...formData, interview_time: e.target.value })
-            }
-            errorMessage="*"
-          />
-          <Dropdown
-            labelName="Interview Stages"
-            options={interviewStages.map((stage) => ({
-              id: stage.id,
-              name: stage.name,
-              selected: stage.id == selectedStageId,
-              disabled: stage.id != selectedStageId,
-            }))}
-            hide={true}
-            selectedValue={selectedStageId.toString()}
-            className="custom-dropdown"
-            errorMessage="*"
-          />
-
-          <Dropdown
-            labelName="Location"
-            options={location}
-            selectedValue={formData.location.toString()}
-            onChange={(e) =>
-              setFormData({ ...formData, location: e.target.value })
-            }
-            errorMessage="*"
-          />
-
+            {errors.interview_date[0] && (
+              <span>{errors.interview_date[0]}</span>
+            )}
+          </div>
+          <div className="input-group">
+            <Input
+              labelName="Time"
+              type="time"
+              name="time"
+              value={formData.interview_time}
+              onChange={(e) =>
+                setFormData({ ...formData, interview_time: e.target.value })
+              }
+              errorMessage="*"
+            />
+            {errors.interview_time[0] && (
+              <span>{errors.interview_time[0]}</span>
+            )}
+          </div>
+          <div className="input-group">
+            <Dropdown
+              labelName="Interview Stages"
+              options={interviewStages.map((stage) => ({
+                id: stage.id,
+                name: stage.name,
+                selected: stage.id == selectedStageId,
+                disabled: stage.id != selectedStageId,
+              }))}
+              hide={true}
+              selectedValue={selectedStageId.toString()}
+              className="custom-dropdown"
+              errorMessage="*"
+            />
+          </div>
+          <div className="input-group">
+            <Dropdown
+              labelName="Location"
+              options={location}
+              selectedValue={formData.location.toString()}
+              onChange={(e) =>
+                setFormData({ ...formData, location: e.target.value })
+              }
+              errorMessage="*"
+            />
+            {errors.location[0] && <span>{errors.location[0]}</span>}
+          </div>
           <div className="btn-plus">
             {data.length < 4 && (
               <Button
@@ -194,16 +207,21 @@ export const InterviewCreate = () => {
             <div key={index} className="card-input--box">
               <div className="card-input--first">
                 <div className="card-input--language">
-                  <Dropdown
-                    labelName="Interviewers"
-                    options={interviewer_id}
-                    selectedValue={formData.interviewerId}
-                    onChange={(e) => {
-                      const updatedData = [...data];
-                      updatedData[index].interviewer_id = e.target.value;
-                      setData(updatedData);
-                    }}
-                  />
+                  <div className="input-group">
+                    <Dropdown
+                      labelName="Interviewers"
+                      options={interviewer_id}
+                      selectedValue={formData.interviewerId}
+                      onChange={(e) => {
+                        const updatedData = [...data];
+                        updatedData[index].interviewer_id = e.target.value;
+                        setData(updatedData);
+                      }}
+                    />
+                    {errors.interviewer_id[0] && (
+                      <span>{errors.interviewer_id[0]}</span>
+                    )}
+                  </div>
                 </div>
                 <div className="card-input--btnMinus">
                   {data.length > 1 && (

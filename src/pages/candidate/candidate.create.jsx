@@ -146,7 +146,6 @@ export const CandidateCreate = () => {
       Check.isValidSelect(formData.agency_id) &&
       Check.isValidSalary(formData.expected_salary) &&
       Check.isValidSalary(formData.last_salary) &&
-      Check.isValidStartingDate(formData.earliest_starting_date) &&
       Check.isValidGender(formData.gender) &&
       experienceValid
     );
