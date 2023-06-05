@@ -48,7 +48,7 @@ export const Candidate = () => {
     return response.data.data;
   };
 
-  const [a, b] = useState();
+
 
   const { data: languages } = useQuery(["get", "languages"], () =>
     languageService.getAll(token)
@@ -59,6 +59,7 @@ export const Candidate = () => {
     queryFn: getCandidates,
   });
 
+  const [a, b] = useState();
   useEffect(() => {
     b(
       (language === "All"
@@ -77,29 +78,11 @@ export const Candidate = () => {
         ?.filter(({ interview }) => {
           return stageFilter === 0
             ? true
-            : stageFilter === interview[0]?.interview_stage.stage_name;
-        })
-
-        ?.filter(({ interview }) => {
-          return interview[0]?.interview_assign
-            .map((interview_assign) => {
-              return remarkFilter == 0
-                ? true
-                : remarkFilter == interview_assign.remarks[0]?.grade;
-            })
-            .reduce((previous, current) => {
-              return previous || current;
-            }, false);
+            : stageFilter ===
+                interview[interview.length - 1]?.interview_stage.stage_name;
         })
     );
-  }, [
-    data,
-    startDateFilter,
-    endDateFilter,
-    language,
-    stageFilter,
-    remarkFilter,
-  ]);
+  }, [data, startDateFilter, endDateFilter, language, stageFilter]);
   const columns = useMemo(
     () =>
       a
