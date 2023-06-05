@@ -198,6 +198,12 @@ export const InterviewList = () => {
                 "-",
             },
             {
+              Header: "Interview Time",
+              Cell: ({ row }) =>
+                row.original.interview[0]?.interview_stage?.interview_time ||
+                "-",
+            },
+            {
               Header: "Applied Position",
               Cell: ({ row }) => row.original.candidate.position_id,
             },
@@ -213,6 +219,7 @@ export const InterviewList = () => {
               Cell: ({ row }) => {
                 const candidate = row.original.candidate;
                 const interview = row.original.interview;
+
                 return (
                   <>
                     <Can permission={"interviewProcessCreate"}>
@@ -235,25 +242,32 @@ export const InterviewList = () => {
                       </Link>
                     </Can>
                     &nbsp;
-                    <Can permission={"remarkAssessmentCreate"}>
-                      <Link
-                        to={`assessment`}
-                        state={{
-                          candidateId: candidate.id,
-                          interviewerId: user.id,
-                        }}
-                        style={{
-                          pointerEvents: check(interview).canAssessment
-                            ? "all"
-                            : "none",
-                          background: check(interview).canAssessment
-                            ? "green"
-                            : "red",
-                        }}
-                      >
-                        Assessment
-                      </Link>
-                    </Can>
+                    {interview?.map((i) => {
+                      return i.interview_assign?.map((assign) => {
+                        return assign.interviewer_id == user.id &&
+                          assign.remarks.length < 1 ? (
+                          <Can permission={"remarkAssessmentCreate"}>
+                            <Link
+                              to={`assessment`}
+                              state={{
+                                candidateId: candidate.id,
+                                interviewerId: user.id,
+                              }}
+                              style={{
+                                pointerEvents: check(interview).canAssessment
+                                  ? "all"
+                                  : "none",
+                                background: check(interview).canAssessment
+                                  ? "green"
+                                  : "red",
+                              }}
+                            >
+                              Assessment
+                            </Link>
+                          </Can>
+                        ) : null;
+                      });
+                    })}
                     <Can permission={"interviewSummarize"}>
                       <Link
                         to={`result`}
@@ -284,7 +298,7 @@ export const InterviewList = () => {
                         Terminate
                       </button>
                     </Can>
-                    <Can permission={"candidateShow"}>
+                    <Can permission={"getCandidateById"}>
                       <ButtonLink
                         type="button"
                         className="btn-info"

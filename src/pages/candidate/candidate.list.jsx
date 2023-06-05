@@ -164,7 +164,7 @@ export const Candidate = () => {
 
                 return (
                   <>
-                    <Can permission={"candidateShow"}>
+                    <Can permission={"getCandidateById"}>
                       <ButtonLink
                         type="button"
                         className="btn-info"
