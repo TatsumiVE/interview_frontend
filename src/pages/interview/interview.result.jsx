@@ -11,29 +11,19 @@ import { useAuth } from "../../store/AuthContext";
 import { useMutation } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
-
 export const InterviewResult = () => {
   const [interview_result_date, setInterviewResultDate] = useState(
     new Date().toISOString().slice(0, 10)
   );
   const [record_path, setRecordPath] = useState("");
-  const [interview_result, setResult] = useState("1");
+  const [interview_result, setResult] = useState();
   const [interview_summarize, setInterviewSummarize] = useState("");
   const { token } = useAuth();
+  const [errors, setErrors] = useState();
   const { state } = useLocation();
   const navigate = useNavigate();
 
-
   const { candidateId, interviewId, candidateName } = state;
-
-  // const [formData, setFormData] = useState({
-  //   interview_result_date:"",
-  //   interview_summarize:"",
-  //   result:"",
-  //   record_path:"",
-  
-  // });
 
   const createInterviewResult = async () => {
     const response = await axios.post(
@@ -58,6 +48,11 @@ export const InterviewResult = () => {
     onSuccess: () => {
       navigate("/interview");
     },
+    onError: (error) => {
+      const { response } = error;
+      setErrors(response.data.data);
+      console.log(response.data.data);
+    },
   });
 
   const handleSubmit = (e) => {
@@ -71,8 +66,8 @@ export const InterviewResult = () => {
         <h2>Interview Result Form</h2>
       </div>
       <div className="form-container">
-        <form onSubmit={handleSubmit} className="card-min__form"  >
-          <div className="input-name">  
+        <form onSubmit={handleSubmit} className="card-min__form">
+          <div className="input-name">
             <span className="txt-default">Candidate Name: </span>
             {candidateName}
           </div>
@@ -85,7 +80,11 @@ export const InterviewResult = () => {
               onChange={(e) => setInterviewResultDate(e.target.value)}
               errorMessage="*"
             />
-           
+            {errors?.interview_result_date && (
+              <span className="txt-danger validated-error">
+                {errors?.interview_result_date[0]}
+              </span>
+            )}
           </div>
           <div className="input-group">
             <TextArea
@@ -96,7 +95,11 @@ export const InterviewResult = () => {
               onChange={(e) => setInterviewSummarize(e.target.value)}
               errorMessage="*"
             />
-           
+            {errors?.interview_summarize[0] && (
+              <span className="txt-danger validated-error">
+                {errors?.interview_summarize[0]}
+              </span>
+            )}
           </div>
 
           <div className="radio-group--modify">
@@ -107,7 +110,6 @@ export const InterviewResult = () => {
               placeholder=""
               value="1"
               onChange={(e) => setResult(e.target.value)}
-            
             />
             <div className="radio-fail">
               <InputCheckbox
@@ -116,13 +118,19 @@ export const InterviewResult = () => {
                 name="result"
                 placeholder=""
                 value="0"
-                onChange={(e) => setResult(e.target.value)}               
+                onChange={(e) => setResult(e.target.value)}
               />
             </div>
+
             <span className="txt-danger star">*</span>
-           
+
+            {errors?.interview_result[0] && (
+              <span className="txt-danger validated-error">
+                {errors?.interview_result[0]}
+              </span>
+            )}
           </div>
-         
+
           <div className="input-group">
             <Input
               labelName="Record Path"
@@ -132,7 +140,11 @@ export const InterviewResult = () => {
               onChange={(e) => setRecordPath(e.target.value)}
               errorMessage="*"
             />
-           
+            {errors?.record_path[0] && (
+              <span className="txt-danger validated-error">
+                {errors?.record_path[0]}
+              </span>
+            )}
           </div>
 
           <div className="button-group--user">

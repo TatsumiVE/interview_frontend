@@ -7,6 +7,7 @@ import { useAuth } from "../../store/AuthContext";
 import { Input, Dropdown, Button, ButtonLink } from "../../components";
 import departmentService from "../../services/departmentService";
 import positionService from "../../services/positionService";
+import Loader from "../../components/loader";
 
 export const InterviewerUpdate = () => {
   const { id } = useParams();
@@ -129,7 +130,7 @@ export const InterviewerUpdate = () => {
   } = useQuery(["get", "positions"], () => positionService.getAll(token));
 
   if (isInterviewerLoading || isDepartmentLoading || isPositionLoading)
-    return "Loading...";
+    return <Loader />;
   if (isInterviewerError) return "Something went wrong...";
   if (interviewerError)
     return `An error has occurred: ${interviewerError.message}`;

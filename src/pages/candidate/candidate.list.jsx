@@ -23,7 +23,7 @@ export const Candidate = () => {
     { id: 2, name: "B" },
     { id: 3, name: "C" },
   ];
-  const [remarkFilter, setRemarkFilter] = useState("");
+  const [remarkFilter, setRemarkFilter] = useState(0);
   const today = new Date();
   const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
   const start = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -47,8 +47,6 @@ export const Candidate = () => {
     );
     return response.data.data;
   };
-
-
 
   const { data: languages } = useQuery(["get", "languages"], () =>
     languageService.getAll(token)
@@ -81,8 +79,26 @@ export const Candidate = () => {
             : stageFilter ===
                 interview[interview.length - 1]?.interview_stage.stage_name;
         })
+        ?.filter(({ interview }) => {
+          return interview[0]?.interview_assign
+            .map((interview_assign) => {
+              return remarkFilter == 0
+                ? true
+                : remarkFilter == interview_assign.remarks[0]?.grade;
+            })
+            .reduce((previous, current) => {
+              return previous || current;
+            }, false);
+        })
     );
-  }, [data, startDateFilter, endDateFilter, language, stageFilter]);
+  }, [
+    data,
+    startDateFilter,
+    endDateFilter,
+    language,
+    stageFilter,
+    remarkFilter,
+  ]);
   const columns = useMemo(
     () =>
       a
@@ -158,7 +174,7 @@ export const Candidate = () => {
                           icon="fa-solid fa-magnifying-glass"
                         />
                       </Can>
-                    </div>                  
+                    </div>
                     <div className="custom-input">
                       <Can permission={"candidateUpdate"}>
                         <ButtonLink
@@ -269,7 +285,6 @@ export const Candidate = () => {
         </div>
 
         <div className="table-wrap__head">
-          
           <div className="table-wrap__content">
             <div className="custom-stage">
               <Button
