@@ -85,8 +85,8 @@ export const DepartmentUpdate = () => {
       <div className="card-min__header">
         <h2>Update Department</h2>
       </div>
-      <form onSubmit={handleUpdate}>
-        <div className="input-type">
+      <form onSubmit={handleUpdate} className="card-min__form">
+        <div className="input-group">
           <Input
             labelName="Name"
             type="text"

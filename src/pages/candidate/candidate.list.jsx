@@ -159,7 +159,6 @@ export const Candidate = () => {
               Header: "Action",
               Cell: ({ row }) => {
                 const candidate = row.original.candidate;
-                const interview = row.original.interview;
 
                 return (
                   <div className="btn-group">
@@ -290,7 +289,9 @@ export const Candidate = () => {
               <Button
                 type="button"
                 onClick={() => setStageFilter(0)}
-                className="btn-primary txt-light"
+                className={`btn-primary txt-light ${
+                  stageFilter === 0 ? "active" : ""
+                }`}
                 text="All"
               />
             </div>
@@ -298,7 +299,9 @@ export const Candidate = () => {
               <Button
                 type="button"
                 onClick={() => setStageFilter(1)}
-                className="btn-primary txt-light"
+                className={`btn-primary txt-light ${
+                  stageFilter === 1 ? "active" : ""
+                }`}
                 text="Stage One"
               />
             </div>
@@ -306,7 +309,9 @@ export const Candidate = () => {
               <Button
                 type="button"
                 onClick={() => setStageFilter(2)}
-                className="btn-primary txt-light"
+                className={`btn-primary txt-light ${
+                  stageFilter === 2 ? "active" : ""
+                }`}
                 text="Stage Two"
               />
             </div>
@@ -314,7 +319,9 @@ export const Candidate = () => {
               <Button
                 type="button"
                 onClick={() => setStageFilter(3)}
-                className="btn-primary txt-light"
+                className={`btn-primary txt-light ${
+                  stageFilter === 3 ? "active" : ""
+                }`}
                 text="Stage Three"
               />
             </div>

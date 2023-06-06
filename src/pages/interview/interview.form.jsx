@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 export const InterviewCreate = () => {
   const { state } = useLocation();
-  const { id, name, stageId } = state;
+  const { id, stageId } = state;
   const { successMessage } = state || {};
   const [errors, setErrors] = useState();
   const [data, setData] = useState([{}]);
@@ -55,8 +55,7 @@ export const InterviewCreate = () => {
     },
     onError: (error) => {
       const { response } = error;
-      console.log(response.data.data.interview_date[0]);
-
+      console.log(response.data.data);
       setErrors(response.data.data);
     },
   });

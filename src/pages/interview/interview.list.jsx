@@ -429,7 +429,9 @@ export const InterviewList = () => {
               <Button
                 type="button"
                 onClick={() => setStageFilter(0)}
-                className="btn-primary txt-light"
+                className={`btn-primary txt-light ${
+                  stageFilter === 0 ? "active" : ""
+                }`}
                 text="All"
               />
             </div>
@@ -437,7 +439,9 @@ export const InterviewList = () => {
               <Button
                 type="button"
                 onClick={() => setStageFilter(1)}
-                className="btn-primary txt-light"
+                className={`btn-primary txt-light ${
+                  stageFilter === 1 ? "active" : ""
+                }`}
                 text="Stage One"
               />
             </div>
@@ -445,7 +449,9 @@ export const InterviewList = () => {
               <Button
                 type="button"
                 onClick={() => setStageFilter(2)}
-                className="btn-primary txt-light"
+                className={`btn-primary txt-light ${
+                  stageFilter === 2 ? "active" : ""
+                }`}
                 text="Stage Two"
               />
             </div>
@@ -453,10 +459,13 @@ export const InterviewList = () => {
               <Button
                 type="button"
                 onClick={() => setStageFilter(3)}
-                className="btn-primary txt-light"
+                className={`btn-primary txt-light ${
+                  stageFilter === 3 ? "active" : ""
+                }`}
                 text="Stage Three"
               />
             </div>
+
             <div className="custom-input">
               <p>
                 Candidate Count: <span className="badge">{a?.length}</span>

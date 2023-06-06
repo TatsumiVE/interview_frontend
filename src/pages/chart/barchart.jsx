@@ -51,9 +51,10 @@ export const BarChart = () => {
           {
             label: "Candidate",
             data: candidateCounts,
-
             backgroundColor: "#19376D",
             borderColor: "#19376D",
+            hoverBackgroundColor: "#192345",
+            hoverBorderColor: "#192345",
           },
         ]);
       } catch (error) {

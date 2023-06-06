@@ -12,7 +12,7 @@ export const MainNavigation = () => {
 
       <Can permission={"candidateView"}>
         <NavigationLink to="/candidates" icon="fa-user-group">
-          Candidates
+          Candidate
         </NavigationLink>
       </Can>
       <Can permission={"interviewerView"}>

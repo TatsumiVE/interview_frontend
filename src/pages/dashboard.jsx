@@ -4,8 +4,8 @@ import PieChart from "./chart/piechart";
 export const Dashboard = () => {
   return (
     <>
-      Dashboard
       <div className="chart">
+        <h1 className="dashboard">Dashboard</h1>
         <div className="chart__bar-chart">
           <BarChart />
         </div>
@@ -14,6 +14,5 @@ export const Dashboard = () => {
         </div>
       </div>
     </>
-
   );
 };

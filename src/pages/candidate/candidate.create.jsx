@@ -475,7 +475,7 @@ export const CandidateCreate = () => {
                   <label className="experience-label">
                     Experience <span className="txt-danger">*</span>
                   </label>
-                  {/* <div className="input-group"> */}
+
                   <div className="experience-group">
                     <Input
                       labelName=""
@@ -525,7 +525,7 @@ export const CandidateCreate = () => {
               </div>
             ))}
           </div>
-          <div className="button-group">
+          <div className="button-group--user">
             <Button
               type="submit"
               text="Create"
@@ -534,7 +534,7 @@ export const CandidateCreate = () => {
             />
             <ButtonLink
               type="button"
-              className="btn-default"
+              className="btn-default cancel"
               route={"/interview"}
               text="Cancel"
               linkText="txt-light txt-sm"

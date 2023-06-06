@@ -1,15 +1,15 @@
 .btn {
-  cursor: pointer; 
-  padding:10px 15px;
+  cursor: pointer;
+  padding: 10px 15px;
   border-radius: 3px;
   border-style: none;
-  font-size: map-get($font-size, sm );
+  font-size: map-get($font-size, sm);
 
   .icon {
     display: inline-flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
-    font-size: map-get($font-size, sm );
+    font-size: map-get($font-size, sm);
     color: #fff;
   }
 
@@ -26,4 +26,7 @@
   &.btn:hover {
     background-color: map-get($colors, secondary);
   }
+}
+.custom-stage .active {
+  background-color: map-get($colors, success);
 }

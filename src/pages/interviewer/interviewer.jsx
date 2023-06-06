@@ -78,11 +78,6 @@ export const Employee = () => {
         Cell: ({ row }) => (
           <div>
             <Can permission={"userCreate"}>
-              {/* {console.log(
-                "user=> ",
-                row.original.id,
-                user.filter((u) => console.log(u.interviewer_id.id))
-              )} */}
               {user.current.filter(
                 (u) => u.interviewer_id.id == row.original.id
               )[0] ? null : (
@@ -139,7 +134,7 @@ export const Employee = () => {
   if (interviewers.length === 0) return <Loader />;
 
   const { globalFilter, pageIndex } = state;
-  console.log("render....");
+
   return (
     <>
       <ToastContainer

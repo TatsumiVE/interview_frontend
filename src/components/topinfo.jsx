@@ -9,7 +9,7 @@ export const TopInfo = () => {
 
   const [showDropdown, setShowDropdown] = useState(false);
   const location = useLocation();
-  const { token, handleLogout, loginName, loginRole } = useAuth();
+  const { handleLogout } = useAuth();
 
   const toggleDropdown = () => {
     setShowDropdown((prevState) => !prevState);

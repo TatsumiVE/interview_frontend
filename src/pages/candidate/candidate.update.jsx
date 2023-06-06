@@ -46,7 +46,7 @@ export const CandidateUpdate = () => {
   const [position, setPosition] = useState("");
   const [agency, setAgency] = useState("");
   const [experienceValid, setExperienceValid] = useState(false);
-  const [languageList, setLanguageList] = useState([]);
+
   const [candidate, setCandidate] = useState({
     name: "",
     email: "",
@@ -447,7 +447,6 @@ export const CandidateUpdate = () => {
         </div>
 
         <div className="card-btnPlus">
-          {console.log(data, "dataaaaaaaaaaa")}
           {data.length < 4 && (
             <Button
               type="button"
@@ -498,51 +497,49 @@ export const CandidateUpdate = () => {
                   Experience <span className="txt-danger">*</span>
                 </label>
                 <div className="experience-group">
-                  <div className="input-group">
-                    <Input
-                      labelName=""
-                      name="year"
-                      type="number"
-                      placeholder=" Enter Year..."
-                      value={row.year}
-                      onChange={(e) => {
-                        const updatedData = [...data];
-                        updatedData[index].year = e.target.value;
-                        setData(updatedData);
-                        const sum =
-                          parseInt(e.target.value) * 12 + parseInt(row.month);
-                        if (sum <= 6) {
-                          setExperienceValid(false);
-                        } else {
-                          setExperienceValid(true);
-                        }
-                      }}
-                    />
-                    <Input
-                      labelName=""
-                      name="month"
-                      type="number"
-                      placeholder=" Enter Month..."
-                      value={row.month}
-                      onChange={(e) => {
-                        const updatedData = [...data];
-                        updatedData[index].month = e.target.value;
-                        setData(updatedData);
-                        const sum =
-                          parseInt(row.year) * 12 + parseInt(e.target.value);
-                        if (sum <= 6) {
-                          setExperienceValid(false);
-                        } else {
-                          setExperienceValid(true);
-                        }
-                      }}
-                    />
-                    {experienceValid ? null : (
-                      <span className="txt-danger validated-error">
-                        experience at least 6 months
-                      </span>
-                    )}
-                  </div>
+                  <Input
+                    labelName=""
+                    name="year"
+                    type="number"
+                    placeholder=" Enter Year..."
+                    value={row.year}
+                    onChange={(e) => {
+                      const updatedData = [...data];
+                      updatedData[index].year = e.target.value;
+                      setData(updatedData);
+                      const sum =
+                        parseInt(e.target.value) * 12 + parseInt(row.month);
+                      if (sum <= 6) {
+                        setExperienceValid(false);
+                      } else {
+                        setExperienceValid(true);
+                      }
+                    }}
+                  />
+                  <Input
+                    labelName=""
+                    name="month"
+                    type="number"
+                    placeholder=" Enter Month..."
+                    value={row.month}
+                    onChange={(e) => {
+                      const updatedData = [...data];
+                      updatedData[index].month = e.target.value;
+                      setData(updatedData);
+                      const sum =
+                        parseInt(row.year) * 12 + parseInt(e.target.value);
+                      if (sum <= 6) {
+                        setExperienceValid(false);
+                      } else {
+                        setExperienceValid(true);
+                      }
+                    }}
+                  />
+                  {experienceValid ? null : (
+                    <span className="txt-danger validated-error candidate-error">
+                      experience at least 6 months
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
