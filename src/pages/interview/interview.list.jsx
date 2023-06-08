@@ -142,7 +142,8 @@ export const InterviewList = () => {
   const { mutate: interviewTerminate } = useMutation({
     mutationKey: ["post", "interview-process", "terminate"],
     mutationFn: terminateProcess,
-    onSuccess: queryClient.invalidateQueries(["get", "candidates-detail"]),
+    onSuccess: () =>
+      queryClient.invalidateQueries(["get", "candidates-detail"]),
   });
 
   const stageCheck = (interview) => {
