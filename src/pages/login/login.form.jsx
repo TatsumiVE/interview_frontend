@@ -48,8 +48,12 @@ export const LoginForm = () => {
         await handleLogin(email, password);
         console.log("Login successful.");
       } catch (error) {
-        const error_result = error.response.data.data.error;
-        setMessage(`Login failed, ${error_result}.!`);
+        console.log(error.response.data.status_code);
+        const error_result = error.response.data.status_code;
+        if(error_result==500 || error_result == 401){
+          setMessage("Login or password is invalid.!");
+        }      
+      
       }
     }
   };
