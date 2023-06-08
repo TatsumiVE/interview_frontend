@@ -284,7 +284,7 @@ export const Candidate = () => {
           </div>
           <div className="custom-input">
             <Dropdown
-              labelName="Remark"
+              labelName="Grade"
               options={remark}
               onChange={(e) => {
                 setRemarkFilter(e.target.value);
