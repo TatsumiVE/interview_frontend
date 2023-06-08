@@ -296,7 +296,7 @@ export const CandidateCreate = () => {
               </div>
               <div className="input-group">
                 <Dropdown
-                  labelName="Agency"
+                  labelName="Source"
                   options={agencies}
                   selectedValue={formData.agency_id}
                   onChange={(e) =>
@@ -466,7 +466,7 @@ export const CandidateCreate = () => {
                         type="button"
                         onClick={() => handleRemove(index)}
                         text="-"
-                        className="txt-light btn-default btnRight"
+                        className="txt-light txt-bold btn-btnColor btnRight"
                       />
                     )}
                   </div>
@@ -534,7 +534,7 @@ export const CandidateCreate = () => {
             />
             <ButtonLink
               type="button"
-              className="btn-default cancel"
+              className="btn-btnColor cancel"
               route={"/interview"}
               text="Cancel"
               linkText="txt-light txt-sm"

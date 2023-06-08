@@ -39,3 +39,6 @@
 .custom-dropdown option[disabled]:hover {
   background-color: transparent;
 }
+select:focus {
+  border: 0.8px solid map-get($colors, primary);
+}

@@ -6,7 +6,7 @@ import { useTable, useGlobalFilter, usePagination } from "react-table";
 import { ButtonLink } from "../../components";
 import agencyService from "../../services/agencyService";
 import Loader from "../../components/loader";
-import { ToastContainer,toast} from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 
 export const AgencyList = () => {
@@ -14,7 +14,6 @@ export const AgencyList = () => {
   const [agencyList, setAgencyList] = useState([]);
   const location = useLocation();
   const { successMessage } = location.state || {};
-  
 
   const {
     data: agencies,
@@ -30,9 +29,7 @@ export const AgencyList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
-    
-  }, [agencies,successMessage]
-  );
+  }, [agencies, successMessage]);
 
   const columns = useMemo(
     () => [
@@ -47,13 +44,13 @@ export const AgencyList = () => {
         accessor: "name",
       },
       {
-        Header: "Action",
+        Header: "",
         accessor: "action",
         Cell: ({ row }) => (
           <Can permission={"agencyCreate"}>
             <ButtonLink
               type="button"
-              className="btn-success"
+              className="btn-primary"
               route={`update/${row.original.id}`}
               linkText="txt-light txt-sm"
               text="Edit"
@@ -82,11 +79,10 @@ export const AgencyList = () => {
     canNextPage,
     canPreviousPage,
     pageOptions,
-    
   } = useTable(
     {
       columns,
-      data:agencyList,
+      data: agencyList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -100,10 +96,13 @@ export const AgencyList = () => {
 
   return (
     <>
-     
-      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
-     
-     <div className="table-wrap">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        className="ToastContainer"
+      />
+
+      <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">
             <input

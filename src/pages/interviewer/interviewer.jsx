@@ -7,7 +7,6 @@ import { ButtonLink } from "../../components";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../../components/loader";
 import Can from "../../components/utilites/can";
-import { getUser } from "../../services/userService";
 import { useRef } from "react";
 
 export const Employee = () => {
@@ -95,7 +94,7 @@ export const Employee = () => {
             <Can permission={"interviewerUpdate"}>
               <ButtonLink
                 type="button"
-                className="btn-success"
+                className="btn-primary"
                 route={`/interviewer/update/${row.original.id}`}
                 text="Edit"
                 linkText="txt-light txt-sm"

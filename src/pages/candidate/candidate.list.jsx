@@ -35,6 +35,36 @@ export const Candidate = () => {
     last.toLocaleDateString("af-ZA")
   );
 
+  const stageCheck = (interview) => {
+    const stage_name =
+      interview &&
+      interview.length > 0 &&
+      interview[interview.length - 1].interview_stage?.stage_name;
+    const interview_result =
+      interview &&
+      interview.length > 0 &&
+      interview[interview.length - 1].interview_result;
+    const result =
+      interview_result == 1
+        ? "Pass"
+        : interview_result == 2
+        ? "Fail"
+        : "Pending";
+    const name =
+      stage_name == 1
+        ? "First Interview"
+        : stage_name == 2
+        ? "Technical Interview"
+        : stage_name == 3
+        ? "Final Interview"
+        : null;
+
+    return {
+      result,
+      name,
+    };
+  };
+
   const getCandidates = async () => {
     const config = {
       headers: {
@@ -80,7 +110,11 @@ export const Candidate = () => {
                 interview[interview.length - 1]?.interview_stage.stage_name;
         })
         ?.filter(({ interview }) => {
-          return interview[0]?.interview_assign
+          let a =
+            stageFilter == 0
+              ? interview[interview?.length - 1]
+              : interview[stageFilter - 1];
+          return a?.interview_assign
             .map((interview_assign) => {
               return remarkFilter == 0
                 ? true
@@ -117,26 +151,29 @@ export const Candidate = () => {
               Header: "Email",
               Cell: ({ row }) => <div>{row.original.candidate.email}</div>,
             },
-            {
-              Header: "Gender",
-              Cell: ({ row }) => (
-                <div>
-                  {row.original.candidate.gender === 1
-                    ? "Male"
-                    : row.original.candidate.gender === 2
-                    ? "Female"
-                    : row.original.candidate.gender === 3
-                    ? "Non-Binary"
-                    : ""}
-                </div>
-              ),
-            },
 
             {
-              Header: "Phone Number",
-              Cell: ({ row }) => (
-                <div>{row.original.candidate.phone_number}</div>
-              ),
+              Header: "Interview Stage",
+              Cell: ({ row }) => {
+                const interview = row.original.interview;
+                const { name } = stageCheck(interview);
+                return <div>{name}</div>;
+              },
+            },
+            {
+              Header: "Interview Result",
+              Cell: ({ row }) => {
+                const interview = row.original.interview;
+                const { result } = stageCheck(interview);
+                const resultClass =
+                  result === "Pass"
+                    ? "pass"
+                    : result === "Fail"
+                    ? "fail"
+                    : "pending";
+
+                return <div className={`result ${resultClass}`}>{result}</div>;
+              },
             },
             {
               Header: "Interview Date",
@@ -166,10 +203,9 @@ export const Candidate = () => {
                       <Can permission={"getCandidateById"}>
                         <ButtonLink
                           type="button"
-                          className="btn-info"
+                          className="btn-primary"
                           route={`/candidates/${candidate.id}`}
                           text="View"
-                          linkText="txt-light txt-sm"
                           icon="fa-solid fa-magnifying-glass"
                         />
                       </Can>
@@ -178,10 +214,9 @@ export const Candidate = () => {
                       <Can permission={"candidateUpdate"}>
                         <ButtonLink
                           type="button"
-                          className="btn-success"
+                          className="btn-primary"
                           route={`/candidates/update/${candidate.id}`}
                           text="Edit"
-                          linkText="txt-light txt-sm"
                           icon="fa-solid fa-pen-to-square"
                         />
                       </Can>
@@ -284,7 +319,7 @@ export const Candidate = () => {
         </div>
 
         <div className="table-wrap__head">
-          <div className="table-wrap__content">
+          <div className="table-wrap__nav">
             <div className="custom-stage">
               <Button
                 type="button"
@@ -302,7 +337,7 @@ export const Candidate = () => {
                 className={`btn-primary txt-light ${
                   stageFilter === 1 ? "active" : ""
                 }`}
-                text="Stage One"
+                text="First Interview"
               />
             </div>
             <div className="custom-stage">
@@ -312,7 +347,7 @@ export const Candidate = () => {
                 className={`btn-primary txt-light ${
                   stageFilter === 2 ? "active" : ""
                 }`}
-                text="Stage Two"
+                text="Technical Interview"
               />
             </div>
             <div className="custom-stage">
@@ -322,15 +357,16 @@ export const Candidate = () => {
                 className={`btn-primary txt-light ${
                   stageFilter === 3 ? "active" : ""
                 }`}
-                text="Stage Three"
+                text="Final Interview"
               />
             </div>
-            <div className="custom-input">
-              <p>
-                Candidate Count: <span className="badge">{a?.length}</span>
-              </p>
-            </div>
           </div>
+          <div className="custom-input">
+            <p>
+              Candidate Count: <span className="badge">{a?.length}</span>
+            </p>
+          </div>
+          <div></div>
         </div>
         <div className="table-wrap__main">
           {page.length > 0 ? (

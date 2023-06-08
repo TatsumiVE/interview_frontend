@@ -1,4 +1,8 @@
-.checkbox-input{
-    display: flex;
-    flex-direction: row;   
+.checkbox-input {
+  display: flex;
+  flex-direction: row;
+  label,
+  input {
+    cursor: pointer;
+  }
 }

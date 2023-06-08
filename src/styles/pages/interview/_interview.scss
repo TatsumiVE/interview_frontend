@@ -1,0 +1,16 @@
+.result {
+  display: inline;
+  color: map-get($colors, light);
+  padding: 5px 10px;
+  border-radius: 15px;
+  &.pass {
+    background-color: rgb(68, 199, 68);
+  }
+
+  &.fail {
+    background-color: rgb(202, 45, 45);
+  }
+  &.pending {
+    background-color: rgb(13, 225, 190);
+  }
+}

@@ -277,7 +277,7 @@ export const InterviewAssessment = () => {
           />
           <ButtonLink
             type="button"
-            className="btn-default cancel"
+            className="btn-btnColor cancel"
             route={"/interview"}
             text="Cancel"
             linkText="txt-light txt-sm"

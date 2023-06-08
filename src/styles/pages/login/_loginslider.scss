@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: black;
+  background-color: map-get($colors, light);
 
   &__left {
     flex: 1;

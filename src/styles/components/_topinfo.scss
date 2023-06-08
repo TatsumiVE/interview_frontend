@@ -12,15 +12,18 @@
 
 .topinfo-path {
   h1 {
-    font-size: 1.6rem;
-    font-weight: bolder;
+    color: map-get($colors, primary);
+    text-shadow: 1px 1px 1px map-get($colors, primary);
+    font-size: 1.5rem;
+    font-weight: 700;
     font-family: sans-serif;
-    text-transform: capitalize;
+    text-transform: uppercase;
   }
 }
 
 .topinfo-userinfo {
   display: flex;
+  color:map-get($colors, primary );
   align-items: center;
   justify-content: flex-end;
   gap: 0.5rem;

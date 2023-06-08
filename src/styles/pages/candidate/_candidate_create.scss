@@ -1,17 +1,17 @@
 .card {
   width: 700px;
   margin: 0 auto;
-  color: white;
-  background-color: var(--navbar-background);
+  color: map-get($colors, primary);
+  background-color: map-get($colors, light);
   border-radius: 10px;
-  box-shadow: 0 0 2px black, 0 0 5px black;
+  box-shadow: 0 0 2px map-get($colors, text), 0 0 1px map-get($colors, text);
 }
 
 .card > h1 {
   text-align: center;
   font-size: 1.5rem;
   margin-bottom: 2rem;
-  color: var(--color-1);
+  color: map-get($colors, primary);
 }
 
 .card-form {
@@ -74,6 +74,10 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.experience-label {
+  font-weight: 600;
 }
 
 .button-group {

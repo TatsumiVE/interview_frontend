@@ -28,7 +28,7 @@ export const RateList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
-  }, [rates,successMessage]);
+  }, [rates, successMessage]);
 
   const columns = useMemo(
     () => [
@@ -43,13 +43,13 @@ export const RateList = () => {
         accessor: "name",
       },
       {
-        Header: "Action",
+        Header: "",
         accessor: "action",
         Cell: ({ row }) => (
           <Can permission={"rateUpdate"}>
             <ButtonLink
               type="button"
-              className="btn-success"
+              className="btn-primary"
               route={`update/${row.original.id}`}
               text="Edit"
               linkText="txt-light txt-sm"
@@ -58,12 +58,11 @@ export const RateList = () => {
           </Can>
         ),
       },
-    
     ],
     []
   );
 
-  const data = useMemo(() => RateList , [RateList]);
+  const data = useMemo(() => RateList, [RateList]);
 
   const {
     getTableProps,
@@ -79,11 +78,10 @@ export const RateList = () => {
     canNextPage,
     canPreviousPage,
     pageOptions,
-    
   } = useTable(
     {
       columns,
-      data:RateList,
+      data: RateList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -97,18 +95,22 @@ export const RateList = () => {
 
   return (
     <>
-    <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
-    <div className="table-wrap">
-      <div className="table-wrap__head">
-        <div className="search-content">
-          <input
-            type="text"
-            value={globalFilter || ""}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="Search..."
-          />
-        </div>
-              
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        className="ToastContainer"
+      />
+      <div className="table-wrap">
+        <div className="table-wrap__head">
+          <div className="search-content">
+            <input
+              type="text"
+              value={globalFilter || ""}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              placeholder="Search..."
+            />
+          </div>
+
           <div className="create-content">
             <Can permission={"rateCreate"}>
               <ButtonLink

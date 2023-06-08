@@ -5,3 +5,4 @@ export * from "./navigation";
 export * from "./navigation.link";
 export * from "./loader";
 export * from "./topinfo";
+export * from "./stage";

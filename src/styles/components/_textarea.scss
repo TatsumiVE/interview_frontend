@@ -13,3 +13,6 @@
     font-size: map-get($font-size, sm);
   }
 }
+textarea:focus {
+  border: 0.8px solid map-get($colors, primary);
+}

@@ -45,7 +45,8 @@ export const InterviewResult = () => {
   const { mutate: interviewResult } = useMutation({
     mutationKey: ["post", "interview-process", "result"],
     mutationFn: createInterviewResult,
-    onSuccess: () => {
+    onSuccess: (response) => {
+      console.log(response);
       navigate("/interview");
     },
     onError: (error) => {
@@ -117,7 +118,7 @@ export const InterviewResult = () => {
                 type="radio"
                 name="result"
                 placeholder=""
-                value="0"
+                value="2"
                 onChange={(e) => setResult(e.target.value)}
               />
             </div>
@@ -155,7 +156,7 @@ export const InterviewResult = () => {
             />
             <ButtonLink
               type="button"
-              className="btn-default cancel"
+              className="btn-btnColor cancel"
               route={"/interview"}
               text="Cancel"
               linkText="txt-light txt-sm"

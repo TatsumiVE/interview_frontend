@@ -1,15 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
-$weight: (light: 400, medium: 500, bold: 700);
+$weight: (
+  light: 400,
+  medium: 500,
+  bold: 700,
+);
 $align: (center, left, right, justify);
 
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
-body, a {
-  font-family: 'Roboto', sans-serif;
+body,
+a {
+  font-family: "Roboto", sans-serif;
   font-weight: 100;
   font-size: 16px;
 }
@@ -18,7 +22,7 @@ a {
   text-decoration: none;
 }
 
-@each $color,$val in $colors {
+@each $color, $val in $colors {
   .txt-#{$color} {
     color: $val;
   }
@@ -30,7 +34,6 @@ a {
 @each $size, $val in $font-size {
   .txt-#{$size} {
     font-size: $val;
-    line-height: $val * 1.5;
   }
 }
 

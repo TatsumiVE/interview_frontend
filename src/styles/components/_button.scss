@@ -3,14 +3,15 @@
   padding: 10px 15px;
   border-radius: 3px;
   border-style: none;
-  font-size: map-get($font-size, sm);
-
+  font-size: map-get($font-size, md);
+  transition: background-color 0.01s;
+  box-sizing: border-box;
   .icon {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    font-size: map-get($font-size, sm);
-    color: #fff;
+    font-size: map-get($font-size, md);
+    color: map-get($colors, light);
   }
 
   @each $color, $val in $colors {
@@ -24,9 +25,32 @@
   }
 
   &.btn:hover {
-    background-color: map-get($colors, secondary);
+    color: map-get($colors, primary);
+
+    box-shadow: 0 0 3px map-get($colors, primary);
+    background-color: map-get($colors, light);
   }
 }
 .custom-stage .active {
-  background-color: map-get($colors, success);
+  color: map-get($colors, primary);
+
+  border: 2px solid map-get($colors, primary);
+  background-color: map-get($colors, light);
+}
+.candidate {
+  padding: 10px 20px;
+}
+
+.candidate:hover span {
+  color: map-get($colors, primary);
+}
+.btn:hover span {
+  color: map-get($colors, primary);
+}
+
+.custom-input > p .badge {
+  padding: 0.3rem 0.5rem;
+  background-color: map-get($colors, primary);
+  color: map-get($colors, light);
+  font-weight: 600;
 }

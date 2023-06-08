@@ -30,8 +30,7 @@
       font-size: 1rem;
       padding: 0.5rem 2.5rem;
       border-radius: 5px;
-      color: white;
-      background-color: rgba(255, 255, 255, 0.1);
+      color: map-get($colors, text);
     }
 
     .input-icon__left {

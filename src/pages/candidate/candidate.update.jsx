@@ -487,7 +487,7 @@ export const CandidateUpdate = () => {
                       type="button"
                       onClick={() => handleRemove(index)}
                       text="-"
-                      className="txt-light btn-default btnRight"
+                      className="txt-light  btn-btnColor btnRight"
                     />
                   )}
                 </div>
@@ -555,7 +555,7 @@ export const CandidateUpdate = () => {
           />
           <ButtonLink
             type="button"
-            className="btn-default cancel"
+            className="btn-btnColor cancel"
             route={"/candidates"}
             text="Cancel"
             linkText="txt-light txt-sm"

@@ -43,13 +43,13 @@ export const TopicList = () => {
         accessor: "name",
       },
       {
-        Header: "Action",
+        Header: "",
         accessor: "action",
         Cell: ({ row }) => (
           <Can permission={"topicUpdate"}>
             <ButtonLink
               type="button"
-              className="btn-success"
+              className="btn-primary"
               route={`update/${row.original.id}`}
               text="Edit"
               linkText="txt-light txt-sm"

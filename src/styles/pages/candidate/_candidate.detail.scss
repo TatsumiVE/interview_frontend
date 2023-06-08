@@ -5,7 +5,8 @@
 }
 
 .candidate-page a {
-  color: var(--font-primary);
+  color: map-get($colors, primary);
+  font-weight: 600;
   padding: 0.5rem 1rem;
 }
 
@@ -31,14 +32,11 @@
   color: var(--font-secondary);
 }
 
-/* navigation */
-
 .c-nav {
   margin: 2rem 0;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  border-bottom: 4px solid var(--navbar-background);
 }
 
 .c-nav > a.active {
@@ -56,8 +54,6 @@
   left: 0;
   background-color: var(--color-1);
 }
-
-/* details section */
 
 .c-details {
   display: flex;
@@ -86,7 +82,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  color: white;
+  color: map-get($colors, light);
 }
 
 .nav-item {
@@ -136,20 +132,18 @@
   border-right: 0;
 }
 
-/* cv */
-
 .c-cv {
 }
 
 .c-cv iframe {
   width: 100%;
-  height: 200vh;
+  height: 100vh;
 }
 
 /* general */
 
 .info-card {
-  background-color: var(--navbar-background);
+  background-color: map-get($colors, light);
   border-radius: 1rem;
   border: 2px solid var(--color-1);
 }
@@ -159,7 +153,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid var(--color-1);
+  font-weight: 600;
+  border-bottom: 2px solid map-get($colors, primary);
 }
 
 .info-main {
@@ -237,7 +232,7 @@
 }
 
 .rating > i[class*="solid"] {
-  color: #d7b700;
+  color: #d7b700c5;
 }
 
 .rating > span {
@@ -246,5 +241,5 @@
   height: 16px;
   bottom: -20px;
   left: 0;
-  font-size: 0.7rem;
+  font-size: 1rem;
 }

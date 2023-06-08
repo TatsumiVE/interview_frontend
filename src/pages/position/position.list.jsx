@@ -15,7 +15,6 @@ export const PositionList = () => {
   const location = useLocation();
   const { successMessage } = location.state || {};
 
-
   const {
     data: positions,
     isLoading: isPositionLoading,
@@ -30,10 +29,8 @@ export const PositionList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
+  }, [positions, successMessage]);
 
-  }, [positions,successMessage]);
-
- 
   const columns = useMemo(
     () => [
       {
@@ -47,13 +44,13 @@ export const PositionList = () => {
         accessor: "name",
       },
       {
-        Header: "Action",
+        Header: "",
         accessor: "action",
         Cell: ({ row }) => (
           <Can permission={"positionUpdate"}>
             <ButtonLink
               type="button"
-              className="btn-success"
+              className="btn-primary"
               route={`update/${row.original.id}`}
               text="Edit"
               linkText="txt-light txt-sm"
@@ -66,7 +63,7 @@ export const PositionList = () => {
     []
   );
 
-  const data = useMemo(() => PositionList , [PositionList]);
+  const data = useMemo(() => PositionList, [PositionList]);
 
   const {
     getTableProps,
@@ -87,7 +84,7 @@ export const PositionList = () => {
   } = useTable(
     {
       columns,
-      data:PositionList,
+      data: PositionList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -101,7 +98,11 @@ export const PositionList = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        className="ToastContainer"
+      />
       <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">

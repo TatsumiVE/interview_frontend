@@ -12,7 +12,6 @@ export const UserCreate = () => {
   const navigate = useNavigate();
   const [error, setError] = useState([]);
 
-
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -21,10 +20,9 @@ export const UserCreate = () => {
 
   const [interviewer, setInterviewer] = useState({
     interviewer_id: id,
-    password: '',
-    role: '',
+    password: "",
+    role: "",
   });
-
 
   const addUser = async () => {
     try {
@@ -39,27 +37,23 @@ export const UserCreate = () => {
       toast.success(successMessage);
 
       setTimeout(() => {
-        navigate('/user');
+        navigate("/user");
       }, 1000);
 
       return response;
-
     } catch (error) {
       setError(error.response.data.err_msg.errors);
-
     }
   };
 
   const getInterviewer = async () => {
     try {
-
       const response = await axios.get(
         `http://localhost:8000/api/interviewers/${id}`,
         config
       );
 
       return response.data.data;
-
     } catch (error) {
       console.error(error);
     }
@@ -67,7 +61,10 @@ export const UserCreate = () => {
 
   const getRoles = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/roles", config);
+      const response = await axios.get(
+        "http://localhost:8000/api/roles",
+        config
+      );
       return response.data.data;
     } catch (error) {
       console.error(error);
@@ -82,11 +79,13 @@ export const UserCreate = () => {
     error: interviewerError,
   } = useQuery(["interviewers", id], getInterviewer);
 
-  const { data: roles, isLoading: isRolesLoading, isError: isRolesError, isSuccess: isRolesSuccess, error: rolesError } = useQuery(
-    'roles',
-    getRoles
-  );
-
+  const {
+    data: roles,
+    isLoading: isRolesLoading,
+    isError: isRolesError,
+    isSuccess: isRolesSuccess,
+    error: rolesError,
+  } = useQuery("roles", getRoles);
 
   const { mutate: createUser } = useMutation({
     mutationKey: ["post", "users"],
@@ -123,18 +122,16 @@ export const UserCreate = () => {
     //   return;
     // }
 
-
     createUser();
   };
 
   return (
-    <div className='card-min'>
+    <div className="card-min">
       <div className="card-min__header">
         <h2>Create User Role</h2>
       </div>
 
       <form onSubmit={handleSubmit} className="card-min__form">
-        
         <div className="input-group">
           <Input
             labelName="Name"
@@ -143,7 +140,7 @@ export const UserCreate = () => {
             placeholder=" Enter Name..."
             value={interviewers.name}
           />
- </div>
+        </div>
         <div className="input-group">
           <Input
             labelName="Email"
@@ -152,43 +149,70 @@ export const UserCreate = () => {
             placeholder=" Enter Email..."
             value={interviewers.email}
           />
- </div>
+        </div>
         <div className="input-group">
           <Input
             labelName="Password"
             type="password"
             name="password"
             placeholder=" Enter Password..."
-            onChange={(e) => setInterviewer({ ...interviewer, password: e.target.value })}
+            onChange={(e) =>
+              setInterviewer({ ...interviewer, password: e.target.value })
+            }
             errorMessage="*"
           />
-          {error.password && <span className="txt-danger txt-ss">{error.password}</span>}
-          </div>
+          {error.password && (
+            <span className="txt-danger txt-ss">{error.password}</span>
+          )}
+        </div>
         <div className="input-group">
           <Input
             labelName="Confirm Password"
             type="password"
             name="password_confirmation"
             placeholder=" Enter Confirm Password..."
-            onChange={(e) => setInterviewer({ ...interviewer, password_confirmation: e.target.value })}
+            onChange={(e) =>
+              setInterviewer({
+                ...interviewer,
+                password_confirmation: e.target.value,
+              })
+            }
             errorMessage="*"
           />
-          {error.password_confirmation && <span className="txt-danger txt-ss">{error.password_confirmation}</span>}
-          </div>
+          {error.password_confirmation && (
+            <span className="txt-danger txt-ss">
+              {error.password_confirmation}
+            </span>
+          )}
+        </div>
         <div className="input-group">
           <Dropdown
             labelName="Role"
             options={roles}
             selectedValue={roles.id}
-            onChange={(e) => setInterviewer({ ...interviewer, role: e.target.value })}
+            onChange={(e) =>
+              setInterviewer({ ...interviewer, role: e.target.value })
+            }
             errorMessage="*"
           />
-          {error.role && <span className="txt-danger txt-ss">{error.role}</span>}
-          </div>
+          {error.role && (
+            <span className="txt-danger txt-ss">{error.role}</span>
+          )}
+        </div>
         <div className="input-group">
           <div className="button-group--user">
-            <Button type="submit" text="Create" className="txt-light btn-primary" />
-            <ButtonLink type="button" className="btn-default cancel" route={"/interviewer"} text="Cancel" linkText="txt-light txt-sm" />
+            <Button
+              type="submit"
+              text="Create"
+              className="txt-light btn-primary"
+            />
+            <ButtonLink
+              type="button"
+              className="btn-btnColor cancel"
+              route={"/interviewer"}
+              text="Cancel"
+              linkText="txt-light txt-sm"
+            />
           </div>
         </div>
       </form>

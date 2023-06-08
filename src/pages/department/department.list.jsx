@@ -29,8 +29,7 @@ export const DepartmentList = () => {
     if (successMessage) {
       toast.success(successMessage);
     }
-
-  }, [departments,successMessage]);
+  }, [departments, successMessage]);
 
   const columns = useMemo(
     () => [
@@ -45,13 +44,13 @@ export const DepartmentList = () => {
         accessor: "name",
       },
       {
-        Header: "Action",
+        Header: "",
         accessor: "action",
         Cell: ({ row }) => (
           <Can permission={"departmentUpdate"}>
             <ButtonLink
               type="button"
-              className="btn-success"
+              className="btn-primary"
               route={`update/${row.original.id}`}
               text="Edit"
               linkText="txt-light txt-sm"
@@ -64,7 +63,7 @@ export const DepartmentList = () => {
     []
   );
 
-  const data = useMemo(() => departmentList , [departmentList]);
+  const data = useMemo(() => departmentList, [departmentList]);
 
   const {
     getTableProps,
@@ -85,7 +84,7 @@ export const DepartmentList = () => {
   } = useTable(
     {
       columns,
-      data:departmentList,
+      data: departmentList,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,
@@ -99,7 +98,11 @@ export const DepartmentList = () => {
     return `An error has occurred: ${departmentError.message}`;
   return (
     <>
-      <ToastContainer position="top-right" autoClose={5000} className="ToastContainer"/>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        className="ToastContainer"
+      />
       <div className="table-wrap">
         <div className="table-wrap__head">
           <div className="search-content">

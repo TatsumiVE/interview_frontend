@@ -18,7 +18,7 @@ export const AuthContextProvider = ({ children }) => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginName, setLoginName] = useState("");
   const [loginRole, setLoginRole] = useState("");
- 
+
   useEffect(() => {
     const checkTokenValidity = async () => {
       try {
@@ -34,7 +34,6 @@ export const AuthContextProvider = ({ children }) => {
         if (!response.data.valid) {
           handleLogout();
         } else {
-          console.log(response, "responseeeeeee");
           setIsLogin(true);
           setToken(token);
 
@@ -98,7 +97,16 @@ export const AuthContextProvider = ({ children }) => {
         <Loader />
       ) : (
         <AuthContext.Provider
-          value={{ token, isLogin, user, handleLogin, handleLogout, can, loginName,loginRole}}
+          value={{
+            token,
+            isLogin,
+            user,
+            handleLogin,
+            handleLogout,
+            can,
+            loginName,
+            loginRole,
+          }}
         >
           {children}
         </AuthContext.Provider>

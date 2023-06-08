@@ -4,7 +4,7 @@ export const NotFound = () => {
   const { state } = useLocation();
   console.log(state);
   const navigate = useNavigate();
-  const back = () => navigate(-1);
+  const back = () => navigate(-2);
   return (
     <>
       <div className="notfound_body">

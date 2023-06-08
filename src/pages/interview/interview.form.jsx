@@ -32,6 +32,8 @@ export const InterviewCreate = () => {
   });
 
   const createInterview = async (formData) => {
+    console.log(id, "candidateeee");
+    console.log(formData, "dataaaaaaaaa");
     const response = await axios.post(
       "http://localhost:8000/api/interview-process",
       {
@@ -44,6 +46,7 @@ export const InterviewCreate = () => {
         },
       }
     );
+
     return response;
   };
 
@@ -55,7 +58,7 @@ export const InterviewCreate = () => {
     },
     onError: (error) => {
       const { response } = error;
-      console.log(response.data.data);
+
       setErrors(response.data.data);
     },
   });
@@ -238,7 +241,7 @@ export const InterviewCreate = () => {
                       type="button"
                       onClick={() => handleRemove(index)}
                       text="-"
-                      className="txt-light btn-default"
+                      className="txt-light btn-btnColor"
                     />
                   )}
                 </div>
@@ -253,7 +256,7 @@ export const InterviewCreate = () => {
             ></Button>
             <ButtonLink
               type="button"
-              className="btn-default cancel"
+              className="btn-btnColor cancel"
               route={"/interview"}
               text="Cancel"
               linkText="txt-light txt-sm"

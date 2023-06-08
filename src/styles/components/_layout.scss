@@ -2,9 +2,8 @@
   --primary-background: #141414;
   --secondary-background: #1f1f1f;
   --navbar-background: #333333;
-  --header-background: #444444;
-  --main-background: #555555;
-  --text-color: #ffffff;
+  --main-background: #f9f9f9;
+  --text-color: #333;
   --paragraph-color: #cccccc;
   --color-1: #177afe;
 }
@@ -46,7 +45,7 @@ body {
 .header {
   grid-column: 3 / span 10;
   grid-row: 1;
-  background-color: var(--header-background);
+  background-color: map-get($colors, light);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -56,7 +55,7 @@ body {
 .main {
   grid-column: 3 / span 10;
   grid-row: 2;
-  background-color: var(--main-background);
+  background-color: map-get($colors, table);
   min-height: calc(100vh - 80px);
   padding: 2rem;
   overflow-x: scroll;
@@ -64,13 +63,11 @@ body {
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
-  background-color: var(--header-background);
+  background-color: map-get($colors, light);
 }
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-1);
-}
+
 ::-webkit-scrollbar-thumb {
-  background-color: var(--navbar-background);
+  background-color: map-get($colors, primary);
 }
 
 /* General Styles */
@@ -84,5 +81,6 @@ h6 {
 }
 
 p {
-  color: var(--paragraph-color);
+  color: map-get($colors, primary);
+  font-weight: 700;
 }

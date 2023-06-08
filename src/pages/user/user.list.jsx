@@ -34,8 +34,6 @@ export const UserList = () => {
         {},
         config
       );
-      console.log(response, "responseeeeeeee");
-      console.log("here");
 
       return response;
     } catch (error) {
@@ -48,7 +46,7 @@ export const UserList = () => {
       console.log("Success");
     },
     onError: (error) => {
-      console.error("Error:", error);
+      return error;
     },
   });
 
@@ -132,7 +130,7 @@ export const UserList = () => {
             <Can permission={"userUpdate"}>
               <ButtonLink
                 type="button"
-                className="btn-success"
+                className="btn-primary"
                 route={`update/${row.original.id}`}
                 text="Edit"
                 linkText="txt-light txt-sm"

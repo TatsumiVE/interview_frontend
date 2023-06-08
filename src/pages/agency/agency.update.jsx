@@ -107,7 +107,7 @@ export const AgencyUpdate = () => {
           />
           <ButtonLink
             type="button"
-            className="btn-default cancel"
+            className="btn-btnColor cancel"
             route={"/agency"}
             text="Cancel"
             linkText="txt-light txt-sm"

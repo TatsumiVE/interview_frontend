@@ -199,7 +199,7 @@ export const CStages = () => {
                         <>
                           <p>
                             <span>GRADE</span>
-                            <span style={{ color: "#d7b700" }}>
+                            <span className="grade">
                               {grades[i.remarks[0].grade - 1]}
                             </span>
                           </p>

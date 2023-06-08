@@ -3,7 +3,7 @@ import { useTable, useGlobalFilter, usePagination } from "react-table";
 import { useMemo } from "react";
 import { useAuth } from "../../store/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from "react-query";
+import { useQuery, useMutation, QueryClient } from "react-query";
 import Can from "../../components/utilites/can";
 import languageService from "../../services/languageService";
 
@@ -11,6 +11,7 @@ import Loader from "../../components/loader";
 import { useEffect, useState } from "react";
 import { TableContainer } from "@mui/material";
 import { Dropdown, ButtonLink, Input, Button } from "../../components";
+const queryClient = new QueryClient();
 
 export const InterviewList = () => {
   const { token, user } = useAuth();
@@ -138,10 +139,38 @@ export const InterviewList = () => {
   const { mutate: interviewTerminate } = useMutation({
     mutationKey: ["post", "interview-process", "terminate"],
     mutationFn: terminateProcess,
-    onSuccess: () => {
-      navigate("/interview");
-    },
+    onSuccess: queryClient.invalidateQueries(["get", "candidates-detail"]),
   });
+
+  const stageCheck = (interview) => {
+    const stage_name =
+      interview &&
+      interview.length > 0 &&
+      interview[interview.length - 1].interview_stage?.stage_name;
+    const interview_result =
+      interview &&
+      interview.length > 0 &&
+      interview[interview.length - 1].interview_result;
+    const result =
+      interview_result == 1
+        ? "Pass"
+        : interview_result == 2
+        ? "Fail"
+        : "Pending";
+    const name =
+      stage_name == 1
+        ? "First Interview"
+        : stage_name == 2
+        ? "Technical Interview"
+        : stage_name == 3
+        ? "Final Interview"
+        : null;
+
+    return {
+      result,
+      name,
+    };
+  };
 
   const { data, isLoading, isError, isSuccess, error } = useQuery({
     queryKey: ["get", "candidates-detail"],
@@ -190,26 +219,31 @@ export const InterviewList = () => {
               Header: "Email",
               Cell: ({ row }) => <div>{row.original.candidate.email}</div>,
             },
+
             {
-              Header: "Gender",
-              Cell: ({ row }) => (
-                <div>
-                  {row.original.candidate.gender === 1
-                    ? "Male"
-                    : row.original.candidate.gender === 2
-                    ? "Female"
-                    : row.original.candidate.gender === 3
-                    ? "Non-Binary"
-                    : ""}
-                </div>
-              ),
+              Header: "Interview Stage",
+              Cell: ({ row }) => {
+                const interview = row.original.interview;
+                const { name } = stageCheck(interview);
+                return <div>{name}</div>;
+              },
             },
             {
-              Header: "Phone Number",
-              Cell: ({ row }) => (
-                <div>{row.original.candidate.phone_number}</div>
-              ),
+              Header: "Interview Result",
+              Cell: ({ row }) => {
+                const interview = row.original.interview;
+                const { result } = stageCheck(interview);
+                const resultClass =
+                  result === "Pass"
+                    ? "pass"
+                    : result === "Fail"
+                    ? "fail"
+                    : "pending";
+
+                return <div className={`result ${resultClass}`}>{result}</div>;
+              },
             },
+
             {
               Header: "Interview Date",
               Cell: ({ row }) =>
@@ -316,7 +350,7 @@ export const InterviewList = () => {
               Header: "Action",
               Cell: ({ row }) => {
                 const candidate = row.original.candidate;
-                const interview = row.original.interview;
+
                 return (
                   <div className="btn-group">
                     <div className="custom-input">
@@ -324,8 +358,7 @@ export const InterviewList = () => {
                         <Button
                           text="Teminate"
                           type="button"
-                          className="btn-warning txt-light"
-                          // icon="fa-solid ban"
+                          className="btn-primary txt-light"
                           onClick={() => {
                             handleTerminate(candidate.id);
                           }}
@@ -336,10 +369,9 @@ export const InterviewList = () => {
                       <Can permission={"candidateShow"}>
                         <ButtonLink
                           type="button"
-                          className="btn-info"
+                          className="btn-primary"
                           route={`/candidates/${candidate.id}`}
                           text="View"
-                          linkText="txt-light txt-sm"
                           icon="fa-solid fa-eye"
                         />
                       </Can>
@@ -382,7 +414,7 @@ export const InterviewList = () => {
   if (isError) return "Something went wrong";
   if (error) return "An error has occurred: " + error.message;
   return (
-    <>
+    <div className="interview-list">
       <div className="table-wrap">
         <div className="table-wrap__content">
           <Dropdown
@@ -397,8 +429,6 @@ export const InterviewList = () => {
             }}
             hide={true}
           />
-        </div>
-        <div className="table-wrap__content">
           <div className="custom-input">
             <Input
               labelName="Start Date"
@@ -424,7 +454,7 @@ export const InterviewList = () => {
         </div>
 
         <div className="table-wrap__head">
-          <div className="table-wrap__content">
+          <div className="table-wrap__nav">
             <div className="custom-stage">
               <Button
                 type="button"
@@ -442,7 +472,7 @@ export const InterviewList = () => {
                 className={`btn-primary txt-light ${
                   stageFilter === 1 ? "active" : ""
                 }`}
-                text="Stage One"
+                text="First Interview"
               />
             </div>
             <div className="custom-stage">
@@ -452,7 +482,7 @@ export const InterviewList = () => {
                 className={`btn-primary txt-light ${
                   stageFilter === 2 ? "active" : ""
                 }`}
-                text="Stage Two"
+                text="Technical Interview"
               />
             </div>
             <div className="custom-stage">
@@ -462,15 +492,14 @@ export const InterviewList = () => {
                 className={`btn-primary txt-light ${
                   stageFilter === 3 ? "active" : ""
                 }`}
-                text="Stage Three"
+                text="Final Interview"
               />
             </div>
-
-            <div className="custom-input">
-              <p>
-                Candidate Count: <span className="badge">{a?.length}</span>
-              </p>
-            </div>
+          </div>
+          <div className="custom-input">
+            <p>
+              Candidate Count: <span className="badge">{a?.length}</span>
+            </p>
           </div>
 
           <Can permission={"candidateCreate"}>
@@ -479,9 +508,8 @@ export const InterviewList = () => {
                 type="button"
                 route="/candidates/create"
                 text="Create Candidate"
-                linkText="txt-light"
                 icon="fa-solid fa-plus"
-                className="btn-primary"
+                className="btn-primary candidate"
               />
             </div>
           </Can>
@@ -546,6 +574,6 @@ export const InterviewList = () => {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
