@@ -82,7 +82,10 @@ export const InterviewList = () => {
     ).grade;
 
     const canCreate = !(
-      (lastStage && !lastInterview.interview_result) ||
+      (lastStage &&
+        !(
+          lastInterview.interview_result && lastInterview.interview_result == 1
+        )) ||
       lastStage > 2
     );
 

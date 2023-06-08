@@ -4,13 +4,13 @@
   padding: 5px 10px;
   border-radius: 15px;
   &.pass {
-    background-color: rgb(68, 199, 68);
+    background-color: map-get($colors, success);
   }
 
   &.fail {
-    background-color: rgb(202, 45, 45);
+    background-color: map-get($colors, danger);
   }
   &.pending {
-    background-color: rgb(13, 225, 190);
+    background-color: map-get($colors, primary);
   }
 }

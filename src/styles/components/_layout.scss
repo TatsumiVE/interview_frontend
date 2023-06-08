@@ -58,7 +58,7 @@ body {
   background-color: map-get($colors, table);
   min-height: calc(100vh - 80px);
   padding: 2rem;
-  overflow-x: scroll;
+  overflow-x: hidden;
 }
 ::-webkit-scrollbar {
   width: 10px;

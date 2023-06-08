@@ -76,7 +76,7 @@
     height: 90px;
     margin-top: 10px;
   }
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 .comment-label {
   font-weight: map-get($weight, bold);
