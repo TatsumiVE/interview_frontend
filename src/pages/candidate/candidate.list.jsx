@@ -44,6 +44,14 @@ export const Candidate = () => {
       interview &&
       interview.length > 0 &&
       interview[interview.length - 1].interview_result;
+    const date =
+      interview &&
+      interview.length > 0 &&
+      interview[interview.length - 1].interview_stage?.interview_date;
+    const time =
+      interview &&
+      interview.length > 0 &&
+      interview[interview.length - 1].interview_stage?.interview_time;
     const result =
       interview_result == 1
         ? "Pass"
@@ -62,6 +70,8 @@ export const Candidate = () => {
     return {
       result,
       name,
+      date,
+      time,
     };
   };
 
@@ -175,11 +185,23 @@ export const Candidate = () => {
                 return <div className={`result ${resultClass}`}>{result}</div>;
               },
             },
+
             {
               Header: "Interview Date",
-              Cell: ({ row }) =>
-                row.original.interview[0]?.interview_stage?.interview_date ||
-                "-",
+              Cell: ({ row }) => {
+                const interview = row.original.interview;
+                const { date } = stageCheck(interview);
+                return <div>{date} </div>;
+              },
+            },
+
+            {
+              Header: "Interview Time",
+              Cell: ({ row }) => {
+                const interview = row.original.interview;
+                const { time } = stageCheck(interview);
+                return <div>{time} </div>;
+              },
             },
             {
               Header: "Applied Position",
