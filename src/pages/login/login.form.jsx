@@ -8,12 +8,12 @@ export const LoginForm = () => {
   const [showPwd, setShowPwd] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message,setMessage] = useState("");
-  const [emailError,setEmailError] = useState("");
-  const [passwordError,setPasswordError] = useState("");
+  const [message, setMessage] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const inputPwd = useRef();
 
- useEffect(() => {
+  useEffect(() => {
     let timeoutId;
 
     if (message) {
@@ -50,10 +50,9 @@ export const LoginForm = () => {
       } catch (error) {
         console.log(error.response.data.status_code);
         const error_result = error.response.data.status_code;
-        if(error_result==500 || error_result == 401){
-          setMessage("Login or password is invalid.!");
-        }      
-      
+        if (error_result == 500 || error_result == 401) {
+          setMessage("Email or password is invalid.!");
+        }
       }
     }
   };
@@ -69,7 +68,7 @@ export const LoginForm = () => {
         Start managing your business faster and better
       </p>
 
-      {message && <span className="txt-danger txt-sm">{message}</span>} 
+      {message && <span className="txt-danger txt-sm">{message}</span>}
 
       <label className="form-input">
         <input
@@ -95,12 +94,15 @@ export const LoginForm = () => {
         />
         <i className="fa-solid fa-lock input-icon__left"></i>
         <i
-          className={`fa-regular fa-${showPwd ? "eye-slash " : "eye "
-            }${"input-icon__right"}`}
+          className={`fa-regular fa-${
+            showPwd ? "eye-slash " : "eye "
+          }${"input-icon__right"}`}
           onClick={() => handleShowPassword()}
         ></i>
       </label>
-      {passwordError && <span className="txt-danger txt-sm">{passwordError}</span>}
+      {passwordError && (
+        <span className="txt-danger txt-sm">{passwordError}</span>
+      )}
       <div className="form-optional">
         <label>
           <input type="checkbox" className="form-input__check" /> Keep me login.

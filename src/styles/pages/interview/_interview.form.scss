@@ -5,7 +5,6 @@
 
 .interviewer-group {
   display: flex;
-  flex-direction: row;
 }
 .btn-minus {
   button {
@@ -13,7 +12,11 @@
   }
 }
 
-.error-input {
-  position: relative;
-  margin-top: 10px;
+.card-input--box {
+  margin-bottom: 10px;
+}
+
+.input-group > .interviewer {
+  position: absolute;
+  bottom: -1rem;
 }
