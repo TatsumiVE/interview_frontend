@@ -82,7 +82,10 @@ export const InterviewList = () => {
     ).grade;
 
     const canCreate = !(
-      (lastStage && !lastInterview.interview_result) ||
+      (lastStage &&
+        !(
+          lastInterview.interview_result && lastInterview.interview_result == 1
+        )) ||
       lastStage > 2
     );
 
@@ -151,6 +154,14 @@ export const InterviewList = () => {
       interview &&
       interview.length > 0 &&
       interview[interview.length - 1].interview_result;
+    const date =
+      interview &&
+      interview.length > 0 &&
+      interview[interview.length - 1].interview_stage?.interview_date;
+    const time =
+      interview &&
+      interview.length > 0 &&
+      interview[interview.length - 1].interview_stage?.interview_time;
     const result =
       interview_result == 1
         ? "Pass"
@@ -169,6 +180,8 @@ export const InterviewList = () => {
     return {
       result,
       name,
+      date,
+      time,
     };
   };
 
@@ -246,16 +259,22 @@ export const InterviewList = () => {
 
             {
               Header: "Interview Date",
-              Cell: ({ row }) =>
-                row.original.interview[0]?.interview_stage?.interview_date ||
-                "-",
+              Cell: ({ row }) => {
+                const interview = row.original.interview;
+                const { date } = stageCheck(interview);
+                return <div>{date} </div>;
+              },
             },
+
             {
               Header: "Interview Time",
-              Cell: ({ row }) =>
-                row.original.interview[0]?.interview_stage?.interview_time ||
-                "-",
+              Cell: ({ row }) => {
+                const interview = row.original.interview;
+                const { time } = stageCheck(interview);
+                return <div>{time} </div>;
+              },
             },
+
             {
               Header: "Applied Position",
               Cell: ({ row }) => row.original.candidate.position.name,

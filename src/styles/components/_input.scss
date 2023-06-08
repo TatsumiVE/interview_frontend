@@ -43,5 +43,5 @@ textarea {
   font-weight: 600;
 }
 input:focus {
-  border: 0.8px solid map-get($colors, primary);
+  box-shadow: 0 0 5px map-get($colors, primary);
 }
