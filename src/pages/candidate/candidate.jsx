@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { useAuth } from "../../store/AuthContext";
 import candidateService from "../../services/candidateService";
 import Loader from "../../components/loader";
+import profileImage from "../../assets/image/profile-picture.ico";
 
 export const CandidateDetails = () => {
   const { token } = useAuth();
@@ -34,7 +35,7 @@ export const CandidateDetails = () => {
     return (
       <div className="candidate-page">
         <div className="c-header">
-          <img className="c-avatar" src="" />
+          <img className="c-avatar" src={profileImage} />
           <div>
             <p>{data.candidate?.name}</p>
             <p className="c-role">Junior web developer</p>
