@@ -86,21 +86,21 @@ export const CStages = () => {
           disabled={!hasStage(1)}
           className={`${activeClass(1)} nav-box`}
         >
-          <div className="nav-item">First Stage</div>
+          <div className="nav-item">First Interview</div>
         </div>
         <div
           onClick={() => setStage(2)}
           disabled={!hasStage(2)}
           className={`${activeClass(2)} nav-box`}
         >
-          <div className="nav-item">Second Stage</div>
+          <div className="nav-item">Technical Interview</div>
         </div>
         <div
           onClick={() => setStage(3)}
           disabled={!hasStage(3)}
           className={`${activeClass(3)} nav-box`}
         >
-          <div className="nav-item">Final Stage</div>
+          <div className="nav-item">Final Interview</div>
         </div>
       </div>
 

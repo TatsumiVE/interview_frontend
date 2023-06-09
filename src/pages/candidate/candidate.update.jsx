@@ -439,7 +439,7 @@ export const CandidateUpdate = () => {
               {!Check.isValidStartingDate(candidate.earliest_starting_date) &&
               formActive ? (
                 <span className="txt-danger validated-error">
-                  Earliest Starting Date is invalid!
+                  Starting Date must be tomorrow or future!
                 </span>
               ) : null}
             </div>

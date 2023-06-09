@@ -26,9 +26,7 @@ export const UserList = () => {
   };
 
   const changeStatus = async (userId) => {
-    console.log(token, "fgbnhjmk,");
     try {
-      console.log(userId, "userrrrrrrrr");
       const response = await axios.post(
         `http://localhost:8000/api/user/${userId}`,
         {},
