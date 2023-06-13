@@ -32,29 +32,89 @@ export const BarChart = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/candidate-barchart",
+          "http://localhost:8000/api/candidates-detail/all",
           config
         );
-        const candidates = response.data.data;
+        const data = response.data.data;
 
-        const candidateCounts = languages.map((language) => {
-          const count = candidates.reduce(
-            (acc, candidate) =>
-              candidate.devlanguage_id === language.id
-                ? acc + candidate.count
-                : acc,
-            0
-          );
-          return count;
+        // let totalCandidate = [];
+        // let rejectCandidate = [];
+
+        // console.log(data);
+        // data.forEach(({ candidate }) => {
+        //   if (candidate.status == 0) {
+        //     totalCandidate = languages.map((language) => {
+        //       const languageCount = candidate.specific_languages.reduce(
+        //         (initial, lan) => {
+        //           return (totalCandidate[language.id] =
+        //             lan.devlanguage_id === language.id
+        //               ? initial + (totalCandidate[language.id] ?? 1)
+        //               : initial);
+        //         },
+        //         {}
+        //       );
+
+        //       return languageCount;
+        //     });
+        //   } else if (candidate.status == 1) {
+        //     rejectCandidate = languages.map((language) => {
+        //       const languageCount = candidate.specific_languages.reduce(
+        //         (initial, lan) => {
+        //           return (rejectCandidate[language.id] =
+        //             lan.devlanguage_id === language.id
+        //               ? initial + (rejectCandidate[language.id] ?? 1)
+        //               : initial);
+        //         },
+        //         {}
+        //       );
+        //       return languageCount;
+        //     });
+        //   }
+        // });
+
+        // console.log(totalCandidate);
+        // console.log(rejectCandidate);
+        let totalCandidate = {};
+        let rejectCandidate = {};
+
+        console.log(data);
+        data.forEach(({ candidate }) => {
+          candidate.specific_languages.reduce((acc, lan) => {
+            totalCandidate[lan.devlanguage_id] =
+              (totalCandidate[lan.devlanguage_id] ?? 0) + 1;
+            return acc;
+          }, 0);
+          if (candidate.status == 1) {
+            candidate.specific_languages.reduce((acc, lan) => {
+              rejectCandidate[lan.devlanguage_id] =
+                (rejectCandidate[lan.devlanguage_id] ?? 0) + 1;
+              return acc;
+            }, 0);
+          }
         });
+
+        totalCandidate = Object.values(totalCandidate);
+        rejectCandidate = Object.values(rejectCandidate);
+
+        console.log(totalCandidate);
+        console.log(rejectCandidate);
+
         setDatasets([
           {
-            label: "Candidate",
-            data: candidateCounts,
+            label: "Total Candidates",
+            data: totalCandidate,
             backgroundColor: "#19376D",
             borderColor: "#19376D",
             hoverBackgroundColor: "#192345",
             hoverBorderColor: "#192345",
+          },
+          {
+            label: "Reject Candidates",
+            data: rejectCandidate,
+            backgroundColor: "#ABCDEF",
+            borderColor: "#ABCDEF",
+            hoverBackgroundColor: "#CBAEDF",
+            hoverBorderColor: "#CBAEDF",
           },
         ]);
       } catch (error) {
@@ -70,8 +130,10 @@ export const BarChart = () => {
     }
   }, [languages]);
 
+  const reversedLabels = [...labels].reverse();
+
   const data = {
-    labels: labels,
+    labels: reversedLabels,
     datasets: datasets,
   };
 
