@@ -37,45 +37,9 @@ export const BarChart = () => {
         );
         const data = response.data.data;
 
-        // let totalCandidate = [];
-        // let rejectCandidate = [];
-
-        // console.log(data);
-        // data.forEach(({ candidate }) => {
-        //   if (candidate.status == 0) {
-        //     totalCandidate = languages.map((language) => {
-        //       const languageCount = candidate.specific_languages.reduce(
-        //         (initial, lan) => {
-        //           return (totalCandidate[language.id] =
-        //             lan.devlanguage_id === language.id
-        //               ? initial + (totalCandidate[language.id] ?? 1)
-        //               : initial);
-        //         },
-        //         {}
-        //       );
-
-        //       return languageCount;
-        //     });
-        //   } else if (candidate.status == 1) {
-        //     rejectCandidate = languages.map((language) => {
-        //       const languageCount = candidate.specific_languages.reduce(
-        //         (initial, lan) => {
-        //           return (rejectCandidate[language.id] =
-        //             lan.devlanguage_id === language.id
-        //               ? initial + (rejectCandidate[language.id] ?? 1)
-        //               : initial);
-        //         },
-        //         {}
-        //       );
-        //       return languageCount;
-        //     });
-        //   }
-        // });
-
-        // console.log(totalCandidate);
-        // console.log(rejectCandidate);
         let totalCandidate = {};
         let rejectCandidate = {};
+        let employedCandidate = {};
 
         console.log(data);
         data.forEach(({ candidate }) => {
@@ -91,10 +55,18 @@ export const BarChart = () => {
               return acc;
             }, 0);
           }
+          if (candidate.status == 2) {
+            candidate.specific_languages.reduce((acc, lan) => {
+              employedCandidate[lan.devlanguage_id] =
+                (employedCandidate[lan.devlanguage_id] ?? 0) + 1;
+              return acc;
+            }, 0);
+          }
         });
 
         totalCandidate = Object.values(totalCandidate);
         rejectCandidate = Object.values(rejectCandidate);
+        employedCandidate = Object.values(employedCandidate);
 
         console.log(totalCandidate);
         console.log(rejectCandidate);
@@ -115,6 +87,14 @@ export const BarChart = () => {
             borderColor: "#ABCDEF",
             hoverBackgroundColor: "#CBAEDF",
             hoverBorderColor: "#CBAEDF",
+          },
+          {
+            label: "Employed Candidates",
+            data: employedCandidate,
+            backgroundColor: "#93e0ec",
+            borderColor: "#ABCDEF",
+            hoverBackgroundColor: "#CBAEDF",
+            hoverBorderColor: "#a7bad3",
           },
         ]);
       } catch (error) {
@@ -153,6 +133,10 @@ export const BarChart = () => {
     <>
       <Bar data={data} options={options} />
       <h2 className="txt-primary barchart">Candidates List By Languages</h2>
+      <p className="notice">
+        Please note that the diagram shows the candidate count in a vertical
+        pose, and each candidate may have proficiency in multiple languages.
+      </p>
     </>
   );
 };

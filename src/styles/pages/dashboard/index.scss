@@ -25,4 +25,10 @@
     flex-direction: column;
     gap: 0.8rem;
   }
+  .notice {
+    color: map-get($colors, btnColor);
+    font-size: map-get($font-size, sm);
+    text-align: center;
+    line-height: 1.2;
+  }
 }
